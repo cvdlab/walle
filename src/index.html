@@ -20,17 +20,7 @@
 
             let s = Snap(body.offsetWidth, body.offsetHeight);
 
-            let grid = {intersections: [], horizontal: [], vertical: []};
-
-            //intersections
-            for (let x = 0; x <= s.attr("width"); x += 30) {
-                for (let y = 0; y <= s.attr("height"); y += 30) {
-                    let circle = s.circle(x, y, 2).attr({
-                        fill: "#eee"
-                    });
-                    grid.intersections.push(circle);
-                }
-            }
+            let grid = {intersections: Snap.set(), horizontal: Snap.set(), vertical: Snap.set()};
 
             //horizontal
             for (let x = 0; x <= s.attr("width"); x += 30) {
@@ -46,6 +36,17 @@
                 grid.horizontal.push(line);
             }
 
+            //intersections
+            for (let x = 0; x <= s.attr("width"); x += 30) {
+                for (let y = 0; y <= s.attr("height"); y += 30) {
+                    let circle = s.circle(x, y, 5).attr({
+                        fill: "#eee"
+                    });
+                    grid.intersections.push(circle);
+                }
+            }
+
+
             let bigCircle = s.circle(150, 150, 100);
             bigCircle.attr({
                 fill: "#bada55",
@@ -53,12 +54,24 @@
                 strokeWidth: 5
             });
 
-            s.click(function (d) {
-                bigCircle.animate({
-                    cx: d.x,
-                    cy: d.y,
-                    r: (Math.random() * 100) + 50
-                }, 1000, mina.bounce);
+            grid.intersections.forEach(function (item) {
+                item.hover(
+                        function (elem) {
+                            item.attr({fill: "#000"});
+                        },
+                        function (elem) {
+                            item.attr({fill: "#eee"});
+                        }
+                );
+
+                item.click(function (d) {
+                    bigCircle.animate({
+                        cx: d.x,
+                        cy: d.y,
+                        r: (Math.random() * 100) + 50
+                    }, 1000, mina.bounce);
+                });
+
             });
         };
     </script>
