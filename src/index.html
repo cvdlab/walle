@@ -5,7 +5,7 @@
     <title>Title</title>
     <script src="components/Snap.svg/dist/snap.svg.js"></script>
     <style>
-        html, body {
+        html, body, #wrapper {
             width: 100%;
             height: 100%;
         }
@@ -16,9 +16,10 @@
 
         window.onload = function () {
 
-            let body = document.getElementById('wrapper');
+            let wrapper = document.getElementById('wrapper');
 
-            let s = Snap(body.offsetWidth, body.offsetHeight);
+            let s = Snap(wrapper.offsetWidth, wrapper.offsetHeight);
+            s.appendTo(wrapper);
 
             let grid = {intersections: Snap.set(), horizontal: Snap.set(), vertical: Snap.set()};
 
@@ -76,7 +77,10 @@
         };
     </script>
 </head>
-<body id="wrapper">
+<body>
+
+<div id="wrapper">
+</div>
 
 </body>
 </html>
