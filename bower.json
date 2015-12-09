@@ -1,0 +1,22 @@
+{
+  "name": "wall-e",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Christian Vadalà <chr.vadala@gmail.com>"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Snap.svg": "snap.svg#~0.4.1"
+  }
+}

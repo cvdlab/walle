@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="components/Snap.svg/dist/snap.svg.js"></script>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script>
+
+        "use strict";
+
+        window.onload = function () {
+
+            let body = document.getElementById('wrapper');
+
+            let s = Snap(body.offsetWidth, body.offsetHeight);
+
+            let grid = {intersections: [], horizontal: [], vertical: []};
+
+            //intersections
+            for (let x = 0; x <= s.attr("width"); x += 30) {
+                for (let y = 0; y <= s.attr("height"); y += 30) {
+                    let circle = s.circle(x, y, 2).attr({
+                        fill: "#eee"
+                    });
+                    grid.intersections.push(circle);
+                }
+            }
+
+            //horizontal
+            for (let x = 0; x <= s.attr("width"); x += 30) {
+                let line = s.line(x, 0, x, s.attr("height"))
+                        .attr({strokeWidth: 1, stroke: "#eee"});
+                grid.vertical.push(line);
+            }
+
+            //vertical
+            for (let y = 0; y <= s.attr("height"); y += 30) {
+                let line = s.line(0, y, s.attr("width"), y)
+                        .attr({strokeWidth: 1, stroke: "#eee"});
+                grid.horizontal.push(line);
+            }
+
+            let bigCircle = s.circle(150, 150, 100);
+            bigCircle.attr({
+                fill: "#bada55",
+                stroke: "#000",
+                strokeWidth: 5
+            });
+
+            s.click(function (d) {
+                bigCircle.animate({
+                    cx: d.x,
+                    cy: d.y,
+                    r: (Math.random() * 100) + 50
+                }, 1000, mina.bounce);
+            });
+        };
+    </script>
+</head>
+<body id="wrapper">
+
+</body>
+</html>
