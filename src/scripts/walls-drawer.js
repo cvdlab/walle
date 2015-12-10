@@ -21,7 +21,7 @@ WallsDrawer.prototype.start = function () {
  */
 WallsDrawer.prototype.stop = function () {
   console.log("stop walls mode");
-  if(this.drawingWall !== null) this.abortDrawing();
+  if (this.drawingWall !== null) this.abortDrawing();
 };
 
 /**
@@ -98,7 +98,9 @@ WallsDrawer.prototype.endDrawing = function (point) {
 
   let wall = this.drawingWall;
 
-  wall.line.attr({x2: x, y2: y});
+  wall.startCircle.attr({stroke: "#8E9BA2"});
+  wall.endCircle.attr({stroke: "#8E9BA2"});
+  wall.line.attr({x2: x, y2: y, stroke: "#8E9BA2"});
   this.walls.push(wall);
 
   this.drawingWall = null;
