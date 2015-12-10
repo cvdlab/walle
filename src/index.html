@@ -1,86 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="components/Snap.svg/dist/snap.svg.js"></script>
-    <style>
-        html, body, #wrapper {
-            width: 100%;
-            height: 100%;
-        }
-    </style>
-    <script>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="components/Snap.svg/dist/snap.svg.js"></script>
+  <script src="components/jquery/dist/jquery.js"></script>
+  <script src="scripts/walle.js"></script>
+  <script src="scripts/walls-drawer.js"></script>
+  <link rel="stylesheet" type="text/css" href="styles/style.css">
 
-        "use strict";
+  <script>
 
-        window.onload = function () {
+    "use strict";
 
-            let wrapper = document.getElementById('wrapper');
+    window.onload = function () {
 
-            let s = Snap(wrapper.offsetWidth, wrapper.offsetHeight);
-            s.appendTo(wrapper);
+      let container = document.getElementById('container');
 
-            let grid = {intersections: Snap.set(), horizontal: Snap.set(), vertical: Snap.set()};
+      let walle = new Walle(container);
 
-            //horizontal
-            for (let x = 0; x <= s.attr("width"); x += 30) {
-                let line = s.line(x, 0, x, s.attr("height"))
-                        .attr({strokeWidth: 1, stroke: "#eee"});
-                grid.vertical.push(line);
-            }
+      walle.showGrid();
 
-            //vertical
-            for (let y = 0; y <= s.attr("height"); y += 30) {
-                let line = s.line(0, y, s.attr("width"), y)
-                        .attr({strokeWidth: 1, stroke: "#eee"});
-                grid.horizontal.push(line);
-            }
+//      walle.easterEgg();
 
-            //intersections
-            for (let x = 0; x <= s.attr("width"); x += 30) {
-                for (let y = 0; y <= s.attr("height"); y += 30) {
-                    let circle = s.circle(x, y, 5).attr({
-                        fill: "#eee"
-                    });
-                    grid.intersections.push(circle);
-                }
-            }
+      walle.wallsDrawer().start();
 
 
-            let bigCircle = s.circle(150, 150, 100);
-            bigCircle.attr({
-                fill: "#bada55",
-                stroke: "#000",
-                strokeWidth: 5
-            });
 
-            grid.intersections.forEach(function (item) {
-                item.hover(
-                        function (elem) {
-                            item.attr({fill: "#000"});
-                        },
-                        function (elem) {
-                            item.attr({fill: "#eee"});
-                        }
-                );
-
-                item.click(function (d) {
-                    bigCircle.animate({
-                        cx: d.x,
-                        cy: d.y,
-                        r: (Math.random() * 100) + 50
-                    }, 1000, mina.bounce);
-                });
-
-            });
-        };
-    </script>
+    };
+  </script>
 </head>
 <body>
 
-<div id="wrapper">
-</div>
+<div id="container"></div>
 
 </body>
 </html>
