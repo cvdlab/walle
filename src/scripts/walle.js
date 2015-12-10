@@ -116,4 +116,12 @@ Walle.prototype.hideGrid = function () {
 };
 
 
+/**
+ * changeCursor
+ */
+Walle.prototype.changeCursor = function (cursor) {
+  this.wrapper.css('cursor', cursor);
+};
+
+
 

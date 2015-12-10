@@ -44,6 +44,8 @@ WallsDrawer.prototype.beginDrawing = function (point) {
 
   this.drawingWall = {line, startCircle, endCircle};
 
+  this.walle.changeCursor("crosshair");
+
   //register events
   this.paper.mousemove(this.updateDrawing, this);
   this.paper.click(this.endDrawing, this);
@@ -62,6 +64,7 @@ WallsDrawer.prototype.abortDrawing = function () {
   this.drawingWall.endCircle.remove();
 
   this.drawingWall = null;
+  this.walle.changeCursor("auto");
 
   //register events
   this.paper.unmousemove(this.updateDrawing);
@@ -99,6 +102,7 @@ WallsDrawer.prototype.endDrawing = function (point) {
   this.walls.push(wall);
 
   this.drawingWall = null;
+  this.walle.changeCursor("auto");
 
   //register events
   this.paper.unmousemove(this.updateDrawing);
