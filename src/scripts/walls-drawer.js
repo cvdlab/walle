@@ -144,6 +144,8 @@ WallsDrawer.prototype.endDrawing = function (point) {
 
   this._resetDrawer();
 
+  if(this.walle.superPower) this.beginDrawing(point);
+
 };
 
 

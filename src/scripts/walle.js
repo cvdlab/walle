@@ -14,6 +14,7 @@ var Walle = function (container) {
   this.drawers = {};
   this.width = container.offsetWidth;
   this.height = container.offsetHeight;
+  this.superPower = false;
 
   // init wrapper
   this.wrapper = jQuery("<div/>", {
@@ -27,11 +28,18 @@ var Walle = function (container) {
   this.paper = Snap(this.width, this.height);
   this.paper.appendTo(this.wrapper.get(0));
 
-  //init abort
-  this.document.on("keyup", (event) => {
-    if (event.keyCode == 27) {
-      this.document.trigger("walle.abort");
-    }
+  let buttons = {shift: 16, esc: 27};
+  this.document.on("keydown", event => {
+    //abort
+    if (event.keyCode == buttons.esc) this.document.trigger("walle.abort");
+
+    //shift
+    if (event.keyCode == buttons.shift) this.superPower = true;
+  });
+
+  this.document.on("keyup", event => {
+    //shift
+    if (event.keyCode == buttons.shift) this.superPower = false;
   });
 };
 
