@@ -5,6 +5,7 @@ var WallsDrawer = function (walle) {
   this.paper = walle.paper;
 
   this.drawingWall = null;
+  this.walls = [];
 };
 
 /**
@@ -92,8 +93,11 @@ WallsDrawer.prototype.endDrawing = function (point) {
   console.log("end drawing wall");
   let x = point.offsetX, y = point.offsetY;
 
-  let line = this.drawingWall.line;
-  line.attr({x2: x, y2: y});
+  let wall = this.drawingWall;
+
+  wall.line.attr({x2: x, y2: y});
+  this.walls.push(wall);
+
   this.drawingWall = null;
 
   //register events
