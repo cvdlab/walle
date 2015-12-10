@@ -42,7 +42,7 @@ WallsDrawer.prototype.beginDrawing = function (point) {
   let endCircle = this.paper.circle(x, y, 8);
   endCircle.attr({strokeWidth: 4, stroke: "#445964", fill: "#fff"});
 
-  this.drawingWall = {line, startCircle, endCircle};
+  this.drawingWall = {line, startCircle, endCircle, data: {x1: x, y1: y}};
 
   this.walle.changeCursor("crosshair");
 
@@ -51,6 +51,33 @@ WallsDrawer.prototype.beginDrawing = function (point) {
   this.paper.click(this.endDrawing, this);
   this.paper.unclick(this.beginDrawing);
   this.walle.registerAbort(this.abortDrawing, this);
+
+  //register snapPoints
+  let snapPoints = [];
+
+  let addSnapPoint = function (x, y) {
+
+    let point = this.paper.circle(x, y, 20);
+    point.attr({strokeWidth: 1, stroke: "#000", fill: "#fff"});
+    point.click(function (event) {
+      this.endDrawing({offsetX: x, offsetY: y});
+      snapPoints.forEach(p => {
+        p.remove()
+      });
+      event.stopPropagation();
+    }.bind(this));
+    snapPoints.push(point);
+
+  }.bind(this);
+
+  this.walls.forEach((wall) => {
+
+    let data = wall.data;
+
+    addSnapPoint(data.x1, data.y1);
+    addSnapPoint(data.x2, data.y2);
+
+  });
 };
 
 /**
@@ -92,8 +119,10 @@ WallsDrawer.prototype.endDrawing = function (point) {
   let wall = this.drawingWall;
 
   wall.startCircle.attr({stroke: "#8E9BA2"});
-  wall.endCircle.attr({stroke: "#8E9BA2"});
+  wall.endCircle.attr({cx: x, cy: y,stroke: "#8E9BA2"});
   wall.line.attr({x2: x, y2: y, stroke: "#8E9BA2"});
+  wall.data.x2 = x;
+  wall.data.y2 = y;
   this.walls.push(wall);
 
   this._resetDrawer();
