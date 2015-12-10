@@ -63,14 +63,7 @@ WallsDrawer.prototype.abortDrawing = function () {
   this.drawingWall.startCircle.remove();
   this.drawingWall.endCircle.remove();
 
-  this.drawingWall = null;
-  this.walle.changeCursor("auto");
-
-  //register events
-  this.paper.unmousemove(this.updateDrawing);
-  this.paper.unclick(this.endDrawing);
-  this.walle.unregisterAbort(this.abortDrawing);
-  this.paper.click(this.beginDrawing, this);
+  this._resetDrawer();
 };
 
 /**
@@ -103,6 +96,16 @@ WallsDrawer.prototype.endDrawing = function (point) {
   wall.line.attr({x2: x, y2: y, stroke: "#8E9BA2"});
   this.walls.push(wall);
 
+  this._resetDrawer();
+
+};
+
+
+/**
+ * resetDrawer
+ * @param point
+ */
+WallsDrawer.prototype._resetDrawer = function () {
   this.drawingWall = null;
   this.walle.changeCursor("auto");
 
@@ -112,5 +115,4 @@ WallsDrawer.prototype.endDrawing = function (point) {
   this.walle.unregisterAbort(this.abortDrawing);
   this.paper.click(this.beginDrawing, this);
 };
-
 
