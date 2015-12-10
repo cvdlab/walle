@@ -52,30 +52,47 @@ WallsDrawer.prototype.beginDrawing = function (point) {
   this.paper.unclick(this.beginDrawing);
   this.walle.registerAbort(this.abortDrawing, this);
 
+
   //register snapPoints
   let snapPoints = [];
 
-  let addSnapPoint = function (x, y) {
-
-    let point = this.paper.circle(x, y, 20);
-    point.attr({strokeWidth: 1, stroke: "#000", fill: "#fff"});
-    point.click(function (event) {
-      this.endDrawing({offsetX: x, offsetY: y});
-      snapPoints.forEach(p => {
-        p.remove()
-      });
-      event.stopPropagation();
-    }.bind(this));
-    snapPoints.push(point);
-
-  }.bind(this);
-
   this.walls.forEach((wall) => {
 
-    let data = wall.data;
+    let addSnapPoint = function (x, y, circle) {
 
-    addSnapPoint(data.x1, data.y1);
-    addSnapPoint(data.x2, data.y2);
+      let point = this.paper.circle(x, y, 30);
+      point.attr({strokeWidth: 1, stroke: "#000", fill: "#fff", opacity: 0});
+
+      point.click(
+        event => {
+          this.endDrawing({offsetX: x, offsetY: y});
+          snapPoints.forEach(p => {
+            p.remove()
+          });
+          event.stopPropagation();
+        });
+
+      point.hover(
+        event => {
+          circle.attr({fill: "#00e5ff"});
+        },
+        event => {
+          circle.attr({fill: "#fff"});
+        });
+
+      point.mousemove(
+        event => {
+          console.log("mv", x, y);
+          this.updateDrawing({offsetX: x, offsetY: y});
+          event.stopPropagation();
+        });
+
+      snapPoints.push(point);
+
+    }.bind(this);
+
+    addSnapPoint(wall.data.x1, wall.data.y1, wall.startCircle);
+    addSnapPoint(wall.data.x2, wall.data.y2, wall.endCircle);
 
   });
 };
@@ -119,7 +136,7 @@ WallsDrawer.prototype.endDrawing = function (point) {
   let wall = this.drawingWall;
 
   wall.startCircle.attr({stroke: "#8E9BA2"});
-  wall.endCircle.attr({cx: x, cy: y,stroke: "#8E9BA2"});
+  wall.endCircle.attr({cx: x, cy: y, stroke: "#8E9BA2"});
   wall.line.attr({x2: x, y2: y, stroke: "#8E9BA2"});
   wall.data.x2 = x;
   wall.data.y2 = y;
