@@ -136,7 +136,7 @@ WallsDrawer.prototype.useSnapPoints = function (handlers) {
       let handler = handlers[handlerName];
 
       snapPoint[handlerName](event => {
-        handler(event, x, y);
+        handler(event, x, y, endpoint);
       });
     }
 
@@ -174,4 +174,17 @@ WallsDrawer.prototype._resetDrawer = function () {
   this.paper.unclick(this.endDrawing);
   this.walle.unregisterAbort(this.abortDrawing);
   this.paper.click(this.beginDrawing, this);
+
+  this.useSnapPoints({
+    click: (event, x, y) => {
+      this.beginDrawing({offsetX: x, offsetY: y});
+      event.stopPropagation();
+    },
+    mouseover: (event, x, y, endpoint) => {
+      endpoint.attr({fill: "#00e5ff"});
+    },
+    mouseout: (event, x, y, endpoint) => {
+      endpoint.attr({fill: "#fff"});
+    }
+  });
 };
