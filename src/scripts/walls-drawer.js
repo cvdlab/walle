@@ -44,7 +44,6 @@ WallsDrawer.prototype.restart = function () {
 
   //clear drawing area
   this.destroySnapPoints();
-  this.drawingWall = null;
   this.walle.changeCursor("auto");
 
   //unregister events
@@ -131,6 +130,7 @@ WallsDrawer.prototype.abortDrawing = function () {
   this.drawingWall.line.remove();
   this.drawingWall.startCircle.remove();
   this.drawingWall.endCircle.remove();
+  this.drawingWall = null;
 
   this.restart();
 };
