@@ -15,6 +15,7 @@ var Walle = function (container) {
   this.width = container.offsetWidth;
   this.height = container.offsetHeight;
   this.superPower = false;
+  this.debugMode = false;
 
   // init wrapper
   this.wrapper = jQuery("<div/>", {
