@@ -15,7 +15,39 @@ var WallsDrawer = function (walle) {
 WallsDrawer.prototype.start = function () {
   console.log("start walls mode");
   this.paper.click(this.beginDrawing, this);
+
+  this.useSnapPoints({
+    click: (event, x, y) => {
+      this.beginDrawing({offsetX: x, offsetY: y});
+      event.stopPropagation();
+    },
+    mouseover: (event, x, y, endpoint) => {
+      endpoint.attr({fill: "#00e5ff"});
+    },
+    mouseout: (event, x, y, endpoint) => {
+      endpoint.attr({fill: "#fff"});
+    }
+  });
 };
+
+/**
+ * restart
+ * @param point
+ */
+WallsDrawer.prototype.restart = function () {
+  console.log("restart walls mode");
+
+  this.drawingWall = null;
+  this.walle.changeCursor("auto");
+
+  //register events
+  this.paper.unmousemove(this.updateDrawing);
+  this.paper.unclick(this.endDrawing);
+  this.walle.unregisterAbort(this.abortDrawing);
+
+  this.start();
+};
+
 
 /**
  * stop
@@ -84,7 +116,7 @@ WallsDrawer.prototype.abortDrawing = function () {
   this.drawingWall.startCircle.remove();
   this.drawingWall.endCircle.remove();
 
-  this._resetDrawer();
+  this.restart();
 };
 
 /**
@@ -118,7 +150,7 @@ WallsDrawer.prototype.endDrawing = function (point) {
   wall.data.y2 = y;
   this.walls.push(wall);
 
-  this._resetDrawer();
+  this.restart();
 
   if (this.walle.superPower) this.beginDrawing(point);
 
@@ -161,30 +193,3 @@ WallsDrawer.prototype.destroySnapPoints = function () {
 };
 
 
-/**
- * (private) resetDrawer
- * @param point
- */
-WallsDrawer.prototype._resetDrawer = function () {
-  this.drawingWall = null;
-  this.walle.changeCursor("auto");
-
-  //register events
-  this.paper.unmousemove(this.updateDrawing);
-  this.paper.unclick(this.endDrawing);
-  this.walle.unregisterAbort(this.abortDrawing);
-  this.paper.click(this.beginDrawing, this);
-
-  this.useSnapPoints({
-    click: (event, x, y) => {
-      this.beginDrawing({offsetX: x, offsetY: y});
-      event.stopPropagation();
-    },
-    mouseover: (event, x, y, endpoint) => {
-      endpoint.attr({fill: "#00e5ff"});
-    },
-    mouseout: (event, x, y, endpoint) => {
-      endpoint.attr({fill: "#fff"});
-    }
-  });
-};
