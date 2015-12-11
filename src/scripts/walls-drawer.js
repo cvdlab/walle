@@ -54,12 +54,18 @@ WallsDrawer.prototype.beginDrawing = function (point) {
   this.walle.registerAbort(this.abortDrawing, this);
 
   this.useSnapPoints({
+    mouseover: event => {
+      endCircle.attr({fill: "#00e5ff"});
+    },
+    mouseout: event => {
+      endCircle.attr({fill: "#fff"});
+    },
     mousemove: (event, x, y) => {
-      console.log("mv", x, y);
       this.updateDrawing({offsetX: x, offsetY: y});
       event.stopPropagation();
     },
     click: (event, x, y) => {
+      endCircle.attr({fill: "#fff"});
       this.endDrawing({offsetX: x, offsetY: y});
       this.destroySnapPoints();
       event.stopPropagation();
@@ -142,14 +148,6 @@ WallsDrawer.prototype.useSnapPoints = function (handlers) {
 
     let snapPoint = this.paper.circle(x, y, sensitiveness);
     snapPoint.attr({strokeWidth: 1, stroke: "#000", fill: "#fff", opacity: this.walle.debugMode ? 0.5 : 0});
-
-    //snapPoint.hover(
-    //  event => {
-    //    endpoint.attr({fill: "#00e5ff"});
-    //  },
-    //  event => {
-    //    endpoint.attr({fill: "#fff"});
-    //  });
 
     for (let handlerName in handlers) {
       let handler = handlers[handlerName];
