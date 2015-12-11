@@ -6,6 +6,7 @@ var WallsDrawer = function (walle) {
 
   this.drawingWall = null;
   this.walls = [];
+  this.snapPoints = [];
 };
 
 /**
@@ -52,49 +53,19 @@ WallsDrawer.prototype.beginDrawing = function (point) {
   this.paper.unclick(this.beginDrawing);
   this.walle.registerAbort(this.abortDrawing, this);
 
-
-  //register snapPoints
-  let snapPoints = [];
-
-  this.walls.forEach((wall) => {
-
-    let addSnapPoint = function (x, y, circle) {
-
-      let point = this.paper.circle(x, y, 30);
-      point.attr({strokeWidth: 1, stroke: "#000", fill: "#fff", opacity: 0});
-
-      point.click(
-        event => {
-          this.endDrawing({offsetX: x, offsetY: y});
-          snapPoints.forEach(p => {
-            p.remove()
-          });
-          event.stopPropagation();
-        });
-
-      point.hover(
-        event => {
-          circle.attr({fill: "#00e5ff"});
-        },
-        event => {
-          circle.attr({fill: "#fff"});
-        });
-
-      point.mousemove(
-        event => {
-          console.log("mv", x, y);
-          this.updateDrawing({offsetX: x, offsetY: y});
-          event.stopPropagation();
-        });
-
-      snapPoints.push(point);
-
-    }.bind(this);
-
-    addSnapPoint(wall.data.x1, wall.data.y1, wall.startCircle);
-    addSnapPoint(wall.data.x2, wall.data.y2, wall.endCircle);
-
+  this.useSnapPoints({
+    mousemove: (event, x, y) => {
+      console.log("mv", x, y);
+      this.updateDrawing({offsetX: x, offsetY: y});
+      event.stopPropagation();
+    },
+    click: (event, x, y) => {
+      this.endDrawing({offsetX: x, offsetY: y});
+      this.destroySnapPoints();
+      event.stopPropagation();
+    }
   });
+
 };
 
 /**
@@ -144,7 +115,7 @@ WallsDrawer.prototype.endDrawing = function (point) {
 
   this._resetDrawer();
 
-  if(this.walle.superPower) this.beginDrawing(point);
+  if (this.walle.superPower) this.beginDrawing(point);
 
 };
 
@@ -164,3 +135,45 @@ WallsDrawer.prototype._resetDrawer = function () {
   this.paper.click(this.beginDrawing, this);
 };
 
+
+WallsDrawer.prototype.useSnapPoints = function (handlers) {
+
+  let addSnapPoint = (x, y, endpoint, sensitiveness) => {
+
+    let snapPoint = this.paper.circle(x, y, sensitiveness);
+    snapPoint.attr({strokeWidth: 1, stroke: "#000", fill: "#fff", opacity: this.walle.debugMode ? 0.5 : 0});
+
+    //snapPoint.hover(
+    //  event => {
+    //    endpoint.attr({fill: "#00e5ff"});
+    //  },
+    //  event => {
+    //    endpoint.attr({fill: "#fff"});
+    //  });
+
+    for (let handlerName in handlers) {
+      let handler = handlers[handlerName];
+
+      snapPoint[handlerName](event => {
+        handler(event, x, y);
+      });
+    }
+
+    this.snapPoints.push(snapPoint);
+  };
+
+
+  this.walls.forEach((wall) => {
+    addSnapPoint(wall.data.x1, wall.data.y1, wall.startCircle, 20);
+    addSnapPoint(wall.data.x2, wall.data.y2, wall.endCircle, 20);
+  });
+
+
+};
+
+WallsDrawer.prototype.destroySnapPoints = function () {
+  this.snapPoints.forEach(p => {
+    p.remove()
+  });
+  this.snapPoints = [];
+};
