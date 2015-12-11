@@ -51,6 +51,8 @@ WallsDrawer.prototype.restart = function () {
   this.paper.unclick(this.endDrawing);
   this.walle.unregisterAbort(this.abortDrawing);
 
+  console.info("walls report", this.walls);
+
   //start
   this.start();
 };
