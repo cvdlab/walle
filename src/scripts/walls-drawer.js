@@ -101,7 +101,6 @@ WallsDrawer.prototype.updateDrawing = function (point) {
   endCircle.attr({cx: x, cy: y});
 };
 
-
 /**
  * endDrawing
  * @param point
@@ -125,23 +124,7 @@ WallsDrawer.prototype.endDrawing = function (point) {
 
 };
 
-
-/**
- * resetDrawer
- * @param point
- */
-WallsDrawer.prototype._resetDrawer = function () {
-  this.drawingWall = null;
-  this.walle.changeCursor("auto");
-
-  //register events
-  this.paper.unmousemove(this.updateDrawing);
-  this.paper.unclick(this.endDrawing);
-  this.walle.unregisterAbort(this.abortDrawing);
-  this.paper.click(this.beginDrawing, this);
-};
-
-
+/** useSnapPoints */
 WallsDrawer.prototype.useSnapPoints = function (handlers) {
 
   let addSnapPoint = (x, y, endpoint, sensitiveness) => {
@@ -169,9 +152,26 @@ WallsDrawer.prototype.useSnapPoints = function (handlers) {
 
 };
 
+/** destroySnapPoints */
 WallsDrawer.prototype.destroySnapPoints = function () {
   this.snapPoints.forEach(p => {
     p.remove()
   });
   this.snapPoints = [];
+};
+
+
+/**
+ * (private) resetDrawer
+ * @param point
+ */
+WallsDrawer.prototype._resetDrawer = function () {
+  this.drawingWall = null;
+  this.walle.changeCursor("auto");
+
+  //register events
+  this.paper.unmousemove(this.updateDrawing);
+  this.paper.unclick(this.endDrawing);
+  this.walle.unregisterAbort(this.abortDrawing);
+  this.paper.click(this.beginDrawing, this);
 };
