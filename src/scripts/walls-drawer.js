@@ -37,6 +37,7 @@ WallsDrawer.prototype.start = function () {
 WallsDrawer.prototype.restart = function () {
   console.log("restart walls mode");
 
+  this.destroySnapPoints();
   this.drawingWall = null;
   this.walle.changeCursor("auto");
 
@@ -99,7 +100,6 @@ WallsDrawer.prototype.beginDrawing = function (point) {
     click: (event, x, y) => {
       endCircle.attr({fill: "#fff"});
       this.endDrawing({offsetX: x, offsetY: y});
-      this.destroySnapPoints();
       event.stopPropagation();
     }
   });
