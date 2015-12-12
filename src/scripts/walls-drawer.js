@@ -5,7 +5,10 @@ var WallsDrawer = function (walle) {
   this.paper = walle.paper;
 
   this.drawingWall = null;
+
   this.walls = [];
+  this.edges = [];
+
   this.snapPoints = [];
 };
 
@@ -27,11 +30,11 @@ WallsDrawer.prototype.start = function () {
       this.beginDrawing(x, y);
       event.stopPropagation();
     },
-    mouseover: (event, x, y, endpoint) => {
-      endpoint.attr({fill: "#00e5ff"});
+    mouseover: (event, x, y, anchor) => {
+      anchor.hovered(true);
     },
-    mouseout: (event, x, y, endpoint) => {
-      endpoint.attr({fill: "#fff"});
+    mouseout: (event, x, y, anchor) => {
+      anchor.hovered(false);
     }
   });
 };
@@ -39,7 +42,6 @@ WallsDrawer.prototype.start = function () {
 
 /**
  * restart
- * @param point
  */
 WallsDrawer.prototype.restart = function () {
   console.log("restart walls mode");
@@ -53,7 +55,7 @@ WallsDrawer.prototype.restart = function () {
   this.paper.removeAllListeners("click.wallsdrawer.end");
   this.walle.emitter.removeAllListeners("abort.wallsdrawer");
 
-  console.info("walls report", this.walls);
+  console.info("status", this.walls, this.edges);
 
   //start
   this.start();
@@ -73,23 +75,24 @@ WallsDrawer.prototype.stop = function () {
 
 /**
  * beginDrawing
- * @param point
+ * @param x
+ * @param y
  */
 WallsDrawer.prototype.beginDrawing = function (x, y) {
   console.log("begin drawing wall", x, y);
 
-  //draw wall and endpoints
-  let line = this.paper.line(x, y, x, y);
-  line.attr({strokeWidth: 4, stroke: "#445964"});
+  //draw wall and edge
+  let edge0 = new Edge(this.paper, x, y);
+  let edge1 = new Edge(this.paper, x, y);
+  let wall = new Wall(this.paper, edge0, edge1);
+  edge0.redraw();
+  edge1.redraw();
 
-  let startCircle = this.paper.circle(x, y, 8);
-  startCircle.attr({strokeWidth: 4, stroke: "#445964", fill: "#fff"});
+  edge0.selected(true);
+  edge1.selected(true);
+  wall.selected(true);
 
-  let endCircle = this.paper.circle(x, y, 8);
-  endCircle.attr({strokeWidth: 4, stroke: "#445964", fill: "#fff"});
-
-  //init structure
-  this.drawingWall = {line, startCircle, endCircle, data: {x1: x, y1: y}};
+  this.drawingWall = wall;
 
   //change mouse mode
   this.walle.changeCursor("crosshair");
@@ -109,17 +112,17 @@ WallsDrawer.prototype.beginDrawing = function (x, y) {
   //use snap mode
   this.useSnapPoints({
     mouseover: event => {
-      endCircle.attr({fill: "#00e5ff"});
+      edge1.hovered(true);
     },
     mouseout: event => {
-      endCircle.attr({fill: "#fff"});
+      edge1.hovered(false);
     },
     mousemove: (event, x, y) => {
       this.updateDrawing(x, y);
       event.stopPropagation();
     },
     click: (event, x, y) => {
-      endCircle.attr({fill: "#fff"});
+      edge1.selected(false);
       this.endDrawing(x, y);
       event.stopPropagation();
     }
@@ -134,9 +137,10 @@ WallsDrawer.prototype.abortDrawing = function () {
   console.log("abort drawing wall");
 
   //abort
-  this.drawingWall.line.remove();
-  this.drawingWall.startCircle.remove();
-  this.drawingWall.endCircle.remove();
+  this.drawingWall.edges[0].remove();
+  this.drawingWall.edges[1].remove();
+  this.drawingWall.remove();
+
   this.drawingWall = null;
 
   this.restart();
@@ -148,12 +152,10 @@ WallsDrawer.prototype.abortDrawing = function () {
  * @param y
  */
 WallsDrawer.prototype.updateDrawing = function (x, y) {
-  console.log("update drawing wall", x, y);
+  //console.log("update drawing wall", x, y);
 
   //move wall endpoint
-  let line = this.drawingWall.line, endCircle = this.drawingWall.endCircle;
-  line.attr({x2: x, y2: y});
-  endCircle.attr({cx: x, cy: y});
+  this.drawingWall.edges[1].move(x,  y);
 };
 
 /**
@@ -166,14 +168,15 @@ WallsDrawer.prototype.endDrawing = function (x, y) {
 
   //set new wall
   let wall = this.drawingWall;
-  wall.startCircle.attr({stroke: "#8E9BA2"});
-  wall.endCircle.attr({cx: x, cy: y, stroke: "#8E9BA2"});
-  wall.line.attr({x2: x, y2: y, stroke: "#8E9BA2"});
+  wall.edges[1].move(x, y);
 
-  //update wall structure
-  wall.data.x2 = x;
-  wall.data.y2 = y;
+  wall.edges[0].selected(false);
+  wall.edges[1].selected(false);
+  wall.selected(false);
+
   this.walls.push(wall);
+  this.edges.push(wall.edges[0]);
+  this.edges.push(wall.edges[1]);
 
   //restart
   this.restart();
@@ -184,26 +187,22 @@ WallsDrawer.prototype.endDrawing = function (x, y) {
 /** useSnapPoints */
 WallsDrawer.prototype.useSnapPoints = function (handlers) {
 
-  let addSnapPoint = (x, y, endpoint, sensitiveness) => {
+  //add wall snap point
+  this.edges.forEach((edge) => {
 
-    let snapPoint = this.paper.circle(x, y, sensitiveness);
+    let snapPoint = this.paper.circle(edge.x, edge.y, 20);
     snapPoint.attr({strokeWidth: 1, stroke: "#000", fill: "#fff", opacity: this.walle.debugMode ? 0.5 : 0});
 
     for (let handlerName in handlers) {
       let handler = handlers[handlerName];
 
       snapPoint[handlerName](event => {
-        handler(event, x, y, endpoint);
+        handler(event, edge.x, edge.y, edge);
       });
     }
 
     this.snapPoints.push(snapPoint);
-  };
 
-  //add wall snap point
-  this.walls.forEach((wall) => {
-    addSnapPoint(wall.data.x1, wall.data.y1, wall.startCircle, 20);
-    addSnapPoint(wall.data.x2, wall.data.y2, wall.endCircle, 20);
   });
 
 
