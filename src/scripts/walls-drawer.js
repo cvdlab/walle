@@ -50,7 +50,7 @@ WallsDrawer.prototype.restart = function () {
 
   //unregister events
   this.paper.removeAllListeners("mousemove.wallsdrawer.update");
-  this.paper.unclick(this.endDrawing);
+  this.paper.removeAllListeners("click.wallsdrawer.end");
   this.walle.unregisterAbort(this.abortDrawing);
 
   console.info("walls report", this.walls);
@@ -98,7 +98,9 @@ WallsDrawer.prototype.beginDrawing = function (x, y) {
   this.paper.addListener("mousemove.wallsdrawer.update", event => {
     this.updateDrawing(event.offsetX, event.offsetY);
   });
-  this.paper.click(this.endDrawing, this);
+  this.paper.addListener("click.wallsdrawer.end", event => {
+    this.endDrawing(event.offsetX, event.offsetY);
+  });
   this.paper.removeAllListeners("click.wallsdrawer.begin");
   this.walle.registerAbort(this.abortDrawing, this);
 
@@ -116,7 +118,7 @@ WallsDrawer.prototype.beginDrawing = function (x, y) {
     },
     click: (event, x, y) => {
       endCircle.attr({fill: "#fff"});
-      this.endDrawing({offsetX: x, offsetY: y});
+      this.endDrawing(x, y);
       event.stopPropagation();
     }
   });
@@ -140,7 +142,8 @@ WallsDrawer.prototype.abortDrawing = function () {
 
 /**
  * updateDrawing
- * @param point
+ * @param x
+ * @param y
  */
 WallsDrawer.prototype.updateDrawing = function (x, y) {
   console.log("update drawing wall", x, y);
@@ -153,13 +156,11 @@ WallsDrawer.prototype.updateDrawing = function (x, y) {
 
 /**
  * endDrawing
- * @param point
+ * @param x
+ * @param y
  */
-WallsDrawer.prototype.endDrawing = function (point) {
-  console.log("end drawing wall");
-
-  //get coords
-  let x = point.offsetX, y = point.offsetY;
+WallsDrawer.prototype.endDrawing = function (x, y) {
+  console.log("end drawing wall", x, y);
 
   //set new wall
   let wall = this.drawingWall;
