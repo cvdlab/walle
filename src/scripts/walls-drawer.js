@@ -17,12 +17,14 @@ WallsDrawer.prototype.start = function () {
   console.log("start walls mode");
 
   //add a point everywhere
-  this.paper.click(this.beginDrawing, this);
+  this.paper.addListener("click.wallsdrawer.begin", event => {
+    this.beginDrawing(event.offsetX, event.offsetY);
+  });
 
   //add a point using snap points
   this.useSnapPoints({
     click: (event, x, y) => {
-      this.beginDrawing({offsetX: x, offsetY: y});
+      this.beginDrawing(x, y);
       event.stopPropagation();
     },
     mouseover: (event, x, y, endpoint) => {
@@ -73,11 +75,8 @@ WallsDrawer.prototype.stop = function () {
  * beginDrawing
  * @param point
  */
-WallsDrawer.prototype.beginDrawing = function (point) {
-  console.log("begin drawing wall");
-
-  //get start point coords (x,y)
-  let x = point.offsetX, y = point.offsetY;
+WallsDrawer.prototype.beginDrawing = function (x, y) {
+  console.log("begin drawing wall", x, y);
 
   //draw wall and endpoints
   let line = this.paper.line(x, y, x, y);
@@ -98,7 +97,7 @@ WallsDrawer.prototype.beginDrawing = function (point) {
   //(un)register events
   this.paper.mousemove(this.updateDrawing, this);
   this.paper.click(this.endDrawing, this);
-  this.paper.unclick(this.beginDrawing);
+  this.paper.removeAllListeners("click.wallsdrawer.begin");
   this.walle.registerAbort(this.abortDrawing, this);
 
   //use snap mode
@@ -176,7 +175,7 @@ WallsDrawer.prototype.endDrawing = function (point) {
 
   //restart
   this.restart();
-  if (this.walle.superPower) this.beginDrawing(point);
+  if (this.walle.superPower) this.beginDrawing(x, y);
 
 };
 
