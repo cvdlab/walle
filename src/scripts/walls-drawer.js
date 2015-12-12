@@ -51,7 +51,7 @@ WallsDrawer.prototype.restart = function () {
   //unregister events
   this.paper.removeAllListeners("mousemove.wallsdrawer.update");
   this.paper.removeAllListeners("click.wallsdrawer.end");
-  this.walle.unregisterAbort(this.abortDrawing);
+  this.walle.emitter.removeAllListeners("abort.wallsdrawer");
 
   console.info("walls report", this.walls);
 
@@ -102,7 +102,9 @@ WallsDrawer.prototype.beginDrawing = function (x, y) {
     this.endDrawing(event.offsetX, event.offsetY);
   });
   this.paper.removeAllListeners("click.wallsdrawer.begin");
-  this.walle.registerAbort(this.abortDrawing, this);
+  this.walle.emitter.addListener("abort.wallsdrawer", event => {
+    this.abortDrawing();
+  });
 
   //use snap mode
   this.useSnapPoints({

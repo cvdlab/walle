@@ -14,6 +14,7 @@ var Walle = function (container) {
   this.drawers = {};
   this.width = container.offsetWidth;
   this.height = container.offsetHeight;
+  this.emitter = new EventEmitter2({wildcard: true});
   this.superPower = false;
   this.debugMode = false;
 
@@ -32,7 +33,7 @@ var Walle = function (container) {
   let buttons = {shift: 16, esc: 27};
   this.document.on("keydown", event => {
     //abort
-    if (event.keyCode == buttons.esc) this.document.trigger("walle.abort");
+    if (event.keyCode == buttons.esc) this.emitter.emit("abort.**");
 
     //shift
     if (event.keyCode == buttons.shift) this.superPower = true;
@@ -42,16 +43,6 @@ var Walle = function (container) {
     //shift
     if (event.keyCode == buttons.shift) this.superPower = false;
   });
-};
-
-
-Walle.prototype.registerAbort = function (handle, context) {
-  context = context || this;
-  this.document.one("walle.abort", handle.bind(context));
-};
-
-Walle.prototype.unregisterAbort = function (handle) {
-  this.document.off("walle.abort");
 };
 
 /**
