@@ -18,6 +18,7 @@
   ],
   "dependencies": {
     "Snap.svg": "snap.svg#~0.4.1",
-    "jquery": "~2.1.4"
+    "jquery": "~2.1.4",
+    "eventemitter2": "~0.4.14"
   }
 }
