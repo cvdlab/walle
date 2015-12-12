@@ -36,7 +36,7 @@
     Element.prototype.removeAllListeners = function (event) {
       let element = this;
       if (!element.emitter) return;
-      element.emitter.removeAllListeners(arguments);
+      element.emitter.removeAllListeners(event);
     };
   });
 
