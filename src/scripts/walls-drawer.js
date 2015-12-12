@@ -49,7 +49,7 @@ WallsDrawer.prototype.restart = function () {
   this.walle.changeCursor("auto");
 
   //unregister events
-  this.paper.unmousemove(this.updateDrawing);
+  this.paper.removeAllListeners("mousemove.wallsdrawer.update");
   this.paper.unclick(this.endDrawing);
   this.walle.unregisterAbort(this.abortDrawing);
 
@@ -95,7 +95,9 @@ WallsDrawer.prototype.beginDrawing = function (x, y) {
   this.walle.changeCursor("crosshair");
 
   //(un)register events
-  this.paper.mousemove(this.updateDrawing, this);
+  this.paper.addListener("mousemove.wallsdrawer.update", event => {
+    this.updateDrawing(event.offsetX, event.offsetY);
+  });
   this.paper.click(this.endDrawing, this);
   this.paper.removeAllListeners("click.wallsdrawer.begin");
   this.walle.registerAbort(this.abortDrawing, this);
@@ -109,7 +111,7 @@ WallsDrawer.prototype.beginDrawing = function (x, y) {
       endCircle.attr({fill: "#fff"});
     },
     mousemove: (event, x, y) => {
-      this.updateDrawing({offsetX: x, offsetY: y});
+      this.updateDrawing(x, y);
       event.stopPropagation();
     },
     click: (event, x, y) => {
@@ -140,11 +142,8 @@ WallsDrawer.prototype.abortDrawing = function () {
  * updateDrawing
  * @param point
  */
-WallsDrawer.prototype.updateDrawing = function (point) {
-  console.log("update drawing wall");
-
-  //get coords
-  let x = point.offsetX, y = point.offsetY;
+WallsDrawer.prototype.updateDrawing = function (x, y) {
+  console.log("update drawing wall", x, y);
 
   //move wall endpoint
   let line = this.drawingWall.line, endCircle = this.drawingWall.endCircle;
