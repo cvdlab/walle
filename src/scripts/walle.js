@@ -10,7 +10,6 @@ var Walle = function (container) {
   this.document = jQuery(document);
 
   //init vars;
-  this.grid = {intersections: Snap.set(), horizontal: Snap.set(), vertical: Snap.set()};
   this.drawers = {};
   this.width = container.offsetWidth;
   this.height = container.offsetHeight;
@@ -78,41 +77,14 @@ Walle.prototype.wallsDrawer = function () {
 };
 
 /**
- * showGrid
+ * wallsDrawer
+ * @returns {WallsDrawer}
  */
-Walle.prototype.showGrid = function () {
-  let width = this.paper.attr("width");
-  let height = this.paper.attr("height");
-  let step = 30;
-
-  //horizontal
-  for (let x = 0; x <= width; x += step) {
-    let line = this.paper.line(x, 0, x, height);
-    line.attr({strokeWidth: 1, stroke: "#eee"});
-    this.grid.vertical.push(line);
+Walle.prototype.grid = function () {
+  if (!this.drawers.hasOwnProperty("grid")) {
+    this.drawers.grid = new Grid(this);
   }
-
-  //vertical
-  for (let y = 0; y <= height; y += 30) {
-    let line = this.paper.line(0, y, width, y);
-    line.attr({strokeWidth: 1, stroke: "#eee"});
-    this.grid.horizontal.push(line);
-  }
-};
-
-
-/**
- * hideGrid
- */
-Walle.prototype.hideGrid = function () {
-
-  this.grid.vertical.forEach(function (element) {
-    element.remove();
-  });
-  this.grid.horizontal.forEach(function (element) {
-    element.remove();
-  });
-
+  return this.drawers.grid;
 };
 
 
