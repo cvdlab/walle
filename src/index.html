@@ -24,15 +24,10 @@
 
       let walle = new Walle(container);
 
-      walle.grid().start();
+      walle.feature("grid").start();
+      walle.feature("wallsDrawer").start();
 
       walle.debugMode = true;
-
-//      walle.easterEgg();
-
-      walle.wallsDrawer().start();
-
-
 
     };
   </script>

@@ -10,7 +10,6 @@ var Walle = function (container) {
   this.document = jQuery(document);
 
   //init vars;
-  this.drawers = {};
   this.width = container.offsetWidth;
   this.height = container.offsetHeight;
   this.emitter = new EventEmitter2({wildcard: true});
@@ -29,6 +28,13 @@ var Walle = function (container) {
   this.paper = Snap(this.width, this.height);
   this.paper.appendTo(this.wrapper.get(0));
 
+  //init features
+  this.features = {
+    grid: new Grid(this),
+    wallsDrawer: new WallsDrawer(this)
+  };
+
+  //register events
   let buttons = {shift: 16, esc: 27};
   this.document.on("keydown", event => {
     //abort
@@ -66,25 +72,13 @@ Walle.prototype.easterEgg = function () {
 };
 
 /**
- * wallsDrawer
- * @returns {WallsDrawer}
+ * get feature
  */
-Walle.prototype.wallsDrawer = function () {
-  if (!this.drawers.hasOwnProperty("walls")) {
-    this.drawers.wallsDrawer = new WallsDrawer(this);
+Walle.prototype.feature = function (featureName) {
+  if (!this.features.hasOwnProperty(featureName)) {
+    throw new Error("feature " + featureName + " not found");
   }
-  return this.drawers.wallsDrawer;
-};
-
-/**
- * wallsDrawer
- * @returns {WallsDrawer}
- */
-Walle.prototype.grid = function () {
-  if (!this.drawers.hasOwnProperty("grid")) {
-    this.drawers.grid = new Grid(this);
-  }
-  return this.drawers.grid;
+  return this.features[featureName];
 };
 
 
