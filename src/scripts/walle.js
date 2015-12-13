@@ -31,7 +31,8 @@ var Walle = function (container) {
   //init features
   this.features = {
     grid: new Grid(this),
-    wallsDrawer: new WallsDrawer(this)
+    wallsDrawer: new WallsDrawer(this),
+    easterEgg: new EasterEgg(this)
   };
 
   //register events
@@ -48,27 +49,6 @@ var Walle = function (container) {
     //shift
     if (event.keyCode == buttons.shift) this.superPower = false;
   });
-};
-
-/**
- * Easter egg
- */
-Walle.prototype.easterEgg = function () {
-  let bigCircle = this.paper.circle(150, 150, 100);
-  bigCircle.attr({
-    fill: "#bada55",
-    stroke: "#000",
-    strokeWidth: 5
-  });
-
-  this.paper.click(function (d) {
-    bigCircle.animate({
-      cx: d.x,
-      cy: d.y,
-      r: (Math.random() * 100) + 50
-    }, 1000, mina.bounce);
-  });
-
 };
 
 /**
