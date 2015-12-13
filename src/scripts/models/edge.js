@@ -47,5 +47,7 @@ Edge.prototype.redraw = function () {
   this.circle = circle;
 };
 
-
+Edge.prototype.remove = function () {
+  this.circle.remove();
+};
 
