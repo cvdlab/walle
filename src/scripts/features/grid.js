@@ -15,7 +15,7 @@ Grid.prototype.start = function () {
   let width = this.walle.width;
   let height = this.walle.height;
   console.log(width, height);
-  let step = 30;
+  let step = 20;
 
   //horizontal
   for (let x = 0; x <= width; x += step) {
@@ -25,7 +25,7 @@ Grid.prototype.start = function () {
   }
 
   //vertical
-  for (let y = 0; y <= height; y += 30) {
+  for (let y = 0; y <= height; y += step) {
     let line = this.paper.line(0, y, width, y);
     line.attr({strokeWidth: 1, stroke: "#eee"});
     this.grid.horizontal.push(line);
