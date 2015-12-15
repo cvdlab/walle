@@ -25,7 +25,8 @@ EasterEgg.prototype.start = function () {
  */
 EasterEgg.prototype.stop = function () {
 
-  this.bigCircle.remove();
+  //this.bigCircle.remove();
+  this.clock.remove();
 
 };
 
