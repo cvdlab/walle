@@ -25,7 +25,8 @@ var Wall = function (paper, edge0, edge1) {
     this.updateDistance();
   });
 
-  this.distanceText = this.paper.text(0, 0, "").attr({"text-anchor": "middle"});
+  this.distanceText = this.paper.text(0, 0, "")
+    .attr({"text-anchor": "middle", "font-family": "monospace"});
   this.distanceGroup = this.paper.g(this.distanceText);
   this.updateDistance();
 };
@@ -60,7 +61,7 @@ Wall.prototype.updateDistance = function () {
 
   let distance = Utils.twoPointsDistance(x1, y1, x2, y2);
   let angle = Utils.angleBetweenTwoPoints(x1, y1, x2, y2);
-  let westside = 180  < angle && angle < 360;
+  let westside = 180 < angle && angle < 360;
 
 
   let matrix = Snap.matrix()
@@ -71,16 +72,15 @@ Wall.prototype.updateDistance = function () {
   let unit = 60;
 
   group.transform(matrix);
-  text.attr({ text: (distance / unit).toFixed(2) + "m" });
+  text.attr({text: (distance / unit).toFixed(2) + "m"});
 
   if (westside) {
-    text.attr({ x: -distance / 2}); //align center
+    text.attr({x: -distance / 2}); //align center
     text.transform(Snap.matrix().rotate(180));
-  }else{
-    text.attr({ x: distance / 2, y: -10 }); //align center
+  } else {
+    text.attr({x: distance / 2, y: -5}); //align center
     text.transform("");
   }
-
 
 
 };
