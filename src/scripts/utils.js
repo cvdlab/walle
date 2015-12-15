@@ -1,8 +1,6 @@
 "use strict";
 
-var Utils = function () {
-};
-
+var Utils = {};
 
 Utils.twoPointsDistance = function (x1, y1, x2, y2) {
 
@@ -20,3 +18,4 @@ Utils.angleBetweenTwoPoints = function (x1, y1, x2, y2) {
   }
 
 };
+
