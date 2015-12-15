@@ -14,7 +14,6 @@ var Grid = function (walle) {
 Grid.prototype.start = function () {
   let width = this.walle.width;
   let height = this.walle.height;
-  console.log(width, height);
   let step = 20;
 
   //horizontal

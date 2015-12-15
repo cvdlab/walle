@@ -27,8 +27,7 @@ Panel.prototype.start = function () {
 
   let width = 0;
   this.panel.find('a').each(function (i) {
-    width += jQuery(this).outerWidth(true)
-    console.log(jQuery(this).outerWidth(true))
+    width += jQuery(this).outerWidth(true);
   });
   this.panel.width(width);
 
