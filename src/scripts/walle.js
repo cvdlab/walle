@@ -9,6 +9,8 @@ var Walle = function (container) {
 
   this.document = jQuery(document);
 
+  this.model = {};
+
   //init vars;
   this.width = container.offsetWidth;
   this.height = container.offsetHeight;
@@ -34,6 +36,7 @@ var Walle = function (container) {
     easterEgg: new EasterEgg(this),
     panel: new Panel(this),
     debugger: new Debugger(this),
+    export: new Export(this)
   };
 
   //abort

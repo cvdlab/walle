@@ -6,8 +6,11 @@ var WallsDrawer = function (walle) {
 
   this.drawingWall = null;
 
-  this.walls = [];
-  this.edges = [];
+  walle.model.walls = walle.model.walls || [];
+  walle.model.edges = walle.model.edges || [];
+
+  this.walls = walle.model.walls;
+  this.edges = walle.model.edges;
 
   this.snapPoints = [];
 };
@@ -56,8 +59,6 @@ WallsDrawer.prototype.restart = function () {
   this.walle.emitter.removeAllListeners("abort.wallsdrawer");
 
   this.drawingWall = null;
-
-  console.info("status", this.walls, this.edges);
 
   //start
   this.start();

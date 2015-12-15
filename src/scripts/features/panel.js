@@ -23,6 +23,7 @@ Panel.prototype.start = function () {
   this.addFeature("wallsDrawer", "fa fa-plus", "Draw new wall", false);
   this.addFeature("easterEgg", "fa fa-flask", "Experimental", false);
   this.addFeature("debugger", "fa fa-terminal", "Debug mode", false);
+  this.addFeature("export", "fa fa-save", "Export", false);
 
   let width = 0;
   this.panel.find('a').each(function (i) {

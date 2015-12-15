@@ -32,3 +32,11 @@ Wall.prototype.remove = function () {
 Wall.prototype.selected = function (isSelected) {
   this.line.attr({stroke: isSelected ? this.colors.strokeSelected : this.colors.strokeNormal});
 };
+
+Wall.prototype.toString = function () {
+  return {
+    type: "wall",
+    edge0: this.edges[0].toString(),
+    edge1: this.edges[1].toString()
+  };
+};

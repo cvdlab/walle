@@ -51,3 +51,10 @@ Edge.prototype.remove = function () {
   this.circle.remove();
 };
 
+Edge.prototype.toString = function () {
+  return {
+    type: "edge",
+    x: this.x,
+    y: this.y
+  };
+};
