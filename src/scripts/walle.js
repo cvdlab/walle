@@ -13,7 +13,6 @@ var Walle = function (container) {
   this.width = container.offsetWidth;
   this.height = container.offsetHeight;
   this.emitter = new EventEmitter2({wildcard: true});
-  this.superPower = false;
   this.debugMode = false;
 
   // init wrapper
@@ -37,20 +36,12 @@ var Walle = function (container) {
     debugger: new Debugger(this),
   };
 
-  //register events
-  let buttons = {shift: 16, esc: 27};
+  //abort
+  let buttons = {esc: 27};
   this.document.on("keydown", event => {
-    //abort
     if (event.keyCode == buttons.esc) this.emitter.emit("abort.**");
-
-    //shift
-    if (event.keyCode == buttons.shift) this.superPower = true;
   });
 
-  this.document.on("keyup", event => {
-    //shift
-    if (event.keyCode == buttons.shift) this.superPower = false;
-  });
 };
 
 /**

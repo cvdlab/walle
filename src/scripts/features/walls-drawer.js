@@ -108,7 +108,7 @@ WallsDrawer.prototype.beginDrawing = function (x, y) {
     this.updateDrawing(event.offsetX, event.offsetY);
   });
   this.paper.addListener("click.wallsdrawer.end", event => {
-    this.endDrawing(event.offsetX, event.offsetY);
+    this.endDrawing(event.offsetX, event.offsetY, event.shiftKey);
   });
   this.paper.removeAllListeners("click.wallsdrawer.begin");
   this.walle.emitter.addListener("abort.wallsdrawer", event => {
@@ -129,7 +129,7 @@ WallsDrawer.prototype.beginDrawing = function (x, y) {
     },
     click: (event, x, y) => {
       edge1.selected(false);
-      this.endDrawing(x, y);
+      this.endDrawing(x, y, event.shiftKey);
       event.stopPropagation();
     }
   });
@@ -169,7 +169,7 @@ WallsDrawer.prototype.updateDrawing = function (x, y) {
  * @param x
  * @param y
  */
-WallsDrawer.prototype.endDrawing = function (x, y) {
+WallsDrawer.prototype.endDrawing = function (x, y, startNew) {
   console.log("end drawing wall", x, y);
 
   //set new wall
@@ -186,7 +186,7 @@ WallsDrawer.prototype.endDrawing = function (x, y) {
 
   //restart
   this.restart();
-  if (this.walle.superPower) this.beginDrawing(x, y);
+  if (startNew) this.beginDrawing(x, y);
 
 };
 
