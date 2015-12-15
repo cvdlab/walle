@@ -55,6 +55,8 @@ WallsDrawer.prototype.restart = function () {
   this.paper.removeAllListeners("click.wallsdrawer.end");
   this.walle.emitter.removeAllListeners("abort.wallsdrawer");
 
+  this.drawingWall = null;
+
   console.info("status", this.walls, this.edges);
 
   //start
@@ -70,6 +72,10 @@ WallsDrawer.prototype.stop = function () {
 
   //abort if needed
   if (this.drawingWall !== null) this.abortDrawing();
+
+  //add a point everywhere
+  this.paper.removeAllListeners("click.wallsdrawer.**");
+  this.destroySnapPoints();
 };
 
 
