@@ -17,11 +17,17 @@ var Wall = function (paper, edge0, edge1) {
 
   edge0.emitter.addListener("move", (x, y)=> {
     line.attr({x1: x, y1: y});
+    this.updateDistance();
   });
 
   edge1.emitter.addListener("move", (x, y)=> {
     line.attr({x2: x, y2: y});
+    this.updateDistance();
   });
+
+  this.distanceText = this.paper.text(0, 0, "").attr({"text-anchor": "middle"});
+  this.distanceGroup = this.paper.g(this.distanceText);
+  this.updateDistance();
 };
 
 
@@ -39,4 +45,42 @@ Wall.prototype.toString = function () {
     edge0: this.edges[0].toString(),
     edge1: this.edges[1].toString()
   };
+};
+
+Wall.prototype.updateDistance = function () {
+
+  let x1 = this.edges[0].x;
+  let y1 = this.edges[0].y;
+  let x2 = this.edges[1].x;
+  let y2 = this.edges[1].y;
+
+  let group = this.distanceGroup;
+  let text = this.distanceText;
+
+
+  let distance = Utils.twoPointsDistance(x1, y1, x2, y2);
+  let angle = Utils.angleBetweenTwoPoints(x1, y1, x2, y2);
+  let westside = 180  < angle && angle < 360;
+
+
+  let matrix = Snap.matrix()
+    .translate(x1, y1)
+    .rotate(90, 0, 0)
+    .rotate(-angle, 0, 0);
+
+  let unit = 60;
+
+  group.transform(matrix);
+  text.attr({ text: (distance / unit).toFixed(2) + "m" });
+
+  if (westside) {
+    text.attr({ x: -distance / 2}); //align center
+    text.transform(Snap.matrix().rotate(180));
+  }else{
+    text.attr({ x: distance / 2, y: -10 }); //align center
+    text.transform("");
+  }
+
+
+
 };

@@ -10,6 +10,7 @@ var Walle = function (container) {
   this.document = jQuery(document);
 
   this.model = {};
+  this.pixelPerUnit = 60;
 
   //init vars;
   this.width = container.offsetWidth;

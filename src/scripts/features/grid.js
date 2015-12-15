@@ -14,7 +14,7 @@ var Grid = function (walle) {
 Grid.prototype.start = function () {
   let width = this.walle.width;
   let height = this.walle.height;
-  let step = 20;
+  let step = this.walle.pixelPerUnit / 2;
 
   //horizontal
   for (let x = 0; x <= width; x += step) {
