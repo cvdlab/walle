@@ -33,7 +33,8 @@ var Walle = function (container) {
     grid: new Grid(this),
     wallsDrawer: new WallsDrawer(this),
     easterEgg: new EasterEgg(this),
-    panel: new Panel(this)
+    panel: new Panel(this),
+    debugger: new Debugger(this),
   };
 
   //register events

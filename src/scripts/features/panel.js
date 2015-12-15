@@ -22,6 +22,7 @@ Panel.prototype.start = function () {
   this.addFeature("grid", "fa fa-th", "Show grids", true);
   this.addFeature("wallsDrawer", "fa fa-plus", "Draw new wall", false);
   this.addFeature("easterEgg", "fa fa-flask", "Experimental", false);
+  this.addFeature("debugger", "fa fa-terminal", "Debug mode", false);
 
   let width = 0;
   this.panel.find('a').each(function (i) {
