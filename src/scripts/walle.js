@@ -21,7 +21,7 @@ var Walle = function (container) {
     width: this.width,
     height: this.height,
     class: 'walle-wrapper'
-  });
+  }).css({position: "relative"});
   this.wrapper.appendTo(container);
 
   //init paper
@@ -32,7 +32,8 @@ var Walle = function (container) {
   this.features = {
     grid: new Grid(this),
     wallsDrawer: new WallsDrawer(this),
-    easterEgg: new EasterEgg(this)
+    easterEgg: new EasterEgg(this),
+    panel: new Panel(this)
   };
 
   //register events

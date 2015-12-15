@@ -6,13 +6,17 @@
   <script src="components/Snap.svg/dist/snap.svg.js"></script>
   <script src="components/jquery/dist/jquery.js"></script>
   <script src="components/eventemitter2/lib/eventemitter2.js"></script>
+  <link rel="stylesheet" type="text/css" href="components/font-awesome/css/font-awesome.css" />
+
   <script src="scripts/plugins/snap-events2.js"></script>
+
   <script src="scripts/models/wall.js"></script>
   <script src="scripts/models/edge.js"></script>
   <script src="scripts/walle.js"></script>
   <script src="scripts/features/walls-drawer.js"></script>
   <script src="scripts/features/grid.js"></script>
   <script src="scripts/features/easter-egg.js"></script>
+  <script src="scripts/features/panel.js"></script>
   <link rel="stylesheet" type="text/css" href="styles/style.css">
 
   <script>
@@ -25,11 +29,9 @@
 
       let walle = new Walle(container);
 
-      walle.feature("grid").start();
-      walle.feature("wallsDrawer").start();
-//      walle.feature("easterEgg").start();
+      walle.feature("panel").start();
 
-      walle.debugMode = true;
+      walle.debugMode = false;
 
     };
   </script>
