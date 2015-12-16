@@ -28,18 +28,12 @@ WallsDrawer.prototype.start = function () {
   });
 
   //add a point using snap points
-  this.useSnapPoints({
-    click: (event, x, y) => {
+  this.useSnapPoints(
+    (event, x, y) => {
       this.beginDrawing(x, y);
       event.stopPropagation();
-    },
-    mouseover: (event, x, y, anchor) => {
-      anchor.hovered(true);
-    },
-    mouseout: (event, x, y, anchor) => {
-      anchor.hovered(false);
     }
-  });
+  );
 };
 
 
@@ -117,23 +111,19 @@ WallsDrawer.prototype.beginDrawing = function (x, y) {
   });
 
   //use snap mode
-  this.useSnapPoints({
-    mouseover: event => {
-      edge1.hovered(true);
-    },
-    mouseout: event => {
-      edge1.hovered(false);
-    },
-    mousemove: (event, x, y) => {
-      this.updateDrawing(x, y);
-      event.stopPropagation();
-    },
-    click: (event, x, y) => {
+  this.destroySnapPoints();
+
+  this.useSnapPoints(
+    (event, x, y) => {
       edge1.selected(false);
       this.endDrawing(x, y, event.shiftKey);
       event.stopPropagation();
+    },
+    (event, x, y) => {
+      this.updateDrawing(x, y);
+      event.stopPropagation();
     }
-  });
+  );
 
 };
 
@@ -162,7 +152,7 @@ WallsDrawer.prototype.updateDrawing = function (x, y) {
   //console.log("update drawing wall", x, y);
 
   //move wall endpoint
-  this.drawingWall.edges[1].move(x,  y);
+  this.drawingWall.edges[1].move(x, y);
 };
 
 /**
@@ -192,23 +182,91 @@ WallsDrawer.prototype.endDrawing = function (x, y, startNew) {
 };
 
 /** useSnapPoints */
-WallsDrawer.prototype.useSnapPoints = function (handlers) {
+WallsDrawer.prototype.useSnapPoints = function (clickFn, mousemoveFn) {
+
+  console.log("use snap point");
+
+  mousemoveFn = mousemoveFn || function () {
+    };
+
+  let snapElementStyles = {
+    circle: {strokeWidth: 1, stroke: "#000", fill: "#fff", opacity: this.walle.debugMode ? 0.5 : 0},
+    line: {strokeWidth: 15, stroke: "#000", opacity: this.walle.debugMode ? 0.3 : 0},
+    anchor: {strokeWidth: 1, stroke: "#1c79bc", opacity: 0}
+  };
+
+  let width = this.walle.width;
+  let height = this.walle.height;
+  let snapPoints = this.snapPoints;
+  let paper = this.paper;
+
+  let addLineSnapPoint = function (x1, y1, x2, y2) {
+
+    let anchor = paper.line(x1, y1, x2, y2).attr(snapElementStyles.anchor);
+
+
+    let line = paper.line(x1, y1, x2, y2)
+      .attr(snapElementStyles.line)
+      .mouseover(event => {
+        anchor.attr({opacity: 1});
+      })
+      .mouseout(event => {
+        anchor.attr({opacity: 0});
+      })
+      .click(event => {
+        let coords = Utils.intersectPoint(x1, y1, x2, y2, event.offsetX, event.offsetY);
+        clickFn(event, coords.x, coords.y);
+      })
+      .mousemove(event => {
+        let coords = Utils.intersectPoint(x1, y1, x2, y2, event.offsetX, event.offsetY);
+        mousemoveFn(event, coords.x, coords.y);
+      });
+
+    snapPoints.push(line);
+    return line;
+  };
+
+  let addCircleSnapPoint = function (x, y) {
+    let circle = paper.circle(x, y, 20)
+      .attr(snapElementStyles.circle)
+      .click(event => {
+        clickFn(event, x, y);
+      })
+      .mousemove(event => {
+        mousemoveFn(event, x, y);
+      });
+
+    snapPoints.push(circle);
+    return circle;
+  };
+
+
+  ////add cross snap point
+  this.edges.forEach((edge) => {
+    let hCoords = Utils.horizontalLineIntoBox(edge.x, edge.y, width, height);
+    let vCoords = Utils.verticalLineIntoBox(edge.x, edge.y, width, height);
+
+    addLineSnapPoint(hCoords.r1.x, hCoords.r1.y, hCoords.r2.x, hCoords.r2.y);
+    addLineSnapPoint(vCoords.r1.x, vCoords.r1.y, vCoords.r2.x, vCoords.r2.y);
+  });
+
+  //add continue snap point
+  this.walls.forEach((wall) => {
+    let coords = Utils.lineIntoBox(wall.edges[0].x, wall.edges[0].y, wall.edges[1].x, wall.edges[1].y, width, height);
+
+    addLineSnapPoint(coords.r1.x, coords.r1.y, coords.r2.x, coords.r2.y);
+  });
 
   //add wall snap point
   this.edges.forEach((edge) => {
 
-    let snapPoint = this.paper.circle(edge.x, edge.y, 20);
-    snapPoint.attr({strokeWidth: 1, stroke: "#000", fill: "#fff", opacity: this.walle.debugMode ? 0.5 : 0});
-
-    for (let handlerName in handlers) {
-      let handler = handlers[handlerName];
-
-      snapPoint[handlerName](event => {
-        handler(event, edge.x, edge.y, edge);
+    addCircleSnapPoint(edge.x, edge.y)
+      .mouseover(event => {
+        edge.hovered(true);
+      })
+      .mouseout(event => {
+        edge.hovered(false);
       });
-    }
-
-    this.snapPoints.push(snapPoint);
 
   });
 
@@ -217,6 +275,8 @@ WallsDrawer.prototype.useSnapPoints = function (handlers) {
 
 /** destroySnapPoints */
 WallsDrawer.prototype.destroySnapPoints = function () {
+  console.log("remove snap point");
+
   this.snapPoints.forEach(p => {
     p.remove()
   });

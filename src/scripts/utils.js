@@ -19,3 +19,61 @@ Utils.angleBetweenTwoPoints = function (x1, y1, x2, y2) {
 
 };
 
+Utils.lineIntoBox = function (x1, y1, x2, y2, width, height) {
+
+  let r1, r2;
+
+  let m = (y2 - y1) / (x2 - x1);
+  let q = y1 - m * x1;
+  let t = m * width + q;
+
+  if (q > 0)
+    r1 = {x: 0, y: q};
+  else
+    r1 = {x: -q / m, y: 0};
+
+  if (t < height)
+    r2 = {x: width, y: t};
+  else
+    r2 = {x: (height - q) / m, y: height};
+
+  return {r1, r2};
+
+};
+
+Utils.verticalLineIntoBox = function (x, y, width, height) {
+
+  let r1 = {x: x, y: 0};
+  let r2 = {x: x, y: height};
+
+  return {r1, r2};
+
+};
+
+Utils.horizontalLineIntoBox = function (x, y, width, height) {
+
+  let r1 = {x: 0, y: y};
+  let r2 = {x: width, y: y};
+
+  return {r1, r2};
+
+};
+
+
+Utils.intersectPoint = function (x1, y1, x2, y2, xp, yp) {
+
+  if (x1 === x2) return {x: x1, y: yp};
+  if (y1 === y2) return {x: xp, y: y1};
+
+  let m = (y2 - y1) / (x2 - x1);
+  let q = y1 - m * x1;
+
+  let mi = -1 / m;
+  let qi = yp - mi * xp;
+
+  let x = (qi - q) / (m - mi);
+  let y = (m * x + q);
+
+  return {x, y};
+
+};
