@@ -19,11 +19,9 @@ var SnapEvents = function (walle) {
  * @param mouseMoveFn = function(event, x, y, anchorObject)
  */
 
-SnapEvents.prototype.add = function (clickFn, mouseMoveFn) {
+SnapEvents.prototype.add = function (handlers) {
 
   console.log("use snap events");
-
-  mouseMoveFn = mouseMoveFn || Function.prototype;
 
   let width = this.walle.width;
   let height = this.walle.height;
@@ -35,27 +33,28 @@ SnapEvents.prototype.add = function (clickFn, mouseMoveFn) {
     let hCoords = Utils.horizontalLineIntoBox(edge.x, edge.y, width, height);
     let vCoords = Utils.verticalLineIntoBox(edge.x, edge.y, width, height);
 
-    this.addSnapLine(hCoords.r1.x, hCoords.r1.y, hCoords.r2.x, hCoords.r2.y, edge, clickFn, mouseMoveFn);
-    this.addSnapLine(vCoords.r1.x, vCoords.r1.y, vCoords.r2.x, vCoords.r2.y, edge, clickFn, mouseMoveFn);
+    this.addSnapLine(hCoords.r1.x, hCoords.r1.y, hCoords.r2.x, hCoords.r2.y, edge, handlers);
+    this.addSnapLine(vCoords.r1.x, vCoords.r1.y, vCoords.r2.x, vCoords.r2.y, edge, handlers);
   });
 
   //add continue snap point
   this.walls.forEach((wall) => {
     let coords = Utils.lineIntoBox(wall.edges[0].x, wall.edges[0].y, wall.edges[1].x, wall.edges[1].y, width, height);
 
-    this.addSnapLine(coords.r1.x, coords.r1.y, coords.r2.x, coords.r2.y, wall, clickFn, mouseMoveFn);
+    this.addSnapLine(coords.r1.x, coords.r1.y, coords.r2.x, coords.r2.y, wall, handlers);
   });
 
   //add wall snap point
   this.edges.forEach((edge) => {
 
-    this.addSnapPoint(edge.x, edge.y, edge, clickFn, mouseMoveFn)
-      .mouseover(event => {
-        edge.hovered(true);
-      })
-      .mouseout(event => {
-        edge.hovered(false);
-      });
+    handlers.mouseover = event => {
+      edge.hovered(true);
+    };
+    handlers.mouseout = event => {
+      edge.hovered(false);
+    };
+
+    this.addSnapPoint(edge.x, edge.y, edge, handlers);
 
   });
 };
@@ -83,13 +82,11 @@ SnapEvents.prototype.remove = function () {
  * @param mouseMoveFn = function(event, x, y, anchorObject)
  * @returns line
  */
-SnapEvents.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, clickFn, mouseMoveFn) {
+SnapEvents.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, handlers) {
 
   let paper = this.paper;
-  mouseMoveFn = mouseMoveFn || Function.prototype;
 
   let anchor = paper.line(x1, y1, x2, y2).attr({strokeWidth: 1, stroke: "#1c79bc", opacity: 0});
-
 
   let line = paper.line(x1, y1, x2, y2)
     .attr({strokeWidth: 15, stroke: "#000", opacity: this.walle.debugMode ? 0.3 : 0})
@@ -101,16 +98,18 @@ SnapEvents.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, click
     })
     .click(event => {
       anchor.attr({opacity: 0});
-      let coords = Utils.intersectPoint(x1, y1, x2, y2, event.offsetX, event.offsetY);
-      clickFn(event, coords.x, coords.y, anchorObject);
-    })
-    .mousemove(event => {
-      let coords = Utils.intersectPoint(x1, y1, x2, y2, event.offsetX, event.offsetY);
-      mouseMoveFn(event, coords.x, coords.y, anchorObject);
     });
 
+  for (let handlerName in handlers) {
+    let handler = handlers[handlerName];
+
+    line[handlerName](event => {
+      let coords = Utils.intersectPoint(x1, y1, x2, y2, event.offsetX, event.offsetY);
+      handler(event, coords.x, coords.y, anchorObject);
+    });
+  }
+
   this.snapPoints.push(line);
-  return line;
 };
 
 /**
@@ -122,20 +121,20 @@ SnapEvents.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, click
  * @param mouseMoveFn = function(event, x, y, anchorObject)
  * @returns {*}
  */
-SnapEvents.prototype.addSnapPoint = function (x, y, anchorObject, clickFn, mouseMoveFn) {
+SnapEvents.prototype.addSnapPoint = function (x, y, anchorObject, handlers) {
 
   let paper = this.paper;
-  mouseMoveFn = mouseMoveFn || Function.prototype;
 
   let circle = paper.circle(x, y, 20)
-    .attr({strokeWidth: 1, stroke: "#000", fill: "#fff", opacity: this.walle.debugMode ? 0.5 : 0})
-    .click(event => {
-      clickFn(event, x, y, anchorObject);
-    })
-    .mousemove(event => {
-      mouseMoveFn(event, x, y, anchorObject);
+    .attr({strokeWidth: 1, stroke: "#000", fill: "#fff", opacity: this.walle.debugMode ? 0.5 : 0});
+
+  for (let handlerName in handlers) {
+    let handler = handlers[handlerName];
+
+    circle[handlerName](event => {
+      handler(event, x, y, anchorObject);
     });
+  }
 
   this.snapPoints.push(circle);
-  return circle;
 };

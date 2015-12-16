@@ -26,12 +26,12 @@ WallsDrawer.prototype.start = function () {
   });
 
   //add a point using snap points
-  this.walle.snapEvents.add(
-    (event, x, y) => {
+  this.walle.snapEvents.add({
+    click: (event, x, y) => {
       this.beginDrawing(x, y);
       event.stopPropagation();
     }
-  );
+  });
 };
 
 
@@ -111,17 +111,17 @@ WallsDrawer.prototype.beginDrawing = function (x, y) {
   //use snap mode
   this.walle.snapEvents.remove();
 
-  this.walle.snapEvents.add(
-    (event, x, y) => {
+  this.walle.snapEvents.add({
+    click: (event, x, y) => {
       edge1.selected(false);
       this.endDrawing(x, y, event.shiftKey);
       event.stopPropagation();
     },
-    (event, x, y) => {
+    mousemove: (event, x, y) => {
       this.updateDrawing(x, y);
       event.stopPropagation();
     }
-  );
+  });
 
 };
 
