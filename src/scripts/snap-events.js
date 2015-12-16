@@ -13,6 +13,12 @@ var SnapEvents = function (walle) {
   this.edges = walle.model.edges;
 };
 
+/**
+ *
+ * @param clickFn = function(event, x, y, anchorObject)
+ * @param mouseMoveFn = function(event, x, y, anchorObject)
+ */
+
 SnapEvents.prototype.add = function (clickFn, mouseMoveFn) {
 
   console.log("use snap events");
@@ -31,7 +37,7 @@ SnapEvents.prototype.add = function (clickFn, mouseMoveFn) {
   let snapPoints = this.snapPoints;
   let paper = this.paper;
 
-  let addLineSnapPoint = function (x1, y1, x2, y2) {
+  let addLineSnapPoint = function (x1, y1, x2, y2, anchorObject) {
 
     let anchor = paper.line(x1, y1, x2, y2).attr(snapElementStyles.anchor);
 
@@ -46,25 +52,25 @@ SnapEvents.prototype.add = function (clickFn, mouseMoveFn) {
       })
       .click(event => {
         let coords = Utils.intersectPoint(x1, y1, x2, y2, event.offsetX, event.offsetY);
-        clickFn(event, coords.x, coords.y);
+        clickFn(event, coords.x, coords.y, anchorObject);
       })
       .mousemove(event => {
         let coords = Utils.intersectPoint(x1, y1, x2, y2, event.offsetX, event.offsetY);
-        mouseMoveFn(event, coords.x, coords.y);
+        mouseMoveFn(event, coords.x, coords.y, anchorObject);
       });
 
     snapPoints.push(line);
     return line;
   };
 
-  let addCircleSnapPoint = function (x, y) {
+  let addCircleSnapPoint = function (x, y, anchorObject) {
     let circle = paper.circle(x, y, 20)
       .attr(snapElementStyles.circle)
       .click(event => {
-        clickFn(event, x, y);
+        clickFn(event, x, y, anchorObject);
       })
       .mousemove(event => {
-        mouseMoveFn(event, x, y);
+        mouseMoveFn(event, x, y, anchorObject);
       });
 
     snapPoints.push(circle);
@@ -77,21 +83,21 @@ SnapEvents.prototype.add = function (clickFn, mouseMoveFn) {
     let hCoords = Utils.horizontalLineIntoBox(edge.x, edge.y, width, height);
     let vCoords = Utils.verticalLineIntoBox(edge.x, edge.y, width, height);
 
-    addLineSnapPoint(hCoords.r1.x, hCoords.r1.y, hCoords.r2.x, hCoords.r2.y);
-    addLineSnapPoint(vCoords.r1.x, vCoords.r1.y, vCoords.r2.x, vCoords.r2.y);
+    addLineSnapPoint(hCoords.r1.x, hCoords.r1.y, hCoords.r2.x, hCoords.r2.y, edge);
+    addLineSnapPoint(vCoords.r1.x, vCoords.r1.y, vCoords.r2.x, vCoords.r2.y, edge);
   });
 
   //add continue snap point
   this.walls.forEach((wall) => {
     let coords = Utils.lineIntoBox(wall.edges[0].x, wall.edges[0].y, wall.edges[1].x, wall.edges[1].y, width, height);
 
-    addLineSnapPoint(coords.r1.x, coords.r1.y, coords.r2.x, coords.r2.y);
+    addLineSnapPoint(coords.r1.x, coords.r1.y, coords.r2.x, coords.r2.y, wall);
   });
 
   //add wall snap point
   this.edges.forEach((edge) => {
 
-    addCircleSnapPoint(edge.x, edge.y)
+    addCircleSnapPoint(edge.x, edge.y, edge)
       .mouseover(event => {
         edge.hovered(true);
       })
