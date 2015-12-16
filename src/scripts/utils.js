@@ -8,6 +8,15 @@ Utils.twoPointsDistance = function (x1, y1, x2, y2) {
 
 };
 
+Utils.linePointDistance = function (x1, y1, x2, y2, xp, yp) {
+
+  let a = Math.abs((y2 - y1) * xp - (x2 - x1) * yp + x2 * y1 - y2 * x1);
+  let b = Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2));
+
+  return a / b;
+
+};
+
 Utils.angleBetweenTwoPoints = function (x1, y1, x2, y2) {
 
   let angle = Math.atan2((x2 - x1), (y2 - y1)) * 180 / Math.PI;
@@ -77,3 +86,4 @@ Utils.intersectPoint = function (x1, y1, x2, y2, xp, yp) {
   return {x, y};
 
 };
+
