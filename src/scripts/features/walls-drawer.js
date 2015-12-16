@@ -11,8 +11,6 @@ var WallsDrawer = function (walle) {
 
   this.walls = walle.model.walls;
   this.edges = walle.model.edges;
-
-  this.snapPoints = [];
 };
 
 
@@ -28,7 +26,7 @@ WallsDrawer.prototype.start = function () {
   });
 
   //add a point using snap points
-  this.useSnapPoints(
+  this.walle.snapEvents.add(
     (event, x, y) => {
       this.beginDrawing(x, y);
       event.stopPropagation();
@@ -44,7 +42,7 @@ WallsDrawer.prototype.restart = function () {
   console.log("restart walls mode");
 
   //clear drawing area
-  this.destroySnapPoints();
+  this.walle.snapEvents.remove();
   this.walle.changeCursor("auto");
 
   //unregister events
@@ -70,7 +68,7 @@ WallsDrawer.prototype.stop = function () {
 
   //add a point everywhere
   this.paper.removeAllListeners("click.wallsdrawer.**");
-  this.destroySnapPoints();
+  this.walle.snapEvents.remove();
 };
 
 
@@ -111,9 +109,9 @@ WallsDrawer.prototype.beginDrawing = function (x, y) {
   });
 
   //use snap mode
-  this.destroySnapPoints();
+  this.walle.snapEvents.remove();
 
-  this.useSnapPoints(
+  this.walle.snapEvents.add(
     (event, x, y) => {
       edge1.selected(false);
       this.endDrawing(x, y, event.shiftKey);
@@ -180,107 +178,3 @@ WallsDrawer.prototype.endDrawing = function (x, y, startNew) {
   if (startNew) this.beginDrawing(x, y);
 
 };
-
-/** useSnapPoints */
-WallsDrawer.prototype.useSnapPoints = function (clickFn, mousemoveFn) {
-
-  console.log("use snap point");
-
-  mousemoveFn = mousemoveFn || function () {
-    };
-
-  let snapElementStyles = {
-    circle: {strokeWidth: 1, stroke: "#000", fill: "#fff", opacity: this.walle.debugMode ? 0.5 : 0},
-    line: {strokeWidth: 15, stroke: "#000", opacity: this.walle.debugMode ? 0.3 : 0},
-    anchor: {strokeWidth: 1, stroke: "#1c79bc", opacity: 0}
-  };
-
-  let width = this.walle.width;
-  let height = this.walle.height;
-  let snapPoints = this.snapPoints;
-  let paper = this.paper;
-
-  let addLineSnapPoint = function (x1, y1, x2, y2) {
-
-    let anchor = paper.line(x1, y1, x2, y2).attr(snapElementStyles.anchor);
-
-
-    let line = paper.line(x1, y1, x2, y2)
-      .attr(snapElementStyles.line)
-      .mouseover(event => {
-        anchor.attr({opacity: 1});
-      })
-      .mouseout(event => {
-        anchor.attr({opacity: 0});
-      })
-      .click(event => {
-        let coords = Utils.intersectPoint(x1, y1, x2, y2, event.offsetX, event.offsetY);
-        clickFn(event, coords.x, coords.y);
-      })
-      .mousemove(event => {
-        let coords = Utils.intersectPoint(x1, y1, x2, y2, event.offsetX, event.offsetY);
-        mousemoveFn(event, coords.x, coords.y);
-      });
-
-    snapPoints.push(line);
-    return line;
-  };
-
-  let addCircleSnapPoint = function (x, y) {
-    let circle = paper.circle(x, y, 20)
-      .attr(snapElementStyles.circle)
-      .click(event => {
-        clickFn(event, x, y);
-      })
-      .mousemove(event => {
-        mousemoveFn(event, x, y);
-      });
-
-    snapPoints.push(circle);
-    return circle;
-  };
-
-
-  ////add cross snap point
-  this.edges.forEach((edge) => {
-    let hCoords = Utils.horizontalLineIntoBox(edge.x, edge.y, width, height);
-    let vCoords = Utils.verticalLineIntoBox(edge.x, edge.y, width, height);
-
-    addLineSnapPoint(hCoords.r1.x, hCoords.r1.y, hCoords.r2.x, hCoords.r2.y);
-    addLineSnapPoint(vCoords.r1.x, vCoords.r1.y, vCoords.r2.x, vCoords.r2.y);
-  });
-
-  //add continue snap point
-  this.walls.forEach((wall) => {
-    let coords = Utils.lineIntoBox(wall.edges[0].x, wall.edges[0].y, wall.edges[1].x, wall.edges[1].y, width, height);
-
-    addLineSnapPoint(coords.r1.x, coords.r1.y, coords.r2.x, coords.r2.y);
-  });
-
-  //add wall snap point
-  this.edges.forEach((edge) => {
-
-    addCircleSnapPoint(edge.x, edge.y)
-      .mouseover(event => {
-        edge.hovered(true);
-      })
-      .mouseout(event => {
-        edge.hovered(false);
-      });
-
-  });
-
-
-};
-
-/** destroySnapPoints */
-WallsDrawer.prototype.destroySnapPoints = function () {
-  console.log("remove snap point");
-
-  this.snapPoints.forEach(p => {
-    p.remove()
-  });
-  this.snapPoints = [];
-};
-
-

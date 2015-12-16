@@ -40,6 +40,8 @@ var Walle = function (container) {
     export: new Export(this)
   };
 
+  this.snapEvents = new SnapEvents(this);
+
   //abort
   let buttons = {esc: 27};
   this.document.on("keydown", event => {
