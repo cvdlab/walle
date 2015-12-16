@@ -50,6 +50,7 @@ SnapEvents.prototype.add = function (clickFn, mouseMoveFn) {
         anchor.attr({opacity: 0});
       })
       .click(event => {
+        anchor.attr({opacity: 0});
         let coords = Utils.intersectPoint(x1, y1, x2, y2, event.offsetX, event.offsetY);
         clickFn(event, coords.x, coords.y, anchorObject);
       })
