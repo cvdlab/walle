@@ -66,6 +66,9 @@ SnapEvents.prototype.add = function (handlers) {
 SnapEvents.prototype.remove = function () {
   console.log("remove snap events");
 
+  this.snapPoints.forEach(item => {item.debugArea.remove()});
+  this.snapLines.forEach(item => {item.debugArea.remove()});
+
   this.snapPoints = [];
   this.snapLines = [];
 };
@@ -81,7 +84,9 @@ SnapEvents.prototype.remove = function () {
  * @returns line
  */
 SnapEvents.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, handlers) {
-  this.snapLines.push({x1, y1, x2, y2, anchorObject, handlers});
+  let debugArea = this.paper.line(x1, y1, x2, y2).attr({strokeWidth: 1, stroke: "red", opacity: this.walle.debugMode ? 0.5 : 0});
+
+  this.snapLines.push({x1, y1, x2, y2, anchorObject, handlers, debugArea});
 };
 
 SnapEvents.prototype._handlerServeSnapLines = function (event) {
@@ -128,7 +133,9 @@ SnapEvents.prototype._handlerServeSnapLines = function (event) {
  * @returns {*}
  */
 SnapEvents.prototype.addSnapPoint = function (x, y, anchorObject, handlers) {
-  this.snapPoints.push({x, y, anchorObject, handlers});
+  let debugArea = this.paper.circle(x, y, 15).attr({strokeWidth: 3, stroke: "red", fill: "#fff", opacity: this.walle.debugMode ? 0.5 : 0});
+
+  this.snapPoints.push({x, y, anchorObject, handlers, debugArea});
 };
 
 SnapEvents.prototype._handlerServeSnapPoints = function (event) {
