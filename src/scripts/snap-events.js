@@ -23,8 +23,7 @@ SnapEvents.prototype.add = function (clickFn, mouseMoveFn) {
 
   console.log("use snap events");
 
-  mouseMoveFn = mouseMoveFn || function () {
-    };
+  mouseMoveFn = mouseMoveFn || Function.prototype;
 
   let snapElementStyles = {
     circle: {strokeWidth: 1, stroke: "#000", fill: "#fff", opacity: this.walle.debugMode ? 0.5 : 0},
