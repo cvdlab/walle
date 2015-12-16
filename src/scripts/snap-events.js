@@ -102,19 +102,16 @@ SnapEvents.prototype._handlerServeSnapLines = function (event) {
 
     let distance = Utils.linePointDistance(x1, y1, x2, y2, xp, yp);
 
-    if (distance <= minDistance) {
+    if (distance > minDistance) return;
 
-      let coords = Utils.intersectPoint(x1, y1, x2, y2, event.offsetX, event.offsetY);
-      let x = coords.x, y = coords.y;
-      let eventType = event.type;
+    let coords = Utils.intersectPoint(x1, y1, x2, y2, event.offsetX, event.offsetY);
+    let x = coords.x, y = coords.y;
+    let eventType = event.type;
 
-      if (distance > minDistance) return;
-
-      if (eventType === 'click' || eventType === 'mousemove' && handlers.hasOwnProperty(eventType)) {
-        console.log(handlers[eventType].toString());
-        handlers[eventType](event, x, y, anchorObject);
-        event.stopImmediatePropagation();
-      }
+    if (eventType === 'click' || eventType === 'mousemove' && handlers.hasOwnProperty(eventType)) {
+      console.log(handlers[eventType].toString());
+      handlers[eventType](event, x, y, anchorObject);
+      event.stopImmediatePropagation();
     }
 
   });
