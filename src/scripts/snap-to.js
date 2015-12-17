@@ -144,7 +144,7 @@ SnapTo.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, handlers)
   let element = {x1, y1, x2, y2, anchorObject, handlers};
 
   let hover = element.hover = this.paper.line(x1, y1, x2, y2).attr({
-    strokeWidth: 2,
+    strokeWidth: 1,
     stroke: "red",
     opacity: opacityDefault
   });
@@ -185,9 +185,9 @@ SnapTo.prototype.addSnapPoint = function (x, y, anchorObject, handlers) {
   let element = {x, y, anchorObject, handlers};
 
   let hover = element.hover = this.paper.circle(x, y, 15).attr({
-    strokeWidth: 3,
+    strokeWidth: 1,
     stroke: "red",
-    fill: "red",
+    fill: "white",
     opacity: opacityDefault
   });
 
