@@ -37,7 +37,8 @@ var Walle = function (container) {
     easterEgg: new EasterEgg(this),
     panel: new Panel(this),
     debugger: new Debugger(this),
-    export: new Export(this)
+    export: new Export(this),
+    edgesMover: new EdgesMover(this),
   };
 
   this.snapTo = new SnapTo(this);

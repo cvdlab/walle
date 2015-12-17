@@ -63,6 +63,10 @@ Edge.prototype.merge = function(edge){
   //add edge listener to this
 };
 
+Edge.prototype.drag = function(onStart, onMove, onEnd){
+  this.circle.drag(onMove, onStart, onEnd);
+};
+
 Edge.isEdge = function(edge){
   return (edge instanceof Edge);
 };
