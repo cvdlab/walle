@@ -139,6 +139,8 @@ SnapTo.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, handlers)
 
   let opacityDefault = this.walle.debugMode ? 0.3 : 0;
 
+  handlers = Object.assign({}, handlers);
+
   let element = {x1, y1, x2, y2, anchorObject, handlers};
 
   let hover = element.hover = this.paper.line(x1, y1, x2, y2).attr({
@@ -177,6 +179,8 @@ SnapTo.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, handlers)
 SnapTo.prototype.addSnapPoint = function (x, y, anchorObject, handlers) {
 
   let opacityDefault = this.walle.debugMode ? 0.3 : 0;
+
+  handlers = Object.assign({}, handlers);
 
   let element = {x, y, anchorObject, handlers};
 
