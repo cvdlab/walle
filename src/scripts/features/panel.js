@@ -19,13 +19,13 @@ Panel.prototype.start = function () {
     .css({position: "absolute", bottom: 5, left: 5, "background-color": "#f7f7f7", border: "1px solid #e3e3e3"})
     .appendTo(this.walle.wrapper);
 
-  this.addFeature("grid", "fa fa-th", "Show grids", true);
   this.addFeature("wallsDrawer", "fa fa-plus", "Draw new wall", false);
   this.addFeature("edgesMover", "fa fa-hand-paper-o", "Move edge", false);
   this.addFeature("easterEgg", "fa fa-flask", "Experimental", false);
-  this.addFeature("debugger", "fa fa-terminal", "Debug mode", false);
   this.addFeature("export", "fa fa-save", "Export", false);
 
+  this.addFeature("grid", "fa fa-th", "Show grids", true);
+  this.addFeature("debugger", "fa fa-terminal", "Debug mode", false);
 
   let width = 0;
   this.panel.find('a').each(function (i) {
