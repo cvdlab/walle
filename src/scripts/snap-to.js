@@ -19,25 +19,50 @@ var SnapTo = function (walle) {
 
     this.snapElements.forEach(element => {
 
-      if (found) return;
-
-      element.over = element.over || false;
-
       let handlers = element.handlers;
       let anchorObject = element.anchorObject;
       let distance = element.distanceFn(xp, yp);
+      let coords;
 
-      if (distance > minDistance) return;
+      element.over = element.over || false;
 
-      found = true;
-
-      let coords = element.snapPointFn(xp, yp);
-
-      if (eventType === 'click' || eventType === 'mousemove' && handlers.hasOwnProperty(eventType)) {
-        handlers[eventType](event, coords.x, coords.y, anchorObject);
-        event.stopImmediatePropagation();
+      //mouse enter into area
+      if (
+        element.over === false
+        && distance <= minDistance
+        && eventType === 'mousemove'
+        && handlers.hasOwnProperty('mouseover')
+      ) {
+        coords = coords || element.snapPointFn(xp, yp);
+        element.over = true;
+        handlers.mouseover(event, coords.x, coords.y, anchorObject);
       }
 
+      //mouse leave area
+      if (
+        element.over === true
+        && distance > minDistance
+        && eventType === 'mousemove'
+        && handlers.hasOwnProperty('mouseout')
+      ) {
+        coords = coords || element.snapPointFn(xp, yp);
+        element.over = false;
+        handlers.mouseout(event, coords.x, coords.y, anchorObject);
+      }
+
+      if (found) return;
+
+      if (distance <= minDistance) {
+
+        found = true;
+
+        coords = coords || element.snapPointFn(xp, yp);
+
+        if (eventType === 'click' || eventType === 'mousemove' && handlers.hasOwnProperty(eventType)) {
+          handlers[eventType](event, coords.x, coords.y, anchorObject);
+          event.stopImmediatePropagation();
+        }
+      }
     });
 
   }.bind(this);
@@ -50,8 +75,7 @@ var SnapTo = function (walle) {
 
 /**
  * Add all snap points
- * @param clickFn = function(event, x, y, anchorObject)
- * @param mouseMoveFn = function(event, x, y, anchorObject)
+ * @param handlers[] = function(event, x, y, anchorObject)
  */
 
 SnapTo.prototype.add = function (handlers) {
@@ -94,7 +118,7 @@ SnapTo.prototype.remove = function () {
   console.log("remove snap events");
 
   this.snapElements.forEach(item => {
-    item.debugArea.remove()
+    item.hover.remove()
   });
 
   this.snapElements = [];
@@ -112,21 +136,34 @@ SnapTo.prototype.remove = function () {
  * @returns line
  */
 SnapTo.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, handlers) {
-  let debugArea = this.paper.line(x1, y1, x2, y2).attr({
+
+  let opacityDefault = this.walle.debugMode ? 0.5 : 0;
+
+  let element = {x1, y1, x2, y2, anchorObject, handlers};
+
+  element.hover = this.paper.line(x1, y1, x2, y2).attr({
     strokeWidth: 1,
     stroke: "red",
-    opacity: this.walle.debugMode ? 0.5 : 0
+    opacity: opacityDefault
   });
 
-  let snapPointFn = function (xp, yp) {
+  element.handlers.mouseover = function (event) {
+    element.hover.attr({opacity: 1});
+  };
+
+  element.handlers.mouseout = function (event) {
+    element.hover.attr({opacity: opacityDefault});
+  };
+
+  element.snapPointFn = function (xp, yp) {
     return Utils.intersectPoint(x1, y1, x2, y2, event.offsetX, event.offsetY);
   };
 
-  let distanceFn = function (xp, yp) {
+  element.distanceFn = function (xp, yp) {
     return Utils.linePointDistance(x1, y1, x2, y2, xp, yp);
   };
 
-  this.snapElements.push({x1, y1, x2, y2, anchorObject, handlers, debugArea, snapPointFn, distanceFn});
+  this.snapElements.push(element);
 };
 
 /**
@@ -138,20 +175,33 @@ SnapTo.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, handlers)
  * @returns {*}
  */
 SnapTo.prototype.addSnapPoint = function (x, y, anchorObject, handlers) {
-  let debugArea = this.paper.circle(x, y, 15).attr({
+
+  let opacityDefault = this.walle.debugMode ? 0.5 : 0;
+
+  let element = {x, y, anchorObject, handlers};
+
+  element.hover = this.paper.circle(x, y, 15).attr({
     strokeWidth: 3,
     stroke: "red",
-    fill: "#fff",
+    fill: "red",
     opacity: this.walle.debugMode ? 0.5 : 0
   });
 
-  let snapPointFn = function (xp, yp) {
+  element.handlers.mouseover = function (event) {
+    element.hover.attr({opacity: 1});
+  };
+
+  element.handlers.mouseout = function (event) {
+    element.hover.attr({opacity: opacityDefault});
+  };
+
+  element.snapPointFn = function (xp, yp) {
     return {x, y};
   };
 
-  let distanceFn = function (xp, yp) {
+  element.distanceFn = function (xp, yp) {
     return Utils.twoPointsDistance(x, y, xp, yp);
   };
 
-  this.snapElements.push({x, y, anchorObject, handlers, debugArea, snapPointFn, distanceFn});
+  this.snapElements.push(element);
 };
