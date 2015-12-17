@@ -27,8 +27,12 @@ WallsDrawer.prototype.start = function () {
 
   //add a point using snap points
   this.walle.snapTo.add({
-    click: (event, x, y) => {
-      this.beginDrawingWithPoint(x, y);
+    click: (event, x, y, anchorPoint) => {
+      if (Edge.isEdge(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
+        this.beginDrawingWithEdge(anchorPoint);
+      } else {
+        this.beginDrawingWithPoint(x, y);
+      }
       event.stopPropagation();
     }
   });
@@ -71,18 +75,27 @@ WallsDrawer.prototype.stop = function () {
   this.walle.snapTo.remove();
 };
 
-
 /**
- * beginDrawingWithPoint
+ * begin drawing
  * @param x
  * @param y
  */
 WallsDrawer.prototype.beginDrawingWithPoint = function (x, y) {
-  console.log("begin drawing wall", x, y);
+  let edge = new Edge(this.paper, x, y);
+
+  this.beginDrawingWithEdge(edge);
+};
+
+/**
+ * begin drawing
+ * @param edge
+ */
+WallsDrawer.prototype.beginDrawingWithEdge = function (edge) {
+  console.log("begin drawing wall", edge.toString());
 
   //draw wall and edge
-  let edge0 = new Edge(this.paper, x, y);
-  let edge1 = new Edge(this.paper, x, y);
+  let edge0 = edge;
+  let edge1 = new Edge(this.paper, edge.x, edge.y);
   let wall = new Wall(this.paper, edge0, edge1);
   edge0.redraw();
   edge1.redraw();
@@ -112,9 +125,13 @@ WallsDrawer.prototype.beginDrawingWithPoint = function (x, y) {
   this.walle.snapTo.remove();
 
   this.walle.snapTo.add({
-    click: (event, x, y) => {
+    click: (event, x, y, anchorPoint) => {
       edge1.selected(false);
-      this.endDrawingWithPoint(x, y, event.shiftKey);
+      if (Edge.isEdge(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
+        this.endDrawingWithEdge(anchorPoint, event.shiftKey);
+      } else {
+        this.endDrawingWithPoint(x, y, event.shiftKey);
+      }
       event.stopPropagation();
     },
     mousemove: (event, x, y) => {
@@ -142,7 +159,15 @@ WallsDrawer.prototype.abortDrawing = function () {
 };
 
 /**
- * updateDrawingWithPoint
+ * update drawing
+ * @param edge
+ */
+WallsDrawer.prototype.updateDrawingWithEdge = function (edge) {
+  this.updateDrawingWithPoint(edge.x, edge.y);
+};
+
+/**
+ * update drawing
  * @param x
  * @param y
  */
@@ -154,7 +179,34 @@ WallsDrawer.prototype.updateDrawingWithPoint = function (x, y) {
 };
 
 /**
- * endDrawingWithPoint
+ * end drawing
+ * @param edge
+ * @param startNew
+ */
+WallsDrawer.prototype.endDrawingWithEdge = function (edge, startNew) {
+  console.log("end drawing wall", edge.toString());
+
+  let wall = this.drawingWall;
+
+  wall.edges[1].remove();
+  wall.edges[1] = edge;
+
+  wall.edges[0].selected(false);
+  wall.edges[1].selected(false);
+  wall.selected(false);
+
+  this.walls.push(wall);
+
+  if (this.edges.indexOf(wall.edges[0]) === -1) this.edges.push(wall.edges[0]);
+
+
+  //restart
+  this.restart();
+  if (startNew) this.beginDrawingWithEdge(edge);
+};
+
+/**
+ * end drawing
  * @param x
  * @param y
  * @param startNew
@@ -172,7 +224,7 @@ WallsDrawer.prototype.endDrawingWithPoint = function (x, y, startNew) {
   wall.selected(false);
 
   this.walls.push(wall);
-  this.edges.push(wall.edges[0]);
+  if (this.edges.indexOf(wall.edges[0]) === -1) this.edges.push(wall.edges[0]);
   this.edges.push(wall.edges[1]);
 
   //restart

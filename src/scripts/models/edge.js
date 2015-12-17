@@ -59,6 +59,10 @@ Edge.prototype.toString = function () {
   };
 };
 
+Edge.prototype.merge = function(edge){
+  //add edge listener to this
+};
+
 Edge.isEdge = function(edge){
   return (edge instanceof Edge);
 };
