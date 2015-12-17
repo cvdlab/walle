@@ -227,7 +227,7 @@ SnapTo.prototype.showOverlay = function(x, y, r){
   let maskRect = this.paper
     .rect(0, 0, this.walle.width, this.walle.height)
     .attr({fill: "black", opacity: 0, mask: mask})
-    .animate({opacity: 0.5}, 30);
+    .animate({opacity: 0.3}, 100);
 
   this.overlay = {
     rect, circle, mask, maskRect
