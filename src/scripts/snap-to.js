@@ -62,6 +62,10 @@ var SnapTo = function (walle) {
           handlers[eventType](event, coords.x, coords.y, anchorObject);
           event.stopImmediatePropagation();
         }
+
+        if (eventType === 'click' && handlers.hasOwnProperty('mouseout')) {
+          handlers.mouseout(event, coords.x, coords.y, anchorObject);
+        }
       }
     });
 
@@ -191,12 +195,14 @@ SnapTo.prototype.addSnapPoint = function (x, y, anchorObject, handlers) {
     opacity: opacityDefault
   });
 
-  handlers.mouseover = function (event) {
+  handlers.mouseover = (event) => {
     hover.attr({opacity: 1});
+    this.showOverlay(x, y, 15);
   };
 
-  handlers.mouseout = function (event) {
+  handlers.mouseout = (event) => {
     hover.attr({opacity: opacityDefault});
+    this.hideOverlay();
   };
 
   element.snapPointFn = function (xp, yp) {
@@ -208,4 +214,31 @@ SnapTo.prototype.addSnapPoint = function (x, y, anchorObject, handlers) {
   };
 
   this.snapElements.push(element);
+};
+
+SnapTo.prototype.showOverlay = function(x, y, r){
+
+  console.log("showOverlay");
+
+  let rect = this.paper.rect(0, 0, "100%", "100%").attr({fill: "white"});
+  let circle = this.paper.circle(x, y, r);
+  let mask = this.paper.mask().append(rect).append(circle);
+
+  let maskRect = this.paper
+    .rect(0, 0, this.walle.width, this.walle.height)
+    .attr({fill: "black", opacity: 0, mask: mask})
+    .animate({opacity: 0.5}, 30);
+
+  this.overlay = {
+    rect, circle, mask, maskRect
+  };
+};
+
+SnapTo.prototype.hideOverlay = function(){
+
+  this.overlay.rect.remove();
+  this.overlay.circle.remove();
+  this.overlay.mask.remove();
+  this.overlay.maskRect.remove();
+
 };
