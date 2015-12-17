@@ -26,7 +26,7 @@ WallsDrawer.prototype.start = function () {
   });
 
   //add a point using snap points
-  this.walle.snapEvents.add({
+  this.walle.snapTo.add({
     click: (event, x, y) => {
       this.beginDrawing(x, y);
       event.stopPropagation();
@@ -42,7 +42,7 @@ WallsDrawer.prototype.restart = function () {
   console.log("restart walls mode");
 
   //clear drawing area
-  this.walle.snapEvents.remove();
+  this.walle.snapTo.remove();
   this.walle.changeCursor("auto");
 
   //unregister events
@@ -68,7 +68,7 @@ WallsDrawer.prototype.stop = function () {
 
   //add a point everywhere
   this.paper.removeAllListeners("click.wallsdrawer.**");
-  this.walle.snapEvents.remove();
+  this.walle.snapTo.remove();
 };
 
 
@@ -109,9 +109,9 @@ WallsDrawer.prototype.beginDrawing = function (x, y) {
   });
 
   //use snap mode
-  this.walle.snapEvents.remove();
+  this.walle.snapTo.remove();
 
-  this.walle.snapEvents.add({
+  this.walle.snapTo.add({
     click: (event, x, y) => {
       edge1.selected(false);
       this.endDrawing(x, y, event.shiftKey);
