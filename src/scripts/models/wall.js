@@ -84,3 +84,7 @@ Wall.prototype.updateDistance = function () {
 
 
 };
+
+Wall.isWall = function(wall){
+  return (wall instanceof Wall);
+};

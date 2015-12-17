@@ -58,3 +58,7 @@ Edge.prototype.toString = function () {
     y: this.y
   };
 };
+
+Edge.isEdge = function(edge){
+  return (edge instanceof Edge);
+};
