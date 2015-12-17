@@ -194,6 +194,7 @@ WallsDrawer.prototype.endDrawingWithEdge = function (edge, startNew) {
   wall.edges[0].selected(false);
   wall.edges[1].selected(false);
   wall.selected(false);
+  wall.edges[1].redraw();
 
   this.walls.push(wall);
 
