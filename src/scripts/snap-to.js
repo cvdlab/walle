@@ -13,6 +13,7 @@ var SnapTo = function (walle) {
 
     let minDistance = 15;
     let xp = event.offsetX, yp = event.offsetY;
+    let eventType = event.type;
 
     let found = false;
 
@@ -24,22 +25,16 @@ var SnapTo = function (walle) {
 
       let handlers = element.handlers;
       let anchorObject = element.anchorObject;
-
       let distance = element.distanceFn(xp, yp);
-
-      //console.log(distance);
 
       if (distance > minDistance) return;
 
       found = true;
 
       let coords = element.snapPointFn(xp, yp);
-      let x = coords.x, y = coords.y;
-
-      let eventType = event.type;
 
       if (eventType === 'click' || eventType === 'mousemove' && handlers.hasOwnProperty(eventType)) {
-        handlers[eventType](event, x, y, anchorObject);
+        handlers[eventType](event, coords.x, coords.y, anchorObject);
         event.stopImmediatePropagation();
       }
 
@@ -90,11 +85,6 @@ SnapTo.prototype.add = function (handlers) {
 
     this.addSnapLine(coords.r1.x, coords.r1.y, coords.r2.x, coords.r2.y, wall, handlers);
   });
-
-
-
-
-  console.log(this.snapElements);
 };
 
 /**
