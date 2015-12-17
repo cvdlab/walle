@@ -137,7 +137,7 @@ SnapTo.prototype.remove = function () {
  */
 SnapTo.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, handlers) {
 
-  let opacityDefault = this.walle.debugMode ? 0.5 : 0;
+  let opacityDefault = this.walle.debugMode ? 0.3 : 0;
 
   let element = {x1, y1, x2, y2, anchorObject, handlers};
 
@@ -176,7 +176,7 @@ SnapTo.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, handlers)
  */
 SnapTo.prototype.addSnapPoint = function (x, y, anchorObject, handlers) {
 
-  let opacityDefault = this.walle.debugMode ? 0.5 : 0;
+  let opacityDefault = this.walle.debugMode ? 0.3 : 0;
 
   let element = {x, y, anchorObject, handlers};
 
@@ -184,7 +184,7 @@ SnapTo.prototype.addSnapPoint = function (x, y, anchorObject, handlers) {
     strokeWidth: 3,
     stroke: "red",
     fill: "red",
-    opacity: this.walle.debugMode ? 0.5 : 0
+    opacity: opacityDefault
   });
 
   element.handlers.mouseover = function (event) {
