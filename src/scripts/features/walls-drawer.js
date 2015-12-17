@@ -161,8 +161,9 @@ WallsDrawer.prototype.updateDrawing = function (x, y) {
 WallsDrawer.prototype.endDrawing = function (x, y, startNew) {
   console.log("end drawing wall", x, y);
 
-  //set new wall
   let wall = this.drawingWall;
+  if (wall.edges[0].x === x && wall.edges[1].y === y)return;
+
   wall.edges[1].move(x, y);
 
   wall.edges[0].selected(false);
