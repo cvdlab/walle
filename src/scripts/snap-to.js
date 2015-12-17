@@ -1,6 +1,6 @@
 "use strict";
 
-var SnapEvents = function (walle) {
+var SnapTo = function (walle) {
   this.walle = walle;
   this.paper = walle.paper;
 
@@ -26,7 +26,7 @@ var SnapEvents = function (walle) {
  * @param mouseMoveFn = function(event, x, y, anchorObject)
  */
 
-SnapEvents.prototype.add = function (handlers) {
+SnapTo.prototype.add = function (handlers) {
 
   console.log("use snap events");
 
@@ -63,7 +63,7 @@ SnapEvents.prototype.add = function (handlers) {
 /**
  * Remove all snap points
  */
-SnapEvents.prototype.remove = function () {
+SnapTo.prototype.remove = function () {
   console.log("remove snap events");
 
   this.snapPoints.forEach(item => {item.debugArea.remove()});
@@ -83,13 +83,13 @@ SnapEvents.prototype.remove = function () {
  * @param handlers[] = function(event, x, y, anchorObject)
  * @returns line
  */
-SnapEvents.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, handlers) {
+SnapTo.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, handlers) {
   let debugArea = this.paper.line(x1, y1, x2, y2).attr({strokeWidth: 1, stroke: "red", opacity: this.walle.debugMode ? 0.5 : 0});
 
   this.snapLines.push({x1, y1, x2, y2, anchorObject, handlers, debugArea});
 };
 
-SnapEvents.prototype._handlerServeSnapLines = function (event) {
+SnapTo.prototype._handlerServeSnapLines = function (event) {
 
 
   let minDistance = 15;
@@ -132,13 +132,13 @@ SnapEvents.prototype._handlerServeSnapLines = function (event) {
  * @param handlers[] = function(event, x, y, anchorObject)
  * @returns {*}
  */
-SnapEvents.prototype.addSnapPoint = function (x, y, anchorObject, handlers) {
+SnapTo.prototype.addSnapPoint = function (x, y, anchorObject, handlers) {
   let debugArea = this.paper.circle(x, y, 15).attr({strokeWidth: 3, stroke: "red", fill: "#fff", opacity: this.walle.debugMode ? 0.5 : 0});
 
   this.snapPoints.push({x, y, anchorObject, handlers, debugArea});
 };
 
-SnapEvents.prototype._handlerServeSnapPoints = function (event) {
+SnapTo.prototype._handlerServeSnapPoints = function (event) {
 
 
   let minDistance = 15;

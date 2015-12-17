@@ -40,7 +40,7 @@ var Walle = function (container) {
     export: new Export(this)
   };
 
-  this.snapEvents = new SnapEvents(this);
+  this.snapEvents = new SnapTo(this);
 
   //abort
   let buttons = {esc: 27};
