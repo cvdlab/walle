@@ -83,6 +83,8 @@ EdgesMover.prototype.endMovingWithPoint = function (x, y) {
 EdgesMover.prototype.stop = function () {
   console.log("stop edges mover mode");
 
+  let edges = this.walle.model.edges;
+
   edges.forEach(function (edge) {
     edge.undrag();
   });
