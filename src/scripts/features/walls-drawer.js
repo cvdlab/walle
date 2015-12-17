@@ -157,6 +157,7 @@ WallsDrawer.prototype.updateDrawing = function (x, y) {
  * endDrawing
  * @param x
  * @param y
+ * @param startNew
  */
 WallsDrawer.prototype.endDrawing = function (x, y, startNew) {
   console.log("end drawing wall", x, y);
