@@ -187,7 +187,7 @@ SnapTo.prototype.addSnapPoint = function (x, y, anchorObject, handlers) {
   let hover = element.hover = this.paper.circle(x, y, 15).attr({
     strokeWidth: 1,
     stroke: "red",
-    fill: "white",
+    fill: "none",
     opacity: opacityDefault
   });
 
