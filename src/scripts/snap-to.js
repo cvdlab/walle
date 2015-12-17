@@ -141,18 +141,18 @@ SnapTo.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, handlers)
 
   let element = {x1, y1, x2, y2, anchorObject, handlers};
 
-  element.hover = this.paper.line(x1, y1, x2, y2).attr({
-    strokeWidth: 1,
+  let hover = element.hover = this.paper.line(x1, y1, x2, y2).attr({
+    strokeWidth: 2,
     stroke: "red",
     opacity: opacityDefault
   });
 
-  element.handlers.mouseover = function (event) {
-    element.hover.attr({opacity: 1});
+  handlers.mouseover = function (event) {
+    hover.attr({opacity: 1});
   };
 
-  element.handlers.mouseout = function (event) {
-    element.hover.attr({opacity: opacityDefault});
+  handlers.mouseout = function (event) {
+    hover.attr({opacity: opacityDefault});
   };
 
   element.snapPointFn = function (xp, yp) {
@@ -180,19 +180,19 @@ SnapTo.prototype.addSnapPoint = function (x, y, anchorObject, handlers) {
 
   let element = {x, y, anchorObject, handlers};
 
-  element.hover = this.paper.circle(x, y, 15).attr({
+  let hover = element.hover = this.paper.circle(x, y, 15).attr({
     strokeWidth: 3,
     stroke: "red",
     fill: "red",
     opacity: opacityDefault
   });
 
-  element.handlers.mouseover = function (event) {
-    element.hover.attr({opacity: 1});
+  handlers.mouseover = function (event) {
+    hover.attr({opacity: 1});
   };
 
-  element.handlers.mouseout = function (event) {
-    element.hover.attr({opacity: opacityDefault});
+  handlers.mouseout = function (event) {
+    hover.attr({opacity: opacityDefault});
   };
 
   element.snapPointFn = function (xp, yp) {
