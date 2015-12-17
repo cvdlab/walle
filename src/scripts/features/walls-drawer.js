@@ -189,7 +189,7 @@ WallsDrawer.prototype.endDrawingWithEdge = function (edge, startNew) {
   let wall = this.drawingWall;
 
   wall.edges[1].remove();
-  wall.edges[1] = edge;
+  wall.updateEdge(1, edge);
 
   wall.edges[0].selected(false);
   wall.edges[1].selected(false);

@@ -88,3 +88,16 @@ Wall.prototype.updateDistance = function () {
 Wall.isWall = function(wall){
   return (wall instanceof Wall);
 };
+
+Wall.prototype.updateEdge = function (edgeId, newEdge) {
+
+  this.edges[edgeId] = newEdge;
+
+  newEdge.emitter.addListener("move", (x, y)=> {
+    if(edgeId===0) this.line.attr({x1: x, y1: y});
+    if(edgeId===1) this.line.attr({x2: x, y2: y});
+    this.updateDistance();
+  });
+
+  this.updateDistance();
+};
