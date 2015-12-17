@@ -22,13 +22,13 @@ WallsDrawer.prototype.start = function () {
 
   //add a point everywhere
   this.paper.addListener("click.wallsdrawer.begin", event => {
-    this.beginDrawing(event.offsetX, event.offsetY);
+    this.beginDrawingWithPoint(event.offsetX, event.offsetY);
   });
 
   //add a point using snap points
   this.walle.snapTo.add({
     click: (event, x, y) => {
-      this.beginDrawing(x, y);
+      this.beginDrawingWithPoint(x, y);
       event.stopPropagation();
     }
   });
@@ -73,11 +73,11 @@ WallsDrawer.prototype.stop = function () {
 
 
 /**
- * beginDrawing
+ * beginDrawingWithPoint
  * @param x
  * @param y
  */
-WallsDrawer.prototype.beginDrawing = function (x, y) {
+WallsDrawer.prototype.beginDrawingWithPoint = function (x, y) {
   console.log("begin drawing wall", x, y);
 
   //draw wall and edge
@@ -98,10 +98,10 @@ WallsDrawer.prototype.beginDrawing = function (x, y) {
 
   //(un)register events
   this.paper.addListener("mousemove.wallsdrawer.update", event => {
-    this.updateDrawing(event.offsetX, event.offsetY);
+    this.updateDrawingWithPoint(event.offsetX, event.offsetY);
   });
   this.paper.addListener("click.wallsdrawer.end", event => {
-    this.endDrawing(event.offsetX, event.offsetY, event.shiftKey);
+    this.endDrawingWithPoint(event.offsetX, event.offsetY, event.shiftKey);
   });
   this.paper.removeAllListeners("click.wallsdrawer.begin");
   this.walle.emitter.addListener("abort.wallsdrawer", event => {
@@ -114,11 +114,11 @@ WallsDrawer.prototype.beginDrawing = function (x, y) {
   this.walle.snapTo.add({
     click: (event, x, y) => {
       edge1.selected(false);
-      this.endDrawing(x, y, event.shiftKey);
+      this.endDrawingWithPoint(x, y, event.shiftKey);
       event.stopPropagation();
     },
     mousemove: (event, x, y) => {
-      this.updateDrawing(x, y);
+      this.updateDrawingWithPoint(x, y);
       event.stopPropagation();
     }
   });
@@ -142,11 +142,11 @@ WallsDrawer.prototype.abortDrawing = function () {
 };
 
 /**
- * updateDrawing
+ * updateDrawingWithPoint
  * @param x
  * @param y
  */
-WallsDrawer.prototype.updateDrawing = function (x, y) {
+WallsDrawer.prototype.updateDrawingWithPoint = function (x, y) {
   //console.log("update drawing wall", x, y);
 
   //move wall endpoint
@@ -154,12 +154,12 @@ WallsDrawer.prototype.updateDrawing = function (x, y) {
 };
 
 /**
- * endDrawing
+ * endDrawingWithPoint
  * @param x
  * @param y
  * @param startNew
  */
-WallsDrawer.prototype.endDrawing = function (x, y, startNew) {
+WallsDrawer.prototype.endDrawingWithPoint = function (x, y, startNew) {
   console.log("end drawing wall", x, y);
 
   let wall = this.drawingWall;
@@ -177,6 +177,6 @@ WallsDrawer.prototype.endDrawing = function (x, y, startNew) {
 
   //restart
   this.restart();
-  if (startNew) this.beginDrawing(x, y);
+  if (startNew) this.beginDrawingWithPoint(x, y);
 
 };
