@@ -2,7 +2,15 @@
 
 var Panel = function (walle) {
   this.walle = walle;
-  this.features = [];
+
+  this.featuresStatus = {};
+  this.featuresBtn = {};
+  this.exclusiveFeatures = [];
+
+  this.colors = {
+    strokeOff: "#8E9BA2",
+    strokeOn: "#1c79bc"
+  };
 };
 
 
@@ -19,20 +27,14 @@ Panel.prototype.start = function () {
     .css({position: "absolute", bottom: 5, left: 5, "background-color": "#f7f7f7", border: "1px solid #e3e3e3"})
     .appendTo(this.walle.wrapper);
 
-  this.addFeature("wallsDrawer", "fa fa-plus", "Draw new wall", false);
-  this.addFeature("edgesMover", "fa fa-hand-paper-o", "Move edge", false);
-  this.addFeature("wallsMover", "fa fa-expand", "Move wall", false);
-  this.addFeature("easterEgg", "fa fa-flask", "Experimental", false);
-  this.addFeature("export", "fa fa-save", "Export", false);
+  this.addFeature("wallsDrawer", "fa fa-plus", "Draw new wall", false, true);
+  this.addFeature("edgesMover", "fa fa-hand-paper-o", "Move edge", false, true);
+  this.addFeature("wallsMover", "fa fa-expand", "Move wall", false, true);
+  this.addFeature("easterEgg", "fa fa-flask", "Experimental", false, true);
+  this.addFeature("export", "fa fa-save", "Export", false, true);
 
-  this.addFeature("grid", "fa fa-th", "Show grids", true);
-  this.addFeature("debugger", "fa fa-terminal", "Debug mode", false);
-
-  let width = 0;
-  this.panel.find('a').each(function (i) {
-    width += jQuery(this).outerWidth(true);
-  });
-  this.panel.width(width);
+  this.addFeature("grid", "fa fa-th", "Show grids", true, false);
+  this.addFeature("debugger", "fa fa-terminal", "Debug mode", false, false);
 
 };
 
@@ -49,56 +51,75 @@ Panel.prototype.stop = function () {
 /**
  * add feature
  */
-Panel.prototype.addFeature = function (featureName, iconClass, featureDescription, defaultOn) {
+Panel.prototype.addFeature = function (featureName, iconClass, featureDescription, defaultOn, exclusive) {
 
-  let features = this.walle.features;
+  let featuresStatus = this.featuresStatus;
+  let featuresBtn = this.featuresBtn;
+  let colors = this.colors;
+  let panel = this.panel;
+  let exclusiveFeatures = this.exclusiveFeatures;
 
-  this.features.push({iconClass, featureName, featureDescription});
-
-  let colors = {
-    strokeNormal: "#8E9BA2",
-    strokeSelected: "#1c79bc"
-  };
-
-  let featureOn = function (event) {
-    jQuery(this)
-      .css({color: colors.strokeSelected})
-      .one("click", featureOff);
-    event.preventDefault();
-
-    features[featureName].start();
-
-    console.log(featureName + " now is ON");
-  };
-
-  let featureOff = function (event) {
-    jQuery(this)
-      .css({color: colors.strokeNormal})
-      .one("click", featureOn);
-    event.preventDefault();
-
-    features[featureName].stop();
-
-    console.log(featureName + " now is OFF");
-  };
+  featuresStatus[featureName] = false;
+  if(exclusive) exclusiveFeatures.push(featureName);
 
 
-  let featureBtn = jQuery("<a href />")
-    .css({display: "inline-block", width: 40, color: defaultOn ? colors.strokeSelected : colors.strokeNormal, "font-size": "30px", "text-align": "center"})
+  let featureBtn = featuresBtn[featureName] = jQuery("<a href />")
+    .css({display: "inline-block", width: 40, "font-size": "30px", "text-align": "center", color: colors.strokeOff})
     .attr({title: featureDescription})
-    .one('click', defaultOn ? featureOff : featureOn)
     .appendTo(this.panel);
 
-
-  let icon = jQuery("<i/>", {
-    class: iconClass
-  })
+  let icon = jQuery("<i/>", {class: iconClass})
     .css({color: "inherit", "font-size": "30px"})
     .appendTo(featureBtn);
 
-  if (defaultOn) {
-    features[featureName].start();
-  }
+  let width = 0;
+  panel.find('a').each(function (i) {
+    width += jQuery(this).outerWidth(true);
+  });
+  panel.width(width);
+
+  let handler = (event) => {
+    if (featuresStatus[featureName]) {
+      this.turnOff(featureName);
+    } else {
+      this.turnOn(featureName);
+    }
+
+    event.preventDefault();
+  };
+
+  featureBtn.on('click', handler);
+
+  if(defaultOn) this.turnOn(featureName);
+
+};
 
 
+Panel.prototype.turnOn = function (featureName) {
+  console.log(featureName + ' turn off');
+
+  let exclusiveFeatures = this.exclusiveFeatures;
+
+  if(exclusiveFeatures.indexOf(featureName) !== -1){
+    exclusiveFeatures.forEach(currentFeatureName =>{
+      if(this.featuresStatus[currentFeatureName] && exclusiveFeatures.indexOf(currentFeatureName) !== -1){
+        this.turnOff(currentFeatureName);
+      }
+    });
+  };
+
+  let colors = this.colors;
+  this.walle.features[featureName].start();
+  this.featuresStatus[featureName] = true;
+  this.featuresBtn[featureName].css({color: colors.strokeOn});
+};
+
+
+Panel.prototype.turnOff = function (featureName) {
+  console.log(featureName + ' turn on');
+
+  let colors = this.colors;
+  this.walle.features[featureName].stop();
+  this.featuresStatus[featureName] = false;
+  this.featuresBtn[featureName].css({color: colors.strokeOff});
 };
