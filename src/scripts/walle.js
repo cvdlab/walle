@@ -19,6 +19,7 @@ var Walle = function (container) {
   this.width = container.offsetWidth;
   this.height = container.offsetHeight;
   this.emitter = new EventEmitter2({wildcard: true});
+  this.events = new Events();
   this.debugMode = false;
 
   // init wrapper
@@ -51,6 +52,7 @@ var Walle = function (container) {
   let buttons = {esc: 27};
   this.document.on("keydown", event => {
     if (event.keyCode == buttons.esc) this.emitter.emit("abort.**");
+    if (event.keyCode == buttons.esc) this.events.dispatchEvent('abort', event);
   });
 
 };
@@ -98,4 +100,14 @@ Walle.prototype.nearestWall = function (x, y, minAcceptedDistance) {
   }else{
     return null;
   }
+};
+
+
+/** events **/
+Walle.prototype.onAbort = function (handler) {
+  this.events.addEventListener('abort', handler);
+};
+
+Walle.prototype.offAbort = function (handler) {
+  this.events.removeEventListener('abort', handler);
 };

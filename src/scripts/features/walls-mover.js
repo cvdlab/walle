@@ -47,8 +47,15 @@ WallsMover.prototype.start = function () {
     }
   };
 
+  this.abortHandler = (event) => {
+    if (this.status === WallsMover.statusWorking) {
+      this.abortMoving();
+    }
+  };
+
   paper.click(this.clickHandler, this);
   paper.mousemove(this.moveHandler, this);
+  walle.onAbort(this.abortHandler, this);
 
 };
 
@@ -113,6 +120,32 @@ WallsMover.prototype.updateMovingWithPoint = function (x, y) {
 };
 
 /**
+ * abort moving
+ */
+WallsMover.prototype.abortMoving = function () {
+
+  console.log("abort moving");
+
+  let paper = this.paper;
+  let wall = this.movingWall.wall;
+  let movingWall = this.movingWall;
+  let edge0 = wall.edges[0], edge1 = wall.edges[1];
+  let ox1 = movingWall.originalPosition.x1, oy1 = movingWall.originalPosition.y1,
+    ox2 = movingWall.originalPosition.x2, oy2 = movingWall.originalPosition.y2;
+
+  edge0.move(ox1, oy1);
+  edge1.move(ox2, oy2);
+
+  movingWall.centerPoint.remove();
+  movingWall.horizontalLine.remove();
+  movingWall.verticalLine.remove();
+  this.movingWall = null;
+
+  this.start();
+
+};
+
+/**
  * end moving
  * @param x
  * @param y
@@ -142,6 +175,12 @@ WallsMover.prototype.endMovingWithPoint = function (x, y) {
 WallsMover.prototype.stop = function () {
   console.log("stop edges mover mode");
 
+  let paper = this.paper;
+  let walle = this.walle;
+
+  paper.unclick(this.clickHandler, this);
+  paper.unmousemove(this.moveHandler, this);
+  walle.offAbort(this.abortHandler, this);
 };
 
 
