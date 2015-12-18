@@ -101,3 +101,11 @@ Wall.prototype.updateEdge = function (edgeId, newEdge) {
 
   this.updateDistance();
 };
+
+Wall.prototype.drag = function(onStart, onMove, onEnd){
+  this.line.drag(onMove, onStart, onEnd);
+};
+
+Wall.prototype.click = function(onClick){
+  this.line.click(onClick);
+};

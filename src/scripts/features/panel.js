@@ -21,6 +21,7 @@ Panel.prototype.start = function () {
 
   this.addFeature("wallsDrawer", "fa fa-plus", "Draw new wall", false);
   this.addFeature("edgesMover", "fa fa-hand-paper-o", "Move edge", false);
+  this.addFeature("wallsMover", "fa fa-expand", "Move wall", false);
   this.addFeature("easterEgg", "fa fa-flask", "Experimental", false);
   this.addFeature("export", "fa fa-save", "Export", false);
 

@@ -68,7 +68,7 @@ Utils.horizontalLineIntoBox = function (x, y, width, height) {
 
 };
 
-
+//nearest point from line
 Utils.intersectPoint = function (x1, y1, x2, y2, xp, yp) {
 
   if (x1 === x2) return {x: x1, y: yp};
@@ -87,3 +87,36 @@ Utils.intersectPoint = function (x1, y1, x2, y2, xp, yp) {
 
 };
 
+
+Utils.centerPoint = function (x1, y1, x2, y2) {
+  return {x: (x1 + x2) / 2, y: (y1 + y2) / 2};
+};
+
+
+Utils.translationVector = function (x1, y1, x2, y2, xp, yp) {
+
+  //punto medio segmento
+  let xm = (x1 + x2) / 2;
+  let ym = (y1 + y2) / 2;
+
+  //eq segmento
+  let m =  (y2 - y1) / (x2 - x1);
+
+  //retta perpendicolare
+  let mi = -1 / m;
+  let qi = ym - mi * xm;
+
+  //retta parallela interseca (xp, yp)
+  let mii = m;
+  let qii = yp - mii * xp;
+
+  //punto (xp, yp) proiettato su perpendicolare
+  let xt = ( qii - qi ) / (mi - mii);
+  let yt = mii * xt + qii;
+
+  //vettore translazione
+  let vx = xt - xm;
+  let vy = yt - ym;
+
+  return {x: xt, y: yt, vx, vy};
+};
