@@ -33,6 +33,7 @@ var Wall = function (paper, edge0, edge1) {
 
 
 Wall.prototype.remove = function () {
+  this.distanceText.remove();
   this.line.remove();
 };
 
@@ -102,14 +103,7 @@ Wall.prototype.updateEdge = function (edgeId, newEdge) {
   this.updateDistance();
 };
 
-Wall.prototype.drag = function(onStart, onMove, onEnd){
-  this.line.drag(onMove, onStart, onEnd);
-};
 
-Wall.prototype.undrag = function(){
-  this.line.undrag();
-};
-
-Wall.prototype.click = function(onClick){
-  this.line.click(onClick);
+Wall.prototype.distanceFromPoint = function(x, y){
+  return Utils.linePointDistance(this.edges[0].x, this.edges[0].y, this.edges[1].x, this.edges[1].y, x, y);
 };

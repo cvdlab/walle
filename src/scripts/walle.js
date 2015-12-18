@@ -9,7 +9,10 @@ var Walle = function (container) {
 
   this.document = jQuery(document);
 
-  this.model = {};
+  this.model = {
+    walls: [],
+    edges: []
+  };
   this.pixelPerUnit = 60;
 
   //init vars;
@@ -71,4 +74,28 @@ Walle.prototype.changeCursor = function (cursor) {
 };
 
 
+/**
+ * nearestWall
+ */
+Walle.prototype.nearestWall = function (x, y, minAcceptedDistance) {
 
+  let minWall = null;
+  let minDistance = Infinity;
+  let walls = this.model.walls;
+
+  walls.forEach(function (wall) {
+    let distance = wall.distanceFromPoint(x, y);
+    console.log(distance);
+
+    if(distance < minDistance){
+      minDistance = distance;
+      minWall = wall;
+    }
+  });
+
+  if (minDistance <= minAcceptedDistance){
+    return minWall;
+  }else{
+    return null;
+  }
+};

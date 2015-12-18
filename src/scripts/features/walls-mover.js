@@ -7,6 +7,7 @@ var WallsMover = function (walle) {
   walle.model.walls = walle.model.walls || [];
 
   this.movingWall = null;
+  this.status = null;
 };
 
 
@@ -16,26 +17,38 @@ var WallsMover = function (walle) {
 WallsMover.prototype.start = function () {
   console.log("start edges mover mode");
 
-  let walls = this.walle.model.walls;
-  let self = this;
+  let paper = this.paper;
+  let walle = this.walle;
 
-  walls.forEach(wall => {
+  this.status = WallsMover.statusWaiting;
 
-    wall.handleMoverStart = (x, y, event) => {
-      self.beginMoving(wall);
-    };
+  /** click handler **/
+  this.clickHandler = (event) => {
 
-    wall.handleMoverMove = (dx, dy, x, y, event) => {
-      this.updateMovingWithPoint(event.offsetX, event.offsetY);
-    };
+    if (this.status === WallsMover.statusWaiting) {
+      let wall = walle.nearestWall(event.offsetX, event.offsetY, 5);
+      if (Wall.isWall(wall)) {
+        this.beginMoving(wall);
+        event.stopPropagation();
+        return;
+      }
+    }
 
-    wall.handleMoverEnd = (event) => {
+    if (this.status === WallsMover.statusWorking) {
       this.endMovingWithPoint(event.offsetX, event.offsetY);
-    };
+      event.stopPropagation();
+    }
+  };
 
-    wall.drag(wall.handleMoverStart, wall.handleMoverMove, wall.handleMoverEnd, this, this, this);
+  /** move handler **/
+  this.moveHandler = (event) => {
+    if (this.status === WallsMover.statusWorking) {
+      this.updateMovingWithPoint(event.offsetX, event.offsetY);
+    }
+  };
 
-  });
+  paper.click(this.clickHandler, this);
+  paper.mousemove(this.moveHandler, this);
 
 };
 
@@ -65,7 +78,7 @@ WallsMover.prototype.beginMoving = function (wall) {
     originalPosition: {x1: wall.edges[0].x, y1: wall.edges[0].y, x2: wall.edges[1].x, y2: wall.edges[1].y}
   };
 
-
+  this.status = WallsMover.statusWorking;
 };
 
 
@@ -75,6 +88,8 @@ WallsMover.prototype.beginMoving = function (wall) {
  * @param y
  */
 WallsMover.prototype.updateMovingWithPoint = function (x, y) {
+
+  console.log("update moving");
 
   let paper = this.paper;
   let width = this.walle.width, height = this.walle.height;
@@ -95,7 +110,6 @@ WallsMover.prototype.updateMovingWithPoint = function (x, y) {
 
   edge0.move(ox1 + vx, oy1 + vy);
   edge1.move(ox2 + vx, oy2 + vy);
-
 };
 
 /**
@@ -105,14 +119,20 @@ WallsMover.prototype.updateMovingWithPoint = function (x, y) {
  */
 WallsMover.prototype.endMovingWithPoint = function (x, y) {
 
+  console.log("end moving");
+
+  let paper = this.paper;
+  let wall = this.movingWall.wall;
+
   this.updateMovingWithPoint(x, y);
 
   let movingWall = this.movingWall;
   movingWall.centerPoint.remove();
   movingWall.horizontalLine.remove();
   movingWall.verticalLine.remove();
-
   this.movingWall = null;
+
+  this.start();
 
 };
 
@@ -124,3 +144,6 @@ WallsMover.prototype.stop = function () {
 
 };
 
+
+WallsMover.statusWaiting = 0;
+WallsMover.statusWorking = 1;
