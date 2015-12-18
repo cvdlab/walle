@@ -106,6 +106,10 @@ Wall.prototype.drag = function(onStart, onMove, onEnd){
   this.line.drag(onMove, onStart, onEnd);
 };
 
+Wall.prototype.undrag = function(){
+  this.line.undrag();
+};
+
 Wall.prototype.click = function(onClick){
   this.line.click(onClick);
 };

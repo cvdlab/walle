@@ -67,6 +67,10 @@ Edge.prototype.drag = function(onStart, onMove, onEnd){
   this.circle.drag(onMove, onStart, onEnd);
 };
 
+Edge.prototype.undrag = function(){
+  this.circle.undrag();
+};
+
 Edge.isEdge = function(edge){
   return (edge instanceof Edge);
 };
