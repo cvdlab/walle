@@ -96,7 +96,7 @@ Panel.prototype.addFeature = function (featureName, iconClass, featureDescriptio
 
 
 Panel.prototype.turnOn = function (featureName) {
-  console.log(featureName + ' turn off');
+  console.log(featureName + ' turn on');
 
   let exclusiveFeatures = this.exclusiveFeatures;
 
@@ -116,7 +116,7 @@ Panel.prototype.turnOn = function (featureName) {
 
 
 Panel.prototype.turnOff = function (featureName) {
-  console.log(featureName + ' turn on');
+  console.log(featureName + ' turn off');
 
   let colors = this.colors;
   this.walle.features[featureName].stop();
