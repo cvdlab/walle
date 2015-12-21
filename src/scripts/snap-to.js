@@ -124,6 +124,7 @@ SnapTo.prototype.use = function (handlers) {
 SnapTo.prototype.remove = function () {
   console.log("remove snap events");
 
+  this.hideOverlay();
   this.snapElements.forEach(item => {
     item.hover.remove()
   });
@@ -223,6 +224,8 @@ SnapTo.prototype.showOverlay = function(x, y, r){
 
   console.log("showOverlay");
 
+  this.hideOverlay();
+
   let rect = this.paper.rect(0, 0, "100%", "100%").attr({fill: "white"});
   let circle = this.paper.circle(x, y, r);
   let mask = this.paper.mask().append(rect).append(circle);
@@ -238,10 +241,12 @@ SnapTo.prototype.showOverlay = function(x, y, r){
 };
 
 SnapTo.prototype.hideOverlay = function(){
-
-  this.overlay.rect.remove();
-  this.overlay.circle.remove();
-  this.overlay.mask.remove();
-  this.overlay.maskRect.remove();
+  if(this.overlay) {
+    this.overlay.rect.remove();
+    this.overlay.circle.remove();
+    this.overlay.mask.remove();
+    this.overlay.maskRect.remove();
+    this.overlay = null;
+  }
 
 };
