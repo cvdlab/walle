@@ -5,6 +5,11 @@ html, body, #container {
   padding: 0;
 }
 
-#container{
+#container {
   border: 1px solid #000;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -o-user-select: none;
 }
