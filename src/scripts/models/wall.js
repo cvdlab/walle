@@ -15,12 +15,12 @@ var Wall = function (paper, edge0, edge1) {
   line.attr({strokeWidth: 4, stroke: this.colors.strokeNormal});
   this.line = line;
 
-  edge0.emitter.addListener("move", (x, y)=> {
+  edge0.onMove((x, y)=> {
     line.attr({x1: x, y1: y});
     this.updateDistance();
   });
 
-  edge1.emitter.addListener("move", (x, y)=> {
+  edge1.onMove((x, y)=> {
     line.attr({x2: x, y2: y});
     this.updateDistance();
   });
@@ -95,7 +95,8 @@ Wall.prototype.updateEdge = function (edgeId, newEdge) {
 
   this.edges[edgeId] = newEdge;
 
-  newEdge.emitter.addListener("move", (x, y)=> {
+
+  newEdge.onMove((x, y)=> {
     if(edgeId===0) this.line.attr({x1: x, y1: y});
     if(edgeId===1) this.line.attr({x2: x, y2: y});
     this.updateDistance();

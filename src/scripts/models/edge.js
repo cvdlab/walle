@@ -15,7 +15,7 @@ var Edge = function (paper, x, y) {
 
   this.walls = [];
 
-  this.emitter = new EventEmitter2();
+  this.events = new Events();
 
   let circle = paper.circle(x, y, 8);
   circle.attr({strokeWidth: 4, stroke: this.colors.strokeNormal, fill: this.colors.fillNormal});
@@ -27,7 +27,7 @@ Edge.prototype.move = function (x, y) {
   this.x = x;
   this.y = y;
   this.circle.attr({cx: x, cy: y});
-  this.emitter.emit("move", x, y);
+  this.events.dispatchEvent("move", x, y);
 };
 
 Edge.prototype.selected = function (isSelected) {
@@ -71,6 +71,16 @@ Edge.prototype.undrag = function(){
   this.circle.undrag();
 };
 
+Edge.prototype.onMove = function(handler){
+  this.events.addEventListener('move', handler);
+};
+
+Edge.prototype.offMove = function(handler){
+  this.events.removeEventListener('move', handler);
+};
+
+
 Edge.isEdge = function(edge){
   return (edge instanceof Edge);
 };
+
