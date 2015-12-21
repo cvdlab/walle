@@ -8,9 +8,7 @@
 var Walle = function (container) {
 
   this.scene = new Scene();
-
   this.document = jQuery(document);
-
   this.pixelPerUnit = 60;
 
   //init vars;
@@ -107,4 +105,14 @@ Walle.prototype.onAbort = function (handler) {
 
 Walle.prototype.offAbort = function (handler) {
   this.events.removeEventListener('abort', handler);
+};
+
+/** snap **/
+Walle.prototype.useSnapTo = function(handler){
+  this.snapTo.use(handler);
+};
+
+/** snap **/
+Walle.prototype.removeSnapTo = function(){
+  this.snapTo.remove();
 };

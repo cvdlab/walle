@@ -81,7 +81,9 @@ var SnapTo = function (walle) {
  * @param handlers[] = function(event, x, y, anchorObject)
  */
 
-SnapTo.prototype.add = function (handlers) {
+SnapTo.prototype.use = function (handlers) {
+
+  this.remove();
 
   console.log("use snap events");
 

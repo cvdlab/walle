@@ -55,18 +55,6 @@ WallsDrawer.prototype.start = function () {
   this.paper.mousemove(this.mouseMoveHandler);
   this.walle.onAbort(this.abortHandler);
 
-
-  //add a point using snap points
-  //this.walle.snapTo.add({
-  //  click: (event, x, y, anchorPoint) => {
-  //    if (Edge.isEdge(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
-  //      this.beginDrawingWithEdge(anchorPoint);
-  //    } else {
-  //      this.beginDrawingWithPoint(x, y);
-  //    }
-  //    event.stopPropagation();
-  //  }
-  //});
 };
 
 
@@ -77,10 +65,22 @@ WallsDrawer.prototype.restart = function () {
   console.log("restart walls mode");
 
   //clear drawing area
-  //this.walle.snapTo.remove();
+  this.walle.removeSnapTo();
   this.walle.changeCursor("auto");
 
   this.drawingWall = null;
+
+  //add a point using snap points
+  this.walle.useSnapTo({
+    click: (event, x, y, anchorPoint) => {
+      if (Edge.isEdge(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
+        this.beginDrawingWithEdge(anchorPoint);
+      } else {
+        this.beginDrawingWithPoint(x, y);
+      }
+      event.stopPropagation();
+    }
+  });
 
   //start
   this.status = WallsDrawer.statusWaiting;
@@ -96,7 +96,7 @@ WallsDrawer.prototype.stop = function () {
   //abort if needed
   if (this.drawingWall !== null) this.abortDrawing();
 
-  //this.walle.snapTo.remove();
+  this.walle.removeSnapTo();
 
   this.status = WallsDrawer.statusDirty;
   this.paper.unclick(this.clickHandler);
@@ -141,23 +141,21 @@ WallsDrawer.prototype.beginDrawingWithEdge = function (edge) {
 
 
   //use snap mode
-  //this.walle.snapTo.remove();
-  //
-  //this.walle.snapTo.add({
-  //  click: (event, x, y, anchorPoint) => {
-  //    edge1.selected(false);
-  //    if (Edge.isEdge(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
-  //      this.endDrawingWithEdge(anchorPoint, event.shiftKey);
-  //    } else {
-  //      this.endDrawingWithPoint(x, y, event.shiftKey);
-  //    }
-  //    event.stopPropagation();
-  //  },
-  //  mousemove: (event, x, y) => {
-  //    this.updateDrawingWithPoint(x, y);
-  //    event.stopPropagation();
-  //  }
-  //});
+  this.walle.useSnapTo({
+    click: (event, x, y, anchorPoint) => {
+      edge1.selected(false);
+      if (Edge.isEdge(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
+        this.endDrawingWithEdge(anchorPoint, event.shiftKey);
+      } else {
+        this.endDrawingWithPoint(x, y, event.shiftKey);
+      }
+      event.stopPropagation();
+    },
+    mousemove: (event, x, y) => {
+      this.updateDrawingWithPoint(x, y);
+      event.stopPropagation();
+    }
+  });
 
 };
 
