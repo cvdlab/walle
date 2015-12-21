@@ -9,8 +9,16 @@ var Scene = function () {
 Scene.prototype.addElement = function (element) {
   console.log("add", element);
   this.elements.push(element);
-  this.events.dispatchEvent('change');
+  this.events.dispatchEvent('change', element, 'add');
   this.events.dispatchEvent('add', element);
+};
+
+Scene.prototype.removeElement = function (element) {
+  console.log("remove", element);
+  var i = this.elements.indexOf(element);
+  if (i !== -1) this.elements.splice(i, 1);
+  this.events.dispatchEvent('change', element, 'remove');
+  this.events.dispatchEvent('remove', element);
 };
 
 Scene.prototype.getEdges = function () {
@@ -19,6 +27,10 @@ Scene.prototype.getEdges = function () {
 
 Scene.prototype.getWalls = function () {
   return this.getElements('wall');
+};
+
+Scene.prototype.getRooms = function () {
+  return this.getElements('room');
 };
 
 
@@ -32,7 +44,7 @@ Scene.prototype.getElements = function (type) {
   this.elements.forEach(function (element) {
     let typeOf = Scene.typeof(element);
 
-    if(typeOf === type){
+    if (typeOf === type) {
       elements.push(element);
     }
   });
@@ -76,9 +88,18 @@ Scene.prototype.offAdd = function (handler) {
   this.events.removeEventListener('add', handler);
 };
 
+Scene.prototype.onRemove = function (handler) {
+  this.events.addEventListener('remove', handler);
+};
+
+Scene.prototype.offRemove = function (handler) {
+  this.events.removeEventListener('remove', handler);
+};
+
 Scene.typeof = function (obj) {
-  if(Edge.isEdge(obj)) return 'edge';
-  if(Wall.isWall(obj)) return 'wall';
+  if (Room.isRoom(obj)) return 'room';
+  if (Edge.isEdge(obj)) return 'edge';
+  if (Wall.isWall(obj)) return 'wall';
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
 };
 

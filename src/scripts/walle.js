@@ -39,7 +39,8 @@ var Walle = function (container) {
     debugger: new Debugger(this),
     export: new Export(this),
     edgesMover: new EdgesMover(this),
-    wallsMover: new WallsMover(this)
+    wallsMover: new WallsMover(this),
+    roomsDetector: new RoomsDetector(this)
   };
 
   this.snapTo = new SnapTo(this);

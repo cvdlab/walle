@@ -32,6 +32,7 @@ Panel.prototype.start = function () {
   this.addFeature("wallsMover", "fa fa-expand", "Move wall", false, true);
   this.addFeature("easterEgg", "fa fa-flask", "Experimental", false, true);
 
+  this.addFeature("roomsDetector", "fa fa-square-o", "Rooms", true, false);
   this.addFeature("export", "fa fa-save", "Export", false, false);
   this.addFeature("grid", "fa fa-th", "Show grids", true, false);
   this.addFeature("debugger", "fa fa-terminal", "Debug mode", false, false);
