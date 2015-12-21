@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Walle</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css"/>
+
+  <script src="src/scripts/models/wall.js"></script>
+  <script src="src/scripts/models/edge.js"></script>
+  <script src="src/scripts/models/events.js"></script>
+  <script src="src/scripts/models/scene.js"></script>
+  <script src="src/scripts/utils.js"></script>
+  <script src="src/scripts/snap-to.js"></script>
+  <script src="src/scripts/walle.js"></script>
+  <script src="src/scripts/features/walls-drawer.js"></script>
+  <script src="src/scripts/features/walls-mover.js"></script>
+  <script src="src/scripts/features/edges-mover.js"></script>
+  <script src="src/scripts/features/grid.js"></script>
+  <script src="src/scripts/features/easter-egg.js"></script>
+  <script src="src/scripts/features/panel.js"></script>
+  <script src="src/scripts/features/debugger.js"></script>
+  <script src="src/scripts/features/export.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="src/styles/style.css">
+
+  <script>
+    window.onload = function () {
+
+      var is_chrome = window.chrome;
+      if(!is_chrome){
+        alert("Sorry! But Walle is, at this moment, only compatible with Chrome!");
+      }
+
+      var container = document.getElementById('container');
+      var walle = window.walle = new Walle(container);
+      walle.feature("panel").start();
+
+    };
+  </script>
+</head>
+<body>
+
+<div id="container"></div>
+
+</body>
+</html>
