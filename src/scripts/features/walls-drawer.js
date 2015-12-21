@@ -21,13 +21,13 @@ WallsDrawer.prototype.start = function () {
 
   this.clickHandler = event => {
 
-    if(this.status === WallsDrawer.statusWaiting){
+    if (this.status === WallsDrawer.statusWaiting) {
       this.beginDrawingWithPoint(event.offsetX, event.offsetY);
       event.stopPropagation();
       return;
     }
 
-    if(this.status === WallsDrawer.statusWorking){
+    if (this.status === WallsDrawer.statusWorking) {
       this.endDrawingWithPoint(event.offsetX, event.offsetY, event.shiftKey);
       event.stopPropagation();
     }
@@ -36,7 +36,7 @@ WallsDrawer.prototype.start = function () {
 
   this.mouseMoveHandler = event => {
 
-    if(this.status === WallsDrawer.statusWorking){
+    if (this.status === WallsDrawer.statusWorking) {
       this.updateDrawingWithPoint(event.offsetX, event.offsetY);
       event.stopPropagation();
     }
@@ -44,7 +44,7 @@ WallsDrawer.prototype.start = function () {
   };
 
   this.abortHandler = event => {
-    if(this.status === WallsDrawer.statusWorking) {
+    if (this.status === WallsDrawer.statusWorking) {
       this.abortDrawing();
       event.stopPropagation();
     }
@@ -164,10 +164,12 @@ WallsDrawer.prototype.beginDrawingWithEdge = function (edge) {
  */
 WallsDrawer.prototype.abortDrawing = function () {
   console.log("abort drawing wall");
+  let scene = this.walle.scene;
+  let edge0 = this.drawingWall.edges[0], edge1 = this.drawingWall.edges[1];
 
   //abort
-  this.drawingWall.edges[0].remove(); //TODO verificare se effettivamente va eliminato
-  this.drawingWall.edges[1].remove();
+  if (!scene.hasElement(edge0)) edge0.remove();
+  edge1.remove();
   this.drawingWall.remove();
 
   this.drawingWall = null;
@@ -218,7 +220,7 @@ WallsDrawer.prototype.endDrawingWithEdge = function (edge, startNew) {
 
   scene.addElement(wall);
 
-  if (! scene.hasElement(wall.edges[0])) scene.addElement(wall.edges[0]);
+  if (!scene.hasElement(wall.edges[0])) scene.addElement(wall.edges[0]);
 
   this.status = WallsDrawer.statusDirty;
 
@@ -248,7 +250,7 @@ WallsDrawer.prototype.endDrawingWithPoint = function (x, y, startNew) {
 
   scene.addElement(wall);
 
-  if (! scene.hasElement(wall.edges[0])) scene.addElement(wall.edges[0]);
+  if (!scene.hasElement(wall.edges[0])) scene.addElement(wall.edges[0]);
   scene.addElement(wall.edges[1]);
 
   this.status = WallsDrawer.statusDirty;
