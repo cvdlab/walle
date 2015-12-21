@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Walle</title>
-  <script src="components/Snap.svg/dist/snap.svg.js"></script>
-  <script src="components/jquery/dist/jquery.js"></script>
-  <script src="components/eventemitter2/lib/eventemitter2.js"></script>
-  <link rel="stylesheet" type="text/css" href="components/font-awesome/css/font-awesome.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css"/>
 
   <script src="scripts/models/wall.js"></script>
   <script src="scripts/models/edge.js"></script>
@@ -24,24 +24,14 @@
   <script src="scripts/features/debugger.js"></script>
   <script src="scripts/features/export.js"></script>
 
-
   <link rel="stylesheet" type="text/css" href="styles/style.css">
 
   <script>
-
-    "use strict";
-
     window.onload = function () {
 
-      let container = document.getElementById('container');
-
-      let walle = new Walle(container);
-
+      var container = document.getElementById('container');
+      var walle = window.walle = new Walle(container);
       walle.feature("panel").start();
-
-      walle.debugMode = false;
-
-      window.walle = walle;
 
     };
   </script>
