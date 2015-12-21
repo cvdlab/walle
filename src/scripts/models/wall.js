@@ -26,7 +26,7 @@ var Wall = function (paper, edge0, edge1) {
   });
 
   this.distanceText = this.paper.text(0, 0, "")
-    .attr({"text-anchor": "middle", "font-family": "monospace"});
+    .attr({"text-anchor": "middle", "font-family": "monospace", "pointer-events":"none"});
   this.distanceGroup = this.paper.g(this.distanceText);
   this.updateDistance();
 };
