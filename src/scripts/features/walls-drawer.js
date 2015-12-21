@@ -47,7 +47,7 @@ WallsDrawer.prototype.restart = function () {
   //unregister events
   this.paper.removeAllListeners("mousemove.wallsdrawer.update");
   this.paper.removeAllListeners("click.wallsdrawer.end");
-  this.walle.emitter.removeAllListeners("abort.wallsdrawer");
+  this.walle.offAbort(this.abortHandler);
 
   this.drawingWall = null;
 
@@ -66,6 +66,7 @@ WallsDrawer.prototype.stop = function () {
   if (this.drawingWall !== null) this.abortDrawing();
 
   //add a point everywhere
+  this.walle.offAbort(this.abortHandler);
   this.paper.removeAllListeners("click.wallsdrawer.**");
   this.walle.snapTo.remove();
 };
@@ -112,9 +113,12 @@ WallsDrawer.prototype.beginDrawingWithEdge = function (edge) {
     this.endDrawingWithPoint(event.offsetX, event.offsetY, event.shiftKey);
   });
   this.paper.removeAllListeners("click.wallsdrawer.begin");
-  this.walle.emitter.addListener("abort.wallsdrawer", event => {
+
+  this.abortHandler = (event) => {
     this.abortDrawing();
-  });
+  };
+  this.walle.onAbort(this.abortHandler);
+
 
   //use snap mode
   this.walle.snapTo.remove();

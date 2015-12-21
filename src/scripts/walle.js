@@ -49,7 +49,6 @@ var Walle = function (container) {
   //abort
   let buttons = {esc: 27};
   this.document.on("keydown", event => {
-    if (event.keyCode == buttons.esc) this.emitter.emit("abort.**");
     if (event.keyCode == buttons.esc) this.events.dispatchEvent('abort', event);
   });
 
