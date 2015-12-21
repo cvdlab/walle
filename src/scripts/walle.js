@@ -82,7 +82,6 @@ Walle.prototype.nearestWall = function (x, y, minAcceptedDistance) {
 
   walls.forEach(function (wall) {
     let distance = wall.distanceFromPoint(x, y);
-    console.log(distance);
 
     if(distance < minDistance){
       minDistance = distance;

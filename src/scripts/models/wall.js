@@ -107,5 +107,5 @@ Wall.prototype.updateEdge = function (edgeId, newEdge) {
 
 
 Wall.prototype.distanceFromPoint = function(x, y){
-  return Utils.linePointDistance(this.edges[0].x, this.edges[0].y, this.edges[1].x, this.edges[1].y, x, y);
+  return Utils.segmentPointDistance(this.edges[0].x, this.edges[0].y, this.edges[1].x, this.edges[1].y, x, y);
 };
