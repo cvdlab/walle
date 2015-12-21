@@ -9,7 +9,8 @@ var Scene = function () {
 Scene.prototype.addElement = function (element) {
   console.log("add", element);
   this.elements.push(element);
-  this.events.dispatchEvent('change', element);
+  this.events.dispatchEvent('change');
+  this.events.dispatchEvent('add', element);
 };
 
 Scene.prototype.getEdges = function () {
@@ -67,7 +68,13 @@ Scene.prototype.offChange = function (handler) {
   this.events.removeEventListener('change', handler);
 };
 
+Scene.prototype.onAdd = function (handler) {
+  this.events.addEventListener('add', handler);
+};
 
+Scene.prototype.offAdd = function (handler) {
+  this.events.removeEventListener('add', handler);
+};
 
 Scene.typeof = function (obj) {
   if(Edge.isEdge(obj)) return 'edge';
