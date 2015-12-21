@@ -50,11 +50,11 @@ WallsDrawer.prototype.start = function () {
     }
   };
 
-  this.status = WallsDrawer.statusWaiting;
   this.paper.click(this.clickHandler);
   this.paper.mousemove(this.mouseMoveHandler);
   this.walle.onAbort(this.abortHandler);
 
+  this.restart();
 };
 
 

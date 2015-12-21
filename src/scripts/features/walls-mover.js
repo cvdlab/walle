@@ -23,8 +23,6 @@ WallsMover.prototype.start = function () {
   let paper = this.paper;
   let walle = this.walle;
 
-  this.status = WallsMover.statusWaiting;
-
   /** click handler **/
   this.clickHandler = (event) => {
 
@@ -60,8 +58,17 @@ WallsMover.prototype.start = function () {
   paper.mousemove(this.moveHandler, this);
   walle.onAbort(this.abortHandler, this);
 
+  this.restart();
 };
 
+/**
+ * start
+ */
+WallsMover.prototype.restart = function () {
+  console.log("start edges mover mode");
+
+  this.status = WallsMover.statusWaiting;
+};
 
 /**
  * begin moving
@@ -144,7 +151,7 @@ WallsMover.prototype.abortMoving = function () {
   movingWall.verticalLine.remove();
   this.movingWall = null;
 
-  this.start();
+  this.restart();
 
 };
 
@@ -168,7 +175,7 @@ WallsMover.prototype.endMovingWithPoint = function (x, y) {
   movingWall.verticalLine.remove();
   this.movingWall = null;
 
-  this.start();
+  this.restart();
 
 };
 
