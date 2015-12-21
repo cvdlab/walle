@@ -29,6 +29,11 @@
   <script>
     window.onload = function () {
 
+      var is_chrome = window.chrome;
+      if(!is_chrome){
+        alert("Sorry! But Walle is, at this moment, only compatible with Chrome!");
+      }
+
       var container = document.getElementById('container');
       var walle = window.walle = new Walle(container);
       walle.feature("panel").start();
