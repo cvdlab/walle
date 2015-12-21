@@ -16,7 +16,7 @@ var Walle = function (container) {
   //init vars;
   this.width = container.offsetWidth;
   this.height = container.offsetHeight;
-  this.emitter = new EventEmitter2({wildcard: true});
+
   this.events = new Events();
   this.debugMode = false;
 
