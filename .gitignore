@@ -1,6 +1,7 @@
 .*
 !.gitignore
 !.bowerrc
+!.editorconfig
 src/components
 node_modules
 npm-debug.log
