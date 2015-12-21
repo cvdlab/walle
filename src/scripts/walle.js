@@ -76,22 +76,36 @@ Walle.prototype.changeCursor = function (cursor) {
  * nearestWall
  */
 Walle.prototype.nearestWall = function (x, y, minAcceptedDistance) {
+  return this.nearestElement('wall', x, y, minAcceptedDistance);
+};
+/**
+ * nearestEdge
+ */
+Walle.prototype.nearestEdge = function (x, y, minAcceptedDistance) {
+  return this.nearestElement('edge', x, y, minAcceptedDistance);
+};
 
-  let minWall = null;
+
+/**
+ * nearestElement
+ */
+Walle.prototype.nearestElement = function (type, x, y, minAcceptedDistance) {
+
+  let minElement = null;
   let minDistance = Infinity;
-  let walls = this.scene.getWalls();
+  let walls = this.scene.getElements(type);
 
   walls.forEach(function (wall) {
     let distance = wall.distanceFromPoint(x, y);
 
     if(distance < minDistance){
       minDistance = distance;
-      minWall = wall;
+      minElement = wall;
     }
   });
 
   if (minDistance <= minAcceptedDistance){
-    return minWall;
+    return minElement;
   }else{
     return null;
   }
