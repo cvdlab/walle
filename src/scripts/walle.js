@@ -7,12 +7,10 @@
  */
 var Walle = function (container) {
 
+  this.scene = new Scene();
+
   this.document = jQuery(document);
 
-  this.model = {
-    walls: [],
-    edges: []
-  };
   this.pixelPerUnit = 60;
 
   //init vars;
@@ -83,7 +81,7 @@ Walle.prototype.nearestWall = function (x, y, minAcceptedDistance) {
 
   let minWall = null;
   let minDistance = Infinity;
-  let walls = this.model.walls;
+  let walls = this.scene.getWalls();
 
   walls.forEach(function (wall) {
     let distance = wall.distanceFromPoint(x, y);

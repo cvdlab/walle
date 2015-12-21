@@ -6,11 +6,6 @@ var WallsDrawer = function (walle) {
 
   this.drawingWall = null;
 
-  walle.model.walls = walle.model.walls || [];
-  walle.model.edges = walle.model.edges || [];
-
-  this.walls = walle.model.walls;
-  this.edges = walle.model.edges;
 };
 
 
@@ -149,7 +144,7 @@ WallsDrawer.prototype.abortDrawing = function () {
   console.log("abort drawing wall");
 
   //abort
-  this.drawingWall.edges[0].remove();
+  this.drawingWall.edges[0].remove(); //TODO verificare se effettivamente va eliminato
   this.drawingWall.edges[1].remove();
   this.drawingWall.remove();
 
@@ -187,6 +182,7 @@ WallsDrawer.prototype.endDrawingWithEdge = function (edge, startNew) {
   console.log("end drawing wall", edge.toString());
 
   let wall = this.drawingWall;
+  let scene = this.walle.scene;
 
   wall.edges[1].remove();
   wall.updateEdge(1, edge);
@@ -196,9 +192,9 @@ WallsDrawer.prototype.endDrawingWithEdge = function (edge, startNew) {
   wall.selected(false);
   wall.edges[1].redraw();
 
-  this.walls.push(wall);
+  scene.addElement(wall);
 
-  if (this.edges.indexOf(wall.edges[0]) === -1) this.edges.push(wall.edges[0]);
+  if (! scene.hasElement(wall.edges[0])) scene.addElement(wall.edges[0]);
 
 
   //restart
@@ -215,6 +211,7 @@ WallsDrawer.prototype.endDrawingWithEdge = function (edge, startNew) {
 WallsDrawer.prototype.endDrawingWithPoint = function (x, y, startNew) {
   console.log("end drawing wall", x, y);
 
+  let scene = this.walle.scene;
   let wall = this.drawingWall;
   if (wall.edges[0].x === x && wall.edges[0].y === y)return;
 
@@ -224,9 +221,10 @@ WallsDrawer.prototype.endDrawingWithPoint = function (x, y, startNew) {
   wall.edges[1].selected(false);
   wall.selected(false);
 
-  this.walls.push(wall);
-  if (this.edges.indexOf(wall.edges[0]) === -1) this.edges.push(wall.edges[0]);
-  this.edges.push(wall.edges[1]);
+  scene.addElement(wall);
+
+  if (! scene.hasElement(wall.edges[0])) scene.addElement(wall.edges[0]);
+  scene.addElement(wall.edges[1]);
 
   //restart
   this.restart();

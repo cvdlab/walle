@@ -51,7 +51,7 @@ Edge.prototype.remove = function () {
   this.circle.remove();
 };
 
-Edge.prototype.toString = function () {
+Edge.prototype.toString = Edge.prototype.toJson = function () {
   return {
     type: "edge",
     x: this.x,

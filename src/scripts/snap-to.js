@@ -4,8 +4,7 @@ var SnapTo = function (walle) {
   this.walle = walle;
   this.paper = walle.paper;
 
-  this.walls = walle.model.walls = walle.model.walls || [];
-  this.edges = walle.model.edges = walle.model.edges || [];
+  this.scene = walle.scene;
 
   this.snapElements = [];
 
@@ -90,16 +89,18 @@ SnapTo.prototype.add = function (handlers) {
   let height = this.walle.height;
   let snapElements = this.snapElements;
   let paper = this.paper;
+  let edges = this.scene.getEdges();
+  let walls = this.scene.getWalls();
 
   //add wall snap point
-  this.edges.forEach((edge) => {
+  edges.forEach((edge) => {
 
     this.addSnapPoint(edge.x, edge.y, edge, handlers);
 
   });
 
   //add horizontal and vertical snap line
-  this.edges.forEach((edge) => {
+  edges.forEach((edge) => {
     let hCoords = Utils.horizontalLineIntoBox(edge.x, edge.y, width, height);
     let vCoords = Utils.verticalLineIntoBox(edge.x, edge.y, width, height);
 
@@ -108,7 +109,7 @@ SnapTo.prototype.add = function (handlers) {
   });
 
   //add continue snap point
-  this.walls.forEach((wall) => {
+  walls.forEach((wall) => {
     let coords = Utils.lineIntoBox(wall.edges[0].x, wall.edges[0].y, wall.edges[1].x, wall.edges[1].y, width, height);
 
     this.addSnapLine(coords.r1.x, coords.r1.y, coords.r2.x, coords.r2.y, wall, handlers);

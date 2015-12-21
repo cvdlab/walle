@@ -3,8 +3,7 @@
 var EdgesMover = function (walle) {
   this.walle = walle;
   this.paper = walle.paper;
-
-  walle.model.edges = walle.model.edges || [];
+  this.scene = walle.scene;
 
   this.movingEdge = null;
 
@@ -17,7 +16,7 @@ var EdgesMover = function (walle) {
 EdgesMover.prototype.start = function () {
   console.log("start edges mover mode");
 
-  let edges = this.walle.model.edges;
+  let edges = this.scene.getEdges();
   let self = this;
 
   edges.forEach(function (edge) {
@@ -83,7 +82,7 @@ EdgesMover.prototype.endMovingWithPoint = function (x, y) {
 EdgesMover.prototype.stop = function () {
   console.log("stop edges mover mode");
 
-  let edges = this.walle.model.edges;
+  let edges = this.scene.getEdges();
 
   edges.forEach(function (edge) {
     edge.undrag();

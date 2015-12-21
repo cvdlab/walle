@@ -3,13 +3,16 @@
 var WallsMover = function (walle) {
   this.walle = walle;
   this.paper = walle.paper;
+  this.scene = walle.scene;
 
-  walle.model.walls = walle.model.walls || [];
 
   this.movingWall = null;
   this.status = null;
 };
 
+/** costants */
+WallsMover.statusWaiting = 0;
+WallsMover.statusWorking = 1;
 
 /**
  * start
@@ -184,5 +187,4 @@ WallsMover.prototype.stop = function () {
 };
 
 
-WallsMover.statusWaiting = 0;
-WallsMover.statusWorking = 1;
+
