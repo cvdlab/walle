@@ -8,6 +8,10 @@ var WallsDrawer = function (walle) {
 
 };
 
+/** costants */
+WallsDrawer.statusWaiting = 0;
+WallsDrawer.statusWorking = 1;
+WallsDrawer.statusDirty = 2;
 
 /**
  * start
@@ -15,22 +19,54 @@ var WallsDrawer = function (walle) {
 WallsDrawer.prototype.start = function () {
   console.log("start walls mode");
 
-  //add a point everywhere
-  this.paper.addListener("click.wallsdrawer.begin", event => {
-    this.beginDrawingWithPoint(event.offsetX, event.offsetY);
-  });
+  this.clickHandler = event => {
 
-  //add a point using snap points
-  this.walle.snapTo.add({
-    click: (event, x, y, anchorPoint) => {
-      if (Edge.isEdge(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
-        this.beginDrawingWithEdge(anchorPoint);
-      } else {
-        this.beginDrawingWithPoint(x, y);
-      }
+    if(this.status === WallsDrawer.statusWaiting){
+      this.beginDrawingWithPoint(event.offsetX, event.offsetY);
+      event.stopPropagation();
+      return;
+    }
+
+    if(this.status === WallsDrawer.statusWorking){
+      this.endDrawingWithPoint(event.offsetX, event.offsetY, event.shiftKey);
       event.stopPropagation();
     }
-  });
+
+  };
+
+  this.mouseMoveHandler = event => {
+
+    if(this.status === WallsDrawer.statusWorking){
+      this.updateDrawingWithPoint(event.offsetX, event.offsetY);
+      event.stopPropagation();
+    }
+
+  };
+
+  this.abortHandler = event => {
+    if(this.status === WallsDrawer.statusWorking) {
+      this.abortDrawing();
+      event.stopPropagation();
+    }
+  };
+
+  this.status = WallsDrawer.statusWaiting;
+  this.paper.click(this.clickHandler);
+  this.paper.mousemove(this.mouseMoveHandler);
+  this.walle.onAbort(this.abortHandler);
+
+
+  //add a point using snap points
+  //this.walle.snapTo.add({
+  //  click: (event, x, y, anchorPoint) => {
+  //    if (Edge.isEdge(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
+  //      this.beginDrawingWithEdge(anchorPoint);
+  //    } else {
+  //      this.beginDrawingWithPoint(x, y);
+  //    }
+  //    event.stopPropagation();
+  //  }
+  //});
 };
 
 
@@ -41,18 +77,13 @@ WallsDrawer.prototype.restart = function () {
   console.log("restart walls mode");
 
   //clear drawing area
-  this.walle.snapTo.remove();
+  //this.walle.snapTo.remove();
   this.walle.changeCursor("auto");
-
-  //unregister events
-  this.paper.removeAllListeners("mousemove.wallsdrawer.update");
-  this.paper.removeAllListeners("click.wallsdrawer.end");
-  this.walle.offAbort(this.abortHandler);
 
   this.drawingWall = null;
 
   //start
-  this.start();
+  this.status = WallsDrawer.statusWaiting;
 };
 
 
@@ -65,10 +96,12 @@ WallsDrawer.prototype.stop = function () {
   //abort if needed
   if (this.drawingWall !== null) this.abortDrawing();
 
-  //add a point everywhere
+  //this.walle.snapTo.remove();
+
+  this.status = WallsDrawer.statusDirty;
+  this.paper.unclick(this.clickHandler);
+  this.paper.unmousemove(this.mouseMoveHandler);
   this.walle.offAbort(this.abortHandler);
-  this.paper.removeAllListeners("click.wallsdrawer.**");
-  this.walle.snapTo.remove();
 };
 
 /**
@@ -78,7 +111,6 @@ WallsDrawer.prototype.stop = function () {
  */
 WallsDrawer.prototype.beginDrawingWithPoint = function (x, y) {
   let edge = new Edge(this.paper, x, y);
-
   this.beginDrawingWithEdge(edge);
 };
 
@@ -105,39 +137,27 @@ WallsDrawer.prototype.beginDrawingWithEdge = function (edge) {
   //change mouse mode
   this.walle.changeCursor("crosshair");
 
-  //(un)register events
-  this.paper.addListener("mousemove.wallsdrawer.update", event => {
-    this.updateDrawingWithPoint(event.offsetX, event.offsetY);
-  });
-  this.paper.addListener("click.wallsdrawer.end", event => {
-    this.endDrawingWithPoint(event.offsetX, event.offsetY, event.shiftKey);
-  });
-  this.paper.removeAllListeners("click.wallsdrawer.begin");
-
-  this.abortHandler = (event) => {
-    this.abortDrawing();
-  };
-  this.walle.onAbort(this.abortHandler);
+  this.status = WallsDrawer.statusWorking;
 
 
   //use snap mode
-  this.walle.snapTo.remove();
-
-  this.walle.snapTo.add({
-    click: (event, x, y, anchorPoint) => {
-      edge1.selected(false);
-      if (Edge.isEdge(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
-        this.endDrawingWithEdge(anchorPoint, event.shiftKey);
-      } else {
-        this.endDrawingWithPoint(x, y, event.shiftKey);
-      }
-      event.stopPropagation();
-    },
-    mousemove: (event, x, y) => {
-      this.updateDrawingWithPoint(x, y);
-      event.stopPropagation();
-    }
-  });
+  //this.walle.snapTo.remove();
+  //
+  //this.walle.snapTo.add({
+  //  click: (event, x, y, anchorPoint) => {
+  //    edge1.selected(false);
+  //    if (Edge.isEdge(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
+  //      this.endDrawingWithEdge(anchorPoint, event.shiftKey);
+  //    } else {
+  //      this.endDrawingWithPoint(x, y, event.shiftKey);
+  //    }
+  //    event.stopPropagation();
+  //  },
+  //  mousemove: (event, x, y) => {
+  //    this.updateDrawingWithPoint(x, y);
+  //    event.stopPropagation();
+  //  }
+  //});
 
 };
 
@@ -153,6 +173,8 @@ WallsDrawer.prototype.abortDrawing = function () {
   this.drawingWall.remove();
 
   this.drawingWall = null;
+
+  this.status = WallsDrawer.statusDirty;
 
   this.restart();
 };
@@ -200,6 +222,7 @@ WallsDrawer.prototype.endDrawingWithEdge = function (edge, startNew) {
 
   if (! scene.hasElement(wall.edges[0])) scene.addElement(wall.edges[0]);
 
+  this.status = WallsDrawer.statusDirty;
 
   //restart
   this.restart();
@@ -229,6 +252,8 @@ WallsDrawer.prototype.endDrawingWithPoint = function (x, y, startNew) {
 
   if (! scene.hasElement(wall.edges[0])) scene.addElement(wall.edges[0]);
   scene.addElement(wall.edges[1]);
+
+  this.status = WallsDrawer.statusDirty;
 
   //restart
   this.restart();
