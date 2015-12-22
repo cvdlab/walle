@@ -79,11 +79,12 @@ Edge.prototype.offMove = function(handler){
   this.events.removeEventListener('move', handler);
 };
 
+Edge.prototype.distanceFromPoint = function(x, y){
+  return Utils.twoPointsDistance(this.x, this.y, x, y);
+};
 
 Edge.isEdge = function(edge){
   return (edge instanceof Edge);
 };
 
-Wall.prototype.distanceFromPoint = function(x, y){
-  return Utils.twoPointsDistance(this.x, this.y, x, y);
-};
+

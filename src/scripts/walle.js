@@ -93,14 +93,15 @@ Walle.prototype.nearestElement = function (type, x, y, minAcceptedDistance) {
 
   let minElement = null;
   let minDistance = Infinity;
-  let walls = this.scene.getElements(type);
+  let elements = this.scene.getElements(type);
 
-  walls.forEach(function (wall) {
-    let distance = wall.distanceFromPoint(x, y);
+  elements.forEach(function (element) {
+
+    let distance = element.distanceFromPoint(x, y);
 
     if(distance < minDistance){
       minDistance = distance;
-      minElement = wall;
+      minElement = element;
     }
   });
 

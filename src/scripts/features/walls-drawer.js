@@ -209,6 +209,7 @@ WallsDrawer.prototype.endDrawingWithEdge = function (edge, startNew) {
 
   let wall = this.drawingWall;
   let scene = this.walle.scene;
+  if (wall.edges[0].x === edge.x && wall.edges[0].y === edge.y)return;
 
   wall.edges[1].remove();
   wall.updateEdge(1, edge);
