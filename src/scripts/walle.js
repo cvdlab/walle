@@ -40,7 +40,8 @@ var Walle = function (container) {
     export: new Export(this),
     edgesMover: new EdgesMover(this),
     wallsMover: new WallsMover(this),
-    roomsDetector: new RoomsDetector(this)
+    roomsDetector: new RoomsDetector(this),
+    windowsDrawer: new WindowsDrawer(this)
   };
 
   this.snapTo = new SnapTo(this);

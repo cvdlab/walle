@@ -11,6 +11,7 @@ var Wall = function (paper, edge0, edge1) {
   this.paper = paper;
   this.events = new Events();
   this.edges = [edge0, edge1];
+  this.length = Utils.twoPointsDistance(edge0.x, edge0.y, edge1.x, edge1.y);
 
   let line = paper.line(edge0.x, edge0.y, edge1.x, edge1.y);
   line.attr({strokeWidth: 4, stroke: this.colors.strokeNormal});
@@ -68,6 +69,7 @@ Wall.prototype.updateDistance = function () {
   let angle = Utils.angleBetweenTwoPoints(x1, y1, x2, y2);
   let westside = 180 < angle && angle < 360;
 
+  this.length = distance;
 
   let matrix = Snap.matrix()
     .translate(x1, y1)

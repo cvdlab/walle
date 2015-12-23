@@ -30,6 +30,7 @@ Panel.prototype.start = function () {
   this.addFeature("wallsDrawer", "flaticon-walls1", "Add a new wall", false, true);
   this.addFeature("edgesMover", "flaticon-move24", "Move wall anchor point", false, true);
   this.addFeature("wallsMover", "flaticon-up13", "Move wall", false, true);
+  this.addFeature("windowsDrawer", "flaticon-opened17", "Add window", false, true);
 
   this.addFeature("roomsDetector", "flaticon-plan1", "Show Rooms", true, false);
   this.addFeature("export", "flaticon-internet43", "Download plan", false, false);

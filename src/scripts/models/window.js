@@ -2,7 +2,7 @@
 
 var Window = function (paper, wall, offset) {
   this.paper = paper;
-  this.length = 60;
+  this.length = 30;
 
   let line = this.line = paper.line(0, 0, this.length, 0)
     .attr({strokeWidth: 5, stroke: "#000"});
@@ -33,11 +33,12 @@ Window.prototype.attach = function (wall, offset) {
  * detach from wall
  */
 Window.prototype.detach = function () {
-  this.wall = null;
-  this.offset = null;
 
-  wall.offMove(this.moveHandler);
-  this.updatePosition();
+  this.wall.offMove(this.moveHandler);
+  this.offset = null;
+  this.wall = null;
+  this.line.attr({x1: 0, x2: this.length});
+
 };
 
 /**
@@ -67,16 +68,33 @@ Window.prototype.updatePosition = function () {
  */
 Window.prototype.move = function (x, y) {
 
-  if(this.wall){
-    //TODO
-    //this.offset = x;
+  let wall = this.wall;
+
+  if (wall) {
+
+    let x1 = wall.edges[0].x, y1 = wall.edges[0].y, x2 = wall.edges[1].x, y2 = wall.edges[1].y;
+    let point = Utils.intersectPoint(x1, y1, x2, y2, x, y);
+    let offset = Utils.twoPointsDistance(x1, y1, point.x, point.y) - this.length / 2;
+
+    if(offset < 0) offset = 0;
+    if(offset > wall.length - this.length) offset = wall.length - this.length;
+
+    this.offset = offset;
     this.updatePosition();
-  }else{
+
+  } else {
 
     let matrix = Snap.matrix()
-      .translate(x - this.length/2, y);
+      .translate(x - this.length / 2, y);
 
     this.group.transform(matrix);
   }
 
+};
+
+/**
+ * remove
+ */
+Window.prototype.remove = function () {
+  this.group.remove();
 };

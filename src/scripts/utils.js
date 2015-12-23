@@ -122,6 +122,31 @@ Utils.translationVector = function (x1, y1, x2, y2, xp, yp) {
 };
 
 
+Utils.projectonPoint = function (x1, y1, x2, y2, xp, yp) {
+
+  //punto medio segmento
+  let xm = (x1 + x2) / 2;
+  let ym = (y1 + y2) / 2;
+
+  //eq segmento
+  let m =  (y2 - y1) / (x2 - x1);
+
+  //retta perpendicolare
+  let mi = -1 / m;
+  let qi = ym - mi * xm;
+
+  //retta parallela interseca (xp, yp)
+  let mii = m;
+  let qii = yp - mii * xp;
+
+  //punto (xp, yp) proiettato su perpendicolare
+  let xt = ( qii - qi ) / (mi - mii);
+  let yt = mii * xt + qii;
+
+  return {x: xt, y: yt};
+};
+
+
 Utils.segmentPointDistance = function pDistance(x1, y1, x2, y2, xp, yp) {
 
   var A = xp - x1;
