@@ -7,7 +7,15 @@ var Window = function (paper, wall, offset) {
   let line = this.line = paper.line(0, 0, this.length, 0)
     .attr({strokeWidth: 5, stroke: "#000"});
 
-  this.group = paper.group(line);
+  let lineLeft = this.lineLeft = paper.line(0, -6, 0, 6)
+    .attr({strokeWidth: 1, stroke: "#000"});
+
+  let lineRight = this.lineLeft = paper.line(this.length, -6, this.length, 6)
+    .attr({strokeWidth: 1, stroke: "#000"});
+
+  let groupSymbol = this.groupSymbol = paper.group(line, lineLeft, lineRight);
+
+  this.group = paper.group(groupSymbol);
 
   if (wall && offset) this.attach(wall, offset);
 };
@@ -37,7 +45,7 @@ Window.prototype.detach = function () {
   this.wall.offMove(this.moveHandler);
   this.offset = null;
   this.wall = null;
-  this.line.attr({x1: 0, x2: this.length});
+  this.groupSymbol.transform(Snap.matrix().translate(0, 0));
 
 };
 
@@ -53,7 +61,7 @@ Window.prototype.updatePosition = function () {
   let x1 = wall.edges[0].x, y1 = wall.edges[0].y, x2 = wall.edges[1].x, y2 = wall.edges[1].y;
 
   let angle = Utils.angleBetweenTwoPoints(x1, y1, x2, y2);
-  this.line.attr({x1: this.offset, x2: this.offset + this.length});
+  this.groupSymbol.transform(Snap.matrix().translate(this.offset, 0));
 
   let matrix = Snap.matrix()
     .translate(x1, y1)
