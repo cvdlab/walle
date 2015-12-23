@@ -105,6 +105,7 @@ Wall.prototype.updateEdge = function (edgeId, newEdge) {
     if(edgeId===0) this.line.attr({x1: x, y1: y});
     if(edgeId===1) this.line.attr({x2: x, y2: y});
     this.updateDistance();
+    this.events.dispatchEvent("move");
   });
 
   this.updateDistance();
