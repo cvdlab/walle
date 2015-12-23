@@ -56,6 +56,7 @@ WindowsDrawer.prototype.updateDrawingWithPoint = function (x, y) {
   if(Wall.isWall(drawingWindow.wall)) {
     //attached mode
     this.status = WindowsDrawer.statusCompletable;
+    walle.changeCursor('crosshair');
 
     //wall leaved
     if(nearestWall == null){
@@ -70,6 +71,7 @@ WindowsDrawer.prototype.updateDrawingWithPoint = function (x, y) {
   }else{
     //detached mode
     this.status = WindowsDrawer.statusUncompletable;
+    walle.changeCursor('not-allowed');
 
     if(nearestWall !== null){
       drawingWindow.attach(nearestWall, 0);
@@ -96,5 +98,6 @@ WindowsDrawer.prototype.stop = function () {
   this.drawingWindow.remove();
   this.paper.unmousemove(this.moveHandler);
   this.paper.unclick(this.clickHandler);
+  walle.changeCursor('auto');
 
 };
