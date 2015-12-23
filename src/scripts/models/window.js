@@ -61,6 +61,8 @@ Window.prototype.updatePosition = function () {
   let x1 = wall.edges[0].x, y1 = wall.edges[0].y, x2 = wall.edges[1].x, y2 = wall.edges[1].y;
 
   let angle = Utils.angleBetweenTwoPoints(x1, y1, x2, y2);
+
+  if(this.offset > wall.length - this.length) this.offset = wall.length - this.length;
   this.groupSymbol.transform(Snap.matrix().translate(this.offset, 0));
 
   let matrix = Snap.matrix()
