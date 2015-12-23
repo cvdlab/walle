@@ -1,0 +1,61 @@
+@font-face {
+	font-family: "Flaticon";
+	src: url("flaticon.eot");
+	src: url("flaticon.eot#iefix") format("embedded-opentype"),
+	url("flaticon.woff") format("woff"),
+	url("flaticon.ttf") format("truetype"),
+	url("flaticon.svg") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {
+	font-family: Flaticon;
+        /*font-size: 20px;*/
+font-style: normal;
+/*margin-left: 20px;*/
+}.flaticon-computer196:before {
+	content: "\e000";
+}
+.flaticon-draft:before {
+	content: "\e001";
+}
+.flaticon-eraser11:before {
+	content: "\e002";
+}
+.flaticon-graphicseditor81:before {
+	content: "\e003";
+}
+.flaticon-internet43:before {
+	content: "\e004";
+}
+.flaticon-move24:before {
+	content: "\e005";
+}
+.flaticon-open203:before {
+	content: "\e006";
+}
+.flaticon-opened17:before {
+	content: "\e007";
+}
+.flaticon-plan1:before {
+	content: "\e008";
+}
+.flaticon-pointer32:before {
+	content: "\e009";
+}
+.flaticon-scroll8:before {
+	content: "\e00a";
+}
+.flaticon-table41:before {
+	content: "\e00b";
+}
+.flaticon-testtube1:before {
+	content: "\e00c";
+}
+.flaticon-up13:before {
+	content: "\e00d";
+}
+.flaticon-walls1:before {
+	content: "\e00e";
+}

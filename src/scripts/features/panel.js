@@ -27,15 +27,15 @@ Panel.prototype.start = function () {
     .css({position: "absolute", bottom: 5, left: 5, "background-color": "#f7f7f7", border: "1px solid #e3e3e3"})
     .appendTo(this.walle.wrapper);
 
-  this.addFeature("wallsDrawer", "fa fa-plus", "Draw new wall", false, true);
-  this.addFeature("edgesMover", "fa fa-hand-paper-o", "Move edge", false, true);
-  this.addFeature("wallsMover", "fa fa-expand", "Move wall", false, true);
-  this.addFeature("easterEgg", "fa fa-flask", "Experimental", false, true);
+  this.addFeature("wallsDrawer", "flaticon-walls1", "Draw new wall", false, true);
+  this.addFeature("edgesMover", "flaticon-move24", "Move edge", false, true);
+  this.addFeature("wallsMover", "flaticon-up13", "Move wall", false, true);
+  this.addFeature("easterEgg", "flaticon-testtube1", "Experimental", false, true);
 
-  this.addFeature("roomsDetector", "fa fa-square-o", "Rooms", true, false);
-  this.addFeature("export", "fa fa-save", "Export", false, false);
-  this.addFeature("grid", "fa fa-th", "Show grids", true, false);
-  this.addFeature("debugger", "fa fa-terminal", "Debug mode", false, false);
+  this.addFeature("roomsDetector", "flaticon-plan1", "Rooms", true, false);
+  this.addFeature("export", "flaticon-internet43", "Export", false, false);
+  this.addFeature("grid", "flaticon-table41", "Show grids", true, false);
+  this.addFeature("debugger", "flaticon-computer196", "Debug mode", false, false);
 
 };
 
@@ -65,12 +65,12 @@ Panel.prototype.addFeature = function (featureName, iconClass, featureDescriptio
 
 
   let featureBtn = featuresBtn[featureName] = jQuery("<a href />")
-    .css({display: "inline-block", width: 40, "font-size": "30px", "text-align": "center", color: colors.strokeOff})
+    .css({display: "inline-block", width: 40, "font-size": "30px", "text-align": "center", "text-decoration":"none", color: colors.strokeOff})
     .attr({title: featureDescription})
     .appendTo(this.panel);
 
   let icon = jQuery("<i/>", {class: iconClass})
-    .css({color: "inherit", "font-size": "30px"})
+    .css({color: "inherit", "font-size": "28px"})
     .appendTo(featureBtn);
 
   let width = 0;
