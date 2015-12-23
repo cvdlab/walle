@@ -4,6 +4,11 @@ var Window = function (paper, wall, offset) {
   this.paper = paper;
   this.length = 30;
 
+  this.opacityLevel = {
+    attached: 0.9,
+    detached: 0.6
+  };
+
   let line = this.line = paper.line(0, 0, this.length, 0)
     .attr({strokeWidth: 5, stroke: "#000"});
 
@@ -13,9 +18,10 @@ var Window = function (paper, wall, offset) {
   let lineRight = this.lineLeft = paper.line(this.length, -6, this.length, 6)
     .attr({strokeWidth: 1, stroke: "#000"});
 
-  let groupSymbol = this.groupSymbol = paper.group(line, lineLeft, lineRight);
+  let groupSymbol = this.groupSymbol = paper.group(line, lineLeft, lineRight)
 
-  this.group = paper.group(groupSymbol);
+  this.group = paper.group(groupSymbol)
+    .attr({opacity: this.opacityLevel.detached});
 
   if (wall && offset) this.attach(wall, offset);
 };
@@ -29,6 +35,8 @@ Window.prototype.attach = function (wall, offset) {
   this.wall = wall;
   this.offset = offset;
 
+  this.group.attr({opacity: this.opacityLevel.attached});
+
   this.moveHandler = () => {
     this.updatePosition();
   };
@@ -41,6 +49,8 @@ Window.prototype.attach = function (wall, offset) {
  * detach from wall
  */
 Window.prototype.detach = function () {
+
+  this.group.attr({opacity: this.opacityLevel.detached});
 
   this.wall.offMove(this.moveHandler);
   this.offset = null;
