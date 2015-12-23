@@ -5,6 +5,8 @@
   <title>Walle</title>
   <script src="components/Snap.svg/dist/snap.svg.js"></script>
   <script src="components/jquery/dist/jquery.js"></script>
+  <script src="components/tooltipster/js/jquery.tooltipster.js"></script>
+  <link rel="stylesheet" type="text/css" href="components/tooltipster/css/tooltipster.css">
 
   <script src="scripts/models/wall.js"></script>
   <script src="scripts/models/edge.js"></script>
@@ -39,6 +41,11 @@
       var container = document.getElementById('container');
       var walle = window.walle = new Walle(container);
       walle.feature("panel").start();
+
+      jQuery(document).ready(function() {
+        console.log('start');
+        jQuery('.tooltip').tooltipster();
+      });
 
     };
   </script>
