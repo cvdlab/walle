@@ -1,0 +1,21 @@
+"use strict";
+
+var FeatureSkeleton = function (walle) {
+  this.walle = walle;
+  this.paper = walle.paper;
+};
+
+
+/**
+ * start
+ */
+FeatureSkeleton.prototype.start = function () {
+
+};
+
+/**
+ * stop
+ */
+FeatureSkeleton.prototype.stop = function () {
+
+};
