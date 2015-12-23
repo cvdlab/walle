@@ -9,6 +9,7 @@ var Wall = function (paper, edge0, edge1) {
   };
 
   this.paper = paper;
+  this.events = new Events();
   this.edges = [edge0, edge1];
 
   let line = paper.line(edge0.x, edge0.y, edge1.x, edge1.y);
@@ -18,11 +19,13 @@ var Wall = function (paper, edge0, edge1) {
   edge0.onMove((x, y)=> {
     line.attr({x1: x, y1: y});
     this.updateDistance();
+    this.events.dispatchEvent("move");
   });
 
   edge1.onMove((x, y)=> {
     line.attr({x2: x, y2: y});
     this.updateDistance();
+    this.events.dispatchEvent("move");
   });
 
   this.distanceText = this.paper.text(0, 0, "")
@@ -108,4 +111,12 @@ Wall.prototype.updateEdge = function (edgeId, newEdge) {
 
 Wall.prototype.distanceFromPoint = function(x, y){
   return Utils.segmentPointDistance(this.edges[0].x, this.edges[0].y, this.edges[1].x, this.edges[1].y, x, y);
+};
+
+Wall.prototype.onMove = function(handler){
+  this.events.addEventListener('move', handler);
+};
+
+Wall.prototype.offMove = function(handler){
+  this.events.removeEventListener('move', handler);
 };
