@@ -32,7 +32,7 @@ Panel.prototype.start = function () {
   this.addFeature("wallsMover", "flaticon-up13", "Move wall", false, true);
   this.addFeature("windowsDrawer", "flaticon-opened17", "Add window", false, true);
 
-  this.addFeature("roomsDetector", "flaticon-plan1", "Show Rooms", true, false);
+  this.addFeature("roomsDetector", "flaticon-plan1", "Show Rooms", false, false);
   this.addFeature("export", "flaticon-internet43", "Download plan", false, false);
   this.addFeature("grid", "flaticon-table41", "Show grids", true, false);
   this.addFeature("debugger", "flaticon-computer196", "Debug mode", false, false);
