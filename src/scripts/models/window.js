@@ -119,7 +119,17 @@ Window.prototype.remove = function () {
   this.group.remove();
 };
 
+Window.prototype.toJson = function () {
+  return {
+    type: "window",
+    wall: this.wall.toJson(),
+    offset: this.offset
+  };
+};
+
+
 Window.isWindow = function(window){
   return (window instanceof Window);
 };
+
 
