@@ -24,16 +24,16 @@ Panel.prototype.start = function () {
     height: 33,
     class: 'walle-panel'
   })
-    .css({position: "absolute", bottom: 5, left: 5, "background-color": "#f7f7f7", border: "1px solid #e3e3e3"})
+    .css({position: "absolute", bottom: 5, left: 5, "background-color": "#f7f7f7", border: "1px solid #fff", "z-index": 700})
     .appendTo(this.walle.wrapper);
 
   this.addFeature("WallsDrawer", "flaticon-walls1", "Add a new wall", false, true);
   this.addFeature("EdgesMover", "flaticon-move24", "Move wall anchor point", false, true);
   this.addFeature("WallsMover", "flaticon-up13", "Move wall", false, true);
   this.addFeature("WindowsDrawer", "flaticon-opened17", "Add window", false, true);
+  this.addFeature("Export", "flaticon-internet43", "Download plan", false, true);
 
   this.addFeature("RoomsDetector", "flaticon-plan1", "Show Rooms", false, false);
-  this.addFeature("Export", "flaticon-internet43", "Download plan", false, false);
   this.addFeature("Grid", "flaticon-table41", "Show grids", true, false);
   this.addFeature("Debugger", "flaticon-computer196", "Debug mode", false, false);
   this.addFeature("EasterEgg", "flaticon-testtube1", "Experimental", false, true);
