@@ -132,3 +132,14 @@ Walle.prototype.useSnapTo = function(handler){
 Walle.prototype.removeSnapTo = function(){
   this.snapTo.remove();
 };
+
+Walle.prototype.clearScene = function(){
+  let scene = this.scene;
+  let elements = scene.getElements();
+
+  elements.forEach(function(element){
+    element.remove();
+  });
+
+  this.scene = new Scene();
+};

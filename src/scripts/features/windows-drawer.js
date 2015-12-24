@@ -82,7 +82,7 @@ WindowsDrawer.prototype.updateDrawingWithPoint = function (x, y) {
 };
 
 WindowsDrawer.prototype.endDrawing= function () {
-
+  this.walle.scene.addElement(this.drawingWindow);
   this.drawingWindow = null;
   this.beginDrawingWithPoint(-999, -999);
 
