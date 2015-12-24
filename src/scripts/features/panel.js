@@ -33,6 +33,7 @@ Panel.prototype.start = function () {
   this.addFeature("WindowsDrawer", "flaticon-opened17", "Add window", false, true);
   this.addFeature("SceneExport", "flaticon-internet43", "Download scene", false, true);
   this.addFeature("SceneImporter", "flaticon-internet43", "Import scene", false, true);
+  this.addFeature("SceneRemove", "flaticon-internet43", "Remove scene", false, true);
 
   this.addFeature("RoomsDetector", "flaticon-plan1", "Show Rooms", false, false);
   this.addFeature("Grid", "flaticon-table41", "Show grids", true, false);

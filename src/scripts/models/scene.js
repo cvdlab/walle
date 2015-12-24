@@ -98,9 +98,10 @@ Scene.prototype.offRemove = function (handler) {
 };
 
 Scene.prototype.remove = function () {
-  this.getElements().forEach(function (element) {
+  this.elements.forEach(function (element) {
     element.remove();
   });
+  this.elements = [];
 };
 
 Scene.prototype.load = function (data) {
