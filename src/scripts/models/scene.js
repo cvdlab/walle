@@ -96,6 +96,13 @@ Scene.prototype.offRemove = function (handler) {
   this.events.removeEventListener('remove', handler);
 };
 
+Scene.prototype.remove = function(){
+  this.getElements().forEach(function(element){
+    element.remove();
+  });
+};
+
+
 Scene.typeof = function (obj) {
   if (Window.isWindow(obj)) return 'window';
   if (Room.isRoom(obj)) return 'room';
