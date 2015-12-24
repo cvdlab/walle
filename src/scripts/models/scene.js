@@ -97,6 +97,7 @@ Scene.prototype.offRemove = function (handler) {
 };
 
 Scene.typeof = function (obj) {
+  if (Window.isWindow(obj)) return 'window';
   if (Room.isRoom(obj)) return 'room';
   if (Edge.isEdge(obj)) return 'edge';
   if (Wall.isWall(obj)) return 'wall';

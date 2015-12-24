@@ -118,3 +118,8 @@ Window.prototype.move = function (x, y) {
 Window.prototype.remove = function () {
   this.group.remove();
 };
+
+Window.isWindow = function(window){
+  return (window instanceof Window);
+};
+
