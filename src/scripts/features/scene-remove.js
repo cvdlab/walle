@@ -9,8 +9,10 @@ var SceneRemove = function (walle) {
  */
 SceneRemove.prototype.start = function () {
 
-  let scene = this.walle.scene;
-  scene.remove();
+  if (window.confirm("Do you really want to remove this scene?")) {
+    let scene = this.walle.scene;
+    scene.remove();
+  }
 
 };
 
