@@ -1,13 +1,13 @@
 "use strict";
 
-var Export = function (walle) {
+var SceneExport = function (walle) {
   this.walle = walle;
 };
 
 /**
  * start
  */
-Export.prototype.start = function () {
+SceneExport.prototype.start = function () {
 
   let scene = this.walle.scene;
 
@@ -75,7 +75,7 @@ Export.prototype.start = function () {
 /**
  * stop
  */
-Export.prototype.stop = function () {
+SceneExport.prototype.stop = function () {
 
   this.overlay.remove();
   this.downloadWindow.remove();
