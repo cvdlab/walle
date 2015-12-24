@@ -50,8 +50,8 @@ SceneExport.prototype.start = function () {
       border: 0,
       display: "block",
       padding: 0,
-      "font-family": "courier"
-
+      "font-family": "courier",
+      outline: 0
     })
     .focus(function () {
       var $this = jQuery(this);

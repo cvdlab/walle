@@ -51,8 +51,8 @@ SceneImporter.prototype.start = function () {
       border: 0,
       display: "block",
       padding: 0,
-      "font-family": "courier"
-
+      "font-family": "courier",
+      outline: 0
     })
     .appendTo(this.uploadWindow);
 
@@ -75,6 +75,8 @@ SceneImporter.prototype.start = function () {
       this.import(textarea.val());
     })
     .appendTo(this.uploadWindow);
+
+  textarea.focus();
 
 
 };
