@@ -24,7 +24,7 @@ Panel.prototype.start = function () {
     height: 33,
     class: 'walle-panel'
   })
-    .css({position: "absolute", bottom: 5, left: 5, "background-color": "#f7f7f7", border: "1px solid #fff", "z-index": 700})
+    .css({position: "absolute", bottom: 5, left: 5, "background-color": "#f7f7f7", border: "1px solid #e3e3e3", "z-index": 700})
     .appendTo(this.walle.wrapper);
 
   this.addFeature("WallsDrawer", "flaticon-walls1", "Add a new wall", false, true);
