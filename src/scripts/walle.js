@@ -17,6 +17,7 @@ var Walle = function (container) {
 
   this.events = new Events();
   this.debugMode = false;
+  this.featuresInstance = {};
 
   // init wrapper
   this.wrapper = jQuery("<div/>", {
@@ -30,20 +31,7 @@ var Walle = function (container) {
   this.paper = Snap(this.width, this.height);
   this.paper.appendTo(this.wrapper.get(0));
 
-  //init features
-  this.features = {
-    grid: new Grid(this),
-    wallsDrawer: new WallsDrawer(this),
-    easterEgg: new EasterEgg(this),
-    panel: new Panel(this),
-    debugger: new Debugger(this),
-    export: new Export(this),
-    edgesMover: new EdgesMover(this),
-    wallsMover: new WallsMover(this),
-    roomsDetector: new RoomsDetector(this),
-    windowsDrawer: new WindowsDrawer(this)
-  };
-
+  //snap to
   this.snapTo = new SnapTo(this);
 
   //abort
@@ -58,10 +46,14 @@ var Walle = function (container) {
  * get feature
  */
 Walle.prototype.feature = function (featureName) {
-  if (!this.features.hasOwnProperty(featureName)) {
+  if (this.featuresInstance.hasOwnProperty(featureName))
+    return this.featuresInstance[featureName];
+
+  if (!window.hasOwnProperty(featureName)) {
     throw new Error("feature " + featureName + " not found");
   }
-  return this.features[featureName];
+
+  return this.featuresInstance[featureName] = new window[featureName](this);
 };
 
 

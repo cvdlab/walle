@@ -27,16 +27,16 @@ Panel.prototype.start = function () {
     .css({position: "absolute", bottom: 5, left: 5, "background-color": "#f7f7f7", border: "1px solid #e3e3e3"})
     .appendTo(this.walle.wrapper);
 
-  this.addFeature("wallsDrawer", "flaticon-walls1", "Add a new wall", false, true);
-  this.addFeature("edgesMover", "flaticon-move24", "Move wall anchor point", false, true);
-  this.addFeature("wallsMover", "flaticon-up13", "Move wall", false, true);
-  this.addFeature("windowsDrawer", "flaticon-opened17", "Add window", false, true);
+  this.addFeature("WallsDrawer", "flaticon-walls1", "Add a new wall", false, true);
+  this.addFeature("EdgesMover", "flaticon-move24", "Move wall anchor point", false, true);
+  this.addFeature("WallsMover", "flaticon-up13", "Move wall", false, true);
+  this.addFeature("WindowsDrawer", "flaticon-opened17", "Add window", false, true);
 
-  this.addFeature("roomsDetector", "flaticon-plan1", "Show Rooms", false, false);
-  this.addFeature("export", "flaticon-internet43", "Download plan", false, false);
-  this.addFeature("grid", "flaticon-table41", "Show grids", true, false);
-  this.addFeature("debugger", "flaticon-computer196", "Debug mode", false, false);
-  this.addFeature("easterEgg", "flaticon-testtube1", "Experimental", false, true);
+  this.addFeature("RoomsDetector", "flaticon-plan1", "Show Rooms", false, false);
+  this.addFeature("Export", "flaticon-internet43", "Download plan", false, false);
+  this.addFeature("Grid", "flaticon-table41", "Show grids", true, false);
+  this.addFeature("Debugger", "flaticon-computer196", "Debug mode", false, false);
+  this.addFeature("EasterEgg", "flaticon-testtube1", "Experimental", false, true);
 };
 
 
@@ -111,7 +111,7 @@ Panel.prototype.turnOn = function (featureName) {
   };
 
   let colors = this.colors;
-  this.walle.features[featureName].start();
+  this.walle.feature(featureName).start();
   this.featuresStatus[featureName] = true;
   this.featuresBtn[featureName].css({color: colors.strokeOn});
 };
@@ -121,7 +121,7 @@ Panel.prototype.turnOff = function (featureName) {
   console.log(featureName + ' turn off');
 
   let colors = this.colors;
-  this.walle.features[featureName].stop();
+  this.walle.feature(featureName).stop();
   this.featuresStatus[featureName] = false;
   this.featuresBtn[featureName].css({color: colors.strokeOff});
 };
