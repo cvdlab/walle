@@ -146,6 +146,11 @@ Scene.prototype.load = function (data) {
     let windowObj = new Window(paper, wall, window.offset);
     this.addElement(windowObj);
   });
+
+  //redraw edge
+  this.getEdges().forEach((edge)=> {
+    edge.redraw();
+  });
 };
 
 
