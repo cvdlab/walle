@@ -7,7 +7,6 @@
  */
 var Walle = function (container) {
 
-  this.scene = new Scene();
   this.document = jQuery(document);
   this.pixelPerUnit = 60;
 
@@ -27,9 +26,10 @@ var Walle = function (container) {
   }).css({position: "relative"});
   this.wrapper.appendTo(container);
 
-  //init paper
+  //init paper and scene
   this.paper = Snap(this.width, this.height);
   this.paper.appendTo(this.wrapper.get(0));
+  this.scene = new Scene(this.paper);
 
   //snap to
   this.snapTo = new SnapTo(this);

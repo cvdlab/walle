@@ -1,6 +1,7 @@
 "use strict";
 
-var Scene = function () {
+var Scene = function (paper) {
+  this.paper = paper;
   this.elements = [];
   this.events = new Events();
 };
@@ -96,9 +97,53 @@ Scene.prototype.offRemove = function (handler) {
   this.events.removeEventListener('remove', handler);
 };
 
-Scene.prototype.remove = function(){
-  this.getElements().forEach(function(element){
+Scene.prototype.remove = function () {
+  this.getElements().forEach(function (element) {
     element.remove();
+  });
+};
+
+Scene.prototype.load = function (data) {
+
+  let paper = this.paper;
+  let hashMap = [];
+
+  let hashEdge = (edge) => {
+    return edge.type + '_' + edge.x + '_' + edge.y
+  };
+  let hashWall = (wall)=> {
+    return wall.type + '_' + hashEdge(wall.edge0) + '_' + hashEdge(wall.edge1)
+  };
+
+  data.edge = data.edge || [];
+  data.wall = data.wall || [];
+  data.window = data.window || [];
+
+  //load edge
+  data.edge.forEach((edge)=> {
+    let edgeObj = new Edge(paper, edge.x, edge.y);
+    hashMap[hashEdge(edge)] = edgeObj;
+    this.addElement(edgeObj);
+  });
+
+  //load wall
+  data.wall.forEach((wall)=> {
+    let edge0 = hashMap[hashEdge(wall.edge0)];
+    let edge1 = hashMap[hashEdge(wall.edge1)];
+    if (!edge0 || !edge1) throw new Error("Edge not found");
+
+    let wallObj = new Wall(paper, edge0, edge1);
+    hashMap[hashWall(wall)] = wallObj;
+    this.addElement(wallObj);
+  });
+
+  //load window
+  data.window.forEach((window) => {
+    let wall = hashMap[hashWall(window.wall)];
+    if (!wall) throw new Error("Wall not found");
+
+    let windowObj = new Window(paper, wall, window.offset);
+    this.addElement(windowObj);
   });
 };
 
