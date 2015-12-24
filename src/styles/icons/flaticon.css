@@ -11,51 +11,57 @@
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
 [class^="flaticon-"]:after, [class*=" flaticon-"]:after {
 	font-family: Flaticon;
-        /*font-size: 20px;*/
+
 font-style: normal;
-/*margin-left: 20px;*/
-}.flaticon-computer196:before {
+
+}.flaticon-arrow68:before {
 	content: "\e000";
 }
-.flaticon-draft:before {
+.flaticon-basket33:before {
 	content: "\e001";
 }
-.flaticon-eraser11:before {
+.flaticon-computer196:before {
 	content: "\e002";
 }
-.flaticon-graphicseditor81:before {
+.flaticon-draft:before {
 	content: "\e003";
 }
-.flaticon-internet43:before {
+.flaticon-eraser11:before {
 	content: "\e004";
 }
-.flaticon-move24:before {
+.flaticon-graphicseditor81:before {
 	content: "\e005";
 }
-.flaticon-open203:before {
+.flaticon-move24:before {
 	content: "\e006";
 }
-.flaticon-opened17:before {
+.flaticon-open203:before {
 	content: "\e007";
 }
-.flaticon-plan1:before {
+.flaticon-opened17:before {
 	content: "\e008";
 }
-.flaticon-pointer32:before {
+.flaticon-plan1:before {
 	content: "\e009";
 }
-.flaticon-scroll8:before {
+.flaticon-pointer32:before {
 	content: "\e00a";
 }
-.flaticon-table41:before {
+.flaticon-scroll8:before {
 	content: "\e00b";
 }
-.flaticon-testtube1:before {
+.flaticon-social13:before {
 	content: "\e00c";
 }
-.flaticon-up13:before {
+.flaticon-table41:before {
 	content: "\e00d";
 }
-.flaticon-walls1:before {
+.flaticon-testtube1:before {
 	content: "\e00e";
+}
+.flaticon-up13:before {
+	content: "\e00f";
+}
+.flaticon-walls1:before {
+	content: "\e010";
 }
