@@ -35,6 +35,7 @@ var Walle = function (container) {
   this.snapTo = new SnapTo(this);
 
   this.showSplash();
+  this.revertAndAutosave();
 
   //abort
   let buttons = {esc: 27};
@@ -94,15 +95,15 @@ Walle.prototype.nearestElement = function (type, x, y, minAcceptedDistance) {
 
     let distance = element.distanceFromPoint(x, y);
 
-    if(distance < minDistance){
+    if (distance < minDistance) {
       minDistance = distance;
       minElement = element;
     }
   });
 
-  if (minDistance <= minAcceptedDistance){
+  if (minDistance <= minAcceptedDistance) {
     return minElement;
-  }else{
+  } else {
     return null;
   }
 };
@@ -118,17 +119,17 @@ Walle.prototype.offAbort = function (handler) {
 };
 
 /** snap **/
-Walle.prototype.useSnapTo = function(handler){
+Walle.prototype.useSnapTo = function (handler) {
   this.snapTo.use(handler);
 };
 
 /** snap **/
-Walle.prototype.removeSnapTo = function(){
+Walle.prototype.removeSnapTo = function () {
   this.snapTo.remove();
 };
 
 
-Walle.prototype.showSplash = function() {
+Walle.prototype.showSplash = function () {
   let splash = jQuery("<div/>", {
     width: "500px",
     height: "200px"
@@ -145,9 +146,7 @@ Walle.prototype.showSplash = function() {
     })
     .appendTo(this.wrapper);
 
-  let content = jQuery('<div>',{
-
-  })
+  let content = jQuery('<div>', {})
     .css({
       "font-family": "fantasy",
       'font-size': "60px",
@@ -158,10 +157,39 @@ Walle.prototype.showSplash = function() {
     .html("<i class=\"flaticon-draft\"></i> Walle 1.0")
     .appendTo(splash);
 
-  setInterval(function(){
-    content.fadeOut( "slow", function(){
+  setInterval(function () {
+    content.fadeOut("slow", function () {
       splash.remove();
     });
   }, 3000);
+
+};
+
+Walle.prototype.revertAndAutosave = function () {
+
+  if (!window.localStorage) return;
+  let storageKey = 'walle_scene_autosave';
+  let storage = window.localStorage;
+
+  let scene = this.scene;
+
+  if (storage.getItem(storageKey) !== null) {
+    //revert
+    let json = JSON.parse(storage.getItem(storageKey));
+    scene.load(json);
+  }
+
+  //autosave after 3 second of inactivity
+  let autosaveHandler = null;
+  scene.onChange(function () {
+
+    if (autosaveHandler !== null) clearTimeout(autosaveHandler);
+
+    autosaveHandler = setTimeout(function () {
+      console.log("autosave");
+      let json = JSON.stringify(scene.toJson());
+      storage.setItem(storageKey, json);
+    }, 3000);
+  });
 
 };
