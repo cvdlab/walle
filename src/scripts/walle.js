@@ -131,17 +131,15 @@ Walle.prototype.removeSnapTo = function () {
 
 Walle.prototype.showSplash = function () {
   let splash = jQuery("<div/>", {
-    width: "500px",
-    height: "200px"
+    width: "100%",
+    height: "100%"
   })
     .css({
       position: "absolute",
-      top: 25,
-      left: 0,
+      top: 0,
       right: 0,
-      margin: "0 auto",
-      border: "1px solid #f7f7f7",
-      //"background-color": "#fff",
+      opacity: 0.9,
+      "background-color": "#fff",
       "z-index": 1000
     })
     .appendTo(this.wrapper);
@@ -149,16 +147,16 @@ Walle.prototype.showSplash = function () {
   let content = jQuery('<div>', {})
     .css({
       "font-family": "fantasy",
-      'font-size': "60px",
+      'font-size': "65px",
       color: "#1c79bc",
-      "line-height": "200px",
+      "margin-top": "20%",
       "text-align": "center"
     })
     .html("<i class=\"flaticon-draft\"></i> Walle 1.0")
     .appendTo(splash);
 
   setInterval(function () {
-    content.fadeOut("slow", function () {
+    splash.fadeOut("slow", function () {
       splash.remove();
     });
   }, 3000);
