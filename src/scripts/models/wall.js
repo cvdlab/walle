@@ -12,6 +12,7 @@ var Wall = function (paper, edge0, edge1) {
   this.events = new Events();
   this.edges = [edge0, edge1];
   this.length = Utils.twoPointsDistance(edge0.x, edge0.y, edge1.x, edge1.y);
+  this.attachedElements = new Set();
 
   let line = paper.line(edge0.x, edge0.y, edge1.x, edge1.y);
   line.attr({strokeWidth: 4, stroke: this.colors.strokeNormal});
@@ -122,4 +123,12 @@ Wall.prototype.onMove = function(handler){
 
 Wall.prototype.offMove = function(handler){
   this.events.removeEventListener('move', handler);
+};
+
+Wall.prototype.addAttachedElement = function(element){
+  this.attachedElements.add(element);
+};
+
+Wall.prototype.removeAttachedElement = function(element){
+  this.attachedElements.delete(element);
 };

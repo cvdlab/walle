@@ -41,7 +41,9 @@ Window.prototype.attach = function (wall, offset) {
     this.updatePosition();
   };
 
+  wall.addAttachedElement(this);
   wall.onMove(this.moveHandler);
+
   this.updatePosition();
 };
 
@@ -52,6 +54,7 @@ Window.prototype.detach = function () {
 
   this.group.attr({opacity: this.opacityLevel.detached});
 
+  this.wall.removeAttachedElement(this);
   this.wall.offMove(this.moveHandler);
   this.offset = null;
   this.wall = null;

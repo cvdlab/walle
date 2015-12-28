@@ -28,9 +28,12 @@ Panel.prototype.start = function () {
     .appendTo(this.walle.wrapper);
 
   this.addFeature("WallsDrawer", "flaticon-walls1", "Add a new wall", false, true);
-  this.addFeature("EdgesMover", "flaticon-move24", "Move wall anchor point", false, true);
   this.addFeature("WallsMover", "flaticon-up13", "Move wall", false, true);
+  this.addFeature("WallsRemover", "flaticon-eraser11", "Remove wall", false, true);
+  this.addFeature("EdgesMover", "flaticon-move24", "Move wall anchor point", false, true);
+
   this.addFeature("WindowsDrawer", "flaticon-opened17", "Add window", false, true);
+
   this.addFeature("SceneExport", "flaticon-social13", "Download scene", false, true);
   this.addFeature("SceneImporter", "flaticon-arrow68", "Import scene", false, true);
   this.addFeature("SceneRemove", "flaticon-basket33", "Remove scene", false, true);
