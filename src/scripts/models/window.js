@@ -32,6 +32,16 @@ Window.prototype.redraw = function(){
 
 };
 
+
+Window.prototype.toJson = function () {
+  return {
+    type: "window",
+    wall: this.wall.toJson(),
+    offset: this.offset
+  };
+};
+
+
 Window.isWindow = function (window) {
   return (window instanceof Window);
 };

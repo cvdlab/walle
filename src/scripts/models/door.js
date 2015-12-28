@@ -35,6 +35,16 @@ Door.prototype.redraw = function () {
   group.add(groupSymbol);
 };
 
+
+Door.prototype.toJson = function () {
+  return {
+    type: "door",
+    wall: this.wall.toJson(),
+    offset: this.offset
+  };
+};
+
+
 Door.isDoor = function (door) {
   return (door instanceof Door);
 };

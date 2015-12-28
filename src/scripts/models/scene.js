@@ -119,6 +119,7 @@ Scene.prototype.load = function (data) {
   data.edge = data.edge || [];
   data.wall = data.wall || [];
   data.window = data.window || [];
+  data.door = data.door || [];
 
   //load edge
   data.edge.forEach((edge)=> {
@@ -147,6 +148,15 @@ Scene.prototype.load = function (data) {
     this.addElement(windowObj);
   });
 
+  //load door
+  data.door.forEach((door) => {
+    let wall = hashMap[hashWall(door.wall)];
+    if (!wall) throw new Error("Wall not found");
+
+    let doorObj = new Door(paper, wall, door.offset);
+    this.addElement(doorObj);
+  });
+
   //redraw edge
   this.getEdges().forEach((edge)=> {
     edge.redraw();
@@ -155,6 +165,7 @@ Scene.prototype.load = function (data) {
 
 
 Scene.typeof = function (obj) {
+  if (Door.isDoor(obj)) return 'door';
   if (Window.isWindow(obj)) return 'window';
   if (Room.isRoom(obj)) return 'room';
   if (Edge.isEdge(obj)) return 'edge';
