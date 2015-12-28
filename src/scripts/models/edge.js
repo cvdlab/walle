@@ -13,7 +13,7 @@ var Edge = function (paper, x, y) {
   this.x = x;
   this.y = y;
 
-  this.walls = [];
+  this.attachedElements = new Set();
 
   this.events = new Events();
 
@@ -87,4 +87,10 @@ Edge.isEdge = function(edge){
   return (edge instanceof Edge);
 };
 
+Edge.prototype.addAttachedElement = function(element){
+  this.attachedElements.add(element);
+};
 
+Edge.prototype.removeAttachedElement = function(element){
+  this.attachedElements.delete(element);
+};

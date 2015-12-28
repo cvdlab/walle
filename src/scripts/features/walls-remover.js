@@ -23,7 +23,6 @@ WallsRemover.prototype.start = function () {
 };
 
 WallsRemover.prototype.removeWall = function (x, y) {
-  console.log(x, y);
   let scene = this.walle.scene;
   let wall = this.walle.nearestWall(x, y, 10);
 
@@ -32,7 +31,13 @@ WallsRemover.prototype.removeWall = function (x, y) {
       scene.removeElement(element);
       element.remove();
     });
-    //check and remove edge
+    wall.edges.forEach(function(edge){
+      edge.removeAttachedElement(wall);
+      if(edge.attachedElements.size === 0){
+        scene.removeElement(edge);
+        edge.remove();
+      }
+    });
     scene.removeElement(wall);
     wall.remove();
   }

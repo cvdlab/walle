@@ -18,12 +18,14 @@ var Wall = function (paper, edge0, edge1) {
   line.attr({strokeWidth: 4, stroke: this.colors.strokeNormal});
   this.line = line;
 
+  edge0.addAttachedElement(this);
   edge0.onMove((x, y)=> {
     line.attr({x1: x, y1: y});
     this.updateDistance();
     this.events.dispatchEvent("move");
   });
 
+  edge1.addAttachedElement(this);
   edge1.onMove((x, y)=> {
     line.attr({x2: x, y2: y});
     this.updateDistance();
@@ -99,7 +101,9 @@ Wall.isWall = function(wall){
 
 Wall.prototype.updateEdge = function (edgeId, newEdge) {
 
+  this.edges[edgeId].removeAttachedElement(this);
   this.edges[edgeId] = newEdge;
+  this.edges[edgeId].addAttachedElement(this);
 
 
   newEdge.onMove((x, y)=> {
