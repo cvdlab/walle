@@ -24,7 +24,14 @@ Panel.prototype.start = function () {
     height: 33,
     class: 'walle-panel'
   })
-    .css({position: "absolute", bottom: 5, left: 5, "background-color": "#f7f7f7", border: "1px solid #e3e3e3", "z-index": 700})
+    .css({
+      position: "absolute",
+      bottom: 5,
+      left: 5,
+      "background-color": "#f7f7f7",
+      border: "1px solid #e3e3e3",
+      "z-index": 700
+    })
     .appendTo(this.walle.wrapper);
 
   this.addFeature("WallsDrawer", "flaticon-walls1", "Add a new wall", false, true);
@@ -32,12 +39,18 @@ Panel.prototype.start = function () {
   this.addFeature("WallsRemover", "flaticon-eraser11", "Remove wall", false, true);
   this.addFeature("EdgesMover", "flaticon-move24", "Move wall anchor point", false, true);
 
+  this.addSeparator();
+
   this.addFeature("WindowsDrawer", "flaticon-opened17", "Add window", false, true);
   this.addFeature("DoorsDrawer", "flaticon-open203", "Add door", false, true);
+
+  this.addSeparator();
 
   this.addFeature("SceneExport", "flaticon-social13", "Download scene", false, true);
   this.addFeature("SceneImporter", "flaticon-arrow68", "Import scene", false, true);
   this.addFeature("SceneRemove", "flaticon-basket33", "Remove scene", false, true);
+
+  this.addSeparator();
 
   this.addFeature("RoomsDetector", "flaticon-plan1", "Show Rooms", false, false);
   this.addFeature("Grid", "flaticon-table41", "Show grids", true, false);
@@ -67,12 +80,20 @@ Panel.prototype.addFeature = function (featureName, iconClass, featureDescriptio
   let exclusiveFeatures = this.exclusiveFeatures;
 
   featuresStatus[featureName] = false;
-  if(exclusive) exclusiveFeatures.push(featureName);
+  if (exclusive) exclusiveFeatures.push(featureName);
 
 
   let featureBtn = featuresBtn[featureName] = jQuery("<a href />")
     .addClass('tooltip')
-    .css({display: "inline-block", width: 40, "font-size": "30px", "text-align": "center", "text-decoration":"none", color: colors.strokeOff})
+    .css({
+      display: "inline-block",
+      width: 40,
+      "font-size": "30px",
+      "text-align": "center",
+      "text-decoration": "none",
+      "vertical-align": "top",
+      color: colors.strokeOff
+    })
     .attr({title: featureDescription})
     .appendTo(this.panel);
 
@@ -81,7 +102,7 @@ Panel.prototype.addFeature = function (featureName, iconClass, featureDescriptio
     .appendTo(featureBtn);
 
   let width = 0;
-  panel.find('a').each(function (i) {
+  panel.find('a, span').each(function (i) {
     width += jQuery(this).outerWidth(true);
   });
   panel.width(width);
@@ -98,8 +119,14 @@ Panel.prototype.addFeature = function (featureName, iconClass, featureDescriptio
 
   featureBtn.on('click', handler);
 
-  if(defaultOn) this.turnOn(featureName);
+  if (defaultOn) this.turnOn(featureName);
 
+};
+
+Panel.prototype.addSeparator = function () {
+  jQuery("<span />")
+    .css({display: "inline-block", width: 1, height: "100%", "background-color": "#e3e3e3"})
+    .appendTo(this.panel);
 };
 
 
@@ -108,13 +135,14 @@ Panel.prototype.turnOn = function (featureName) {
 
   let exclusiveFeatures = this.exclusiveFeatures;
 
-  if(exclusiveFeatures.indexOf(featureName) !== -1){
-    exclusiveFeatures.forEach(currentFeatureName =>{
-      if(this.featuresStatus[currentFeatureName] && exclusiveFeatures.indexOf(currentFeatureName) !== -1){
+  if (exclusiveFeatures.indexOf(featureName) !== -1) {
+    exclusiveFeatures.forEach(currentFeatureName => {
+      if (this.featuresStatus[currentFeatureName] && exclusiveFeatures.indexOf(currentFeatureName) !== -1) {
         this.turnOff(currentFeatureName);
       }
     });
-  };
+  }
+  ;
 
   let colors = this.colors;
   this.walle.feature(featureName).start();
