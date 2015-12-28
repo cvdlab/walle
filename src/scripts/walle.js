@@ -34,6 +34,8 @@ var Walle = function (container) {
   //snap to
   this.snapTo = new SnapTo(this);
 
+  this.showSplash();
+
   //abort
   let buttons = {esc: 27};
   this.document.on("keydown", event => {
@@ -123,4 +125,43 @@ Walle.prototype.useSnapTo = function(handler){
 /** snap **/
 Walle.prototype.removeSnapTo = function(){
   this.snapTo.remove();
+};
+
+
+Walle.prototype.showSplash = function() {
+  let splash = jQuery("<div/>", {
+    width: "500px",
+    height: "200px"
+  })
+    .css({
+      position: "absolute",
+      top: 25,
+      left: 0,
+      right: 0,
+      margin: "0 auto",
+      border: "1px solid #f7f7f7",
+      //"background-color": "#fff",
+      "z-index": 1000
+    })
+    .appendTo(this.wrapper);
+
+  let content = jQuery('<div>',{
+
+  })
+    .css({
+      "font-family": "fantasy",
+      'font-size': "60px",
+      color: "#1c79bc",
+      "line-height": "200px",
+      "text-align": "center"
+    })
+    .html("<i class=\"flaticon-draft\"></i> Walle 1.0")
+    .appendTo(splash);
+
+  setInterval(function(){
+    content.fadeOut( "slow", function(){
+      splash.remove();
+    });
+  }, 3000);
+
 };
