@@ -102,6 +102,8 @@ Scene.prototype.remove = function () {
     element.remove();
   });
   this.elements = [];
+  this.events.dispatchEvent('change', this, 'remove');
+  this.events.dispatchEvent('remove', this);
 };
 
 Scene.prototype.load = function (data) {
