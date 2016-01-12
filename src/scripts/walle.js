@@ -178,17 +178,12 @@ Walle.prototype.revertAndAutosave = function () {
     scene.load(json);
   }
 
-  //autosave after 3 second of inactivity
-  let autosaveHandler = null;
   scene.onChange(function () {
 
-    if (autosaveHandler !== null) clearTimeout(autosaveHandler);
+    console.log("autosave");
+    let json = JSON.stringify(scene.toJson());
+    storage.setItem(storageKey, json);
 
-    autosaveHandler = setTimeout(function () {
-      console.log("autosave");
-      let json = JSON.stringify(scene.toJson());
-      storage.setItem(storageKey, json);
-    }, 3000);
   });
 
 };
