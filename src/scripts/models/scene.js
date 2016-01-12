@@ -4,12 +4,18 @@ var Scene = function (paper) {
   this.paper = paper;
   this.elements = [];
   this.events = new Events();
+
+  this.onChange((element) => {
+    if (Room.isRoom(element)) return;
+    this.refreshRooms();
+  });
+
 };
 
 Scene.prototype.addElements = function (elements) {
   console.log("add", elements);
   elements.forEach((element) => {
-    if(!this.hasElement(element)) this.elements.push(element);
+    if (!this.hasElement(element)) this.elements.push(element);
   });
   this.events.dispatchEvent('change', elements, 'add');
   this.events.dispatchEvent('add', elements);
@@ -170,6 +176,40 @@ Scene.prototype.load = function (data) {
   //redraw edge
   this.getEdges().forEach((edge)=> {
     edge.redraw();
+  });
+};
+
+Scene.prototype.refreshRooms = function () {
+  let scene = this;
+  let edges = scene.getEdges();
+  let walls = scene.getWalls();
+
+  //remove old rooms
+  scene.getRooms().forEach(function (room) {
+    scene.removeElement(room);
+    room.remove();
+  });
+
+  //add new rooms
+  let edgesArray = edges.map(function (edge) {
+    return [edge.x, edge.y];
+  });
+  let wallsArray = walls.map(function (wall) {
+    return wall.edges.map(function (edge) {
+      return edges.indexOf(edge);
+    })
+  });
+
+  let cycles = find_cycles(edgesArray, wallsArray);
+  let rooms = cycles.e_cycles.map(function (roomWallIds) {
+    return roomWallIds.map(function (wallId) {
+      return walls[wallId];
+    });
+  });
+
+  rooms.forEach((walls) => {
+    let room = new Room(this.paper, walls);
+    scene.addElement(room);
   });
 };
 
