@@ -6,6 +6,14 @@ var Scene = function (paper) {
   this.events = new Events();
 };
 
+Scene.prototype.addElements = function (elements) {
+  console.log("add", elements);
+  elements.forEach((element) => {
+    if(!this.hasElement(element)) this.elements.push(element);
+  });
+  this.events.dispatchEvent('change', elements, 'add');
+  this.events.dispatchEvent('add', elements);
+};
 
 Scene.prototype.addElement = function (element) {
   console.log("add", element);

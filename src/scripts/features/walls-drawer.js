@@ -219,9 +219,7 @@ WallsDrawer.prototype.endDrawingWithEdge = function (edge, startNew) {
   wall.selected(false);
   wall.edges[1].redraw();
 
-  scene.addElement(wall);
-
-  if (!scene.hasElement(wall.edges[0])) scene.addElement(wall.edges[0]);
+  scene.addElements([wall, wall.edges[0]]);
 
   this.status = WallsDrawer.statusDirty;
 
@@ -250,10 +248,7 @@ WallsDrawer.prototype.endDrawingWithPoint = function (x, y, startNew) {
   wall.edges[1].selected(false);
   wall.selected(false);
 
-  scene.addElement(wall);
-
-  if (!scene.hasElement(wall.edges[0])) scene.addElement(wall.edges[0]);
-  scene.addElement(wall.edges[1]);
+  scene.addElements([wall, wall.edges[0], wall.edges[1]]);
 
   this.status = WallsDrawer.statusDirty;
 
