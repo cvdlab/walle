@@ -20,6 +20,12 @@ Room.prototype.remove = function(){
   this.path.remove();
 };
 
+Room.prototype.toJson = function(){
+  return {
+    type: "room",
+    walls: this.walls.map(function(wall){return wall.toJson()})
+  };
+};
 
 Room.edgesToPath = function (edges) {
   let path = "";
