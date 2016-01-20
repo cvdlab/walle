@@ -9,7 +9,7 @@ var Walle = function (container) {
 
   this.document = jQuery(document);
   this.pixelPerUnit = 60;
-  this.splashTime = 3000;
+  this.splashTime = 0;
 
   //init vars;
   this.width = container.offsetWidth;
