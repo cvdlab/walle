@@ -223,4 +223,28 @@ Scene.typeof = function (obj) {
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
 };
 
+/**
+ * nearestElement
+ */
+Scene.prototype.nearestElement = function (x, y, minAcceptedDistance, type) {
 
+  let minElement = null;
+  let minDistance = Infinity;
+  let elements = type ? this.getElements(type) : this.elements;
+
+  elements.forEach(function (element) {
+
+    let distance = element.distanceFromPoint(x, y);
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      minElement = element;
+    }
+  });
+
+  if (minDistance <= minAcceptedDistance) {
+    return minElement;
+  } else {
+    return null;
+  }
+};

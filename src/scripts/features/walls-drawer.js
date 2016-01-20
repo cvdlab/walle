@@ -240,7 +240,7 @@ WallsDrawer.prototype.endDrawingWithPoint = function (x, y, startNew) {
   let scene = this.walle.scene;
   let wall = this.drawingWall;
   if (wall.edges[0].x === x && wall.edges[0].y === y)return;
-  if (this.walle.nearestEdge(x, y, 1) !== null) return;
+  if (scene.nearestElement(x, y, 1, 'edge') !== null) return;
 
   wall.edges[1].move(x, y);
 

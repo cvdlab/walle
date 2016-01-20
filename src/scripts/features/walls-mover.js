@@ -22,12 +22,13 @@ WallsMover.prototype.start = function () {
 
   let paper = this.paper;
   let walle = this.walle;
+  let scene = walle.scene
 
   /** click handler **/
   this.clickHandler = (event) => {
 
     if (this.status === WallsMover.statusWaiting) {
-      let wall = walle.nearestWall(event.offsetX, event.offsetY, 5);
+      let wall = scene.nearestElement(event.offsetX, event.offsetY, 5, 'wall');
       if (Wall.isWall(wall)) {
         this.beginMoving(wall);
         event.stopPropagation();

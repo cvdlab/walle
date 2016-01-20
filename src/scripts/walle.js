@@ -68,48 +68,6 @@ Walle.prototype.changeCursor = function (cursor) {
   this.wrapper.css('cursor', cursor);
 };
 
-
-/**
- * nearestWall
- */
-Walle.prototype.nearestWall = function (x, y, minAcceptedDistance) {
-  return this.nearestElement('wall', x, y, minAcceptedDistance);
-};
-/**
- * nearestEdge
- */
-Walle.prototype.nearestEdge = function (x, y, minAcceptedDistance) {
-  return this.nearestElement('edge', x, y, minAcceptedDistance);
-};
-
-
-/**
- * nearestElement
- */
-Walle.prototype.nearestElement = function (type, x, y, minAcceptedDistance) {
-
-  let minElement = null;
-  let minDistance = Infinity;
-  let elements = this.scene.getElements(type);
-
-  elements.forEach(function (element) {
-
-    let distance = element.distanceFromPoint(x, y);
-
-    if (distance < minDistance) {
-      minDistance = distance;
-      minElement = element;
-    }
-  });
-
-  if (minDistance <= minAcceptedDistance) {
-    return minElement;
-  } else {
-    return null;
-  }
-};
-
-
 /** events **/
 Walle.prototype.onAbort = function (handler) {
   this.events.addEventListener('abort', handler);

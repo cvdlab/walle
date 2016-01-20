@@ -24,7 +24,7 @@ WallsRemover.prototype.start = function () {
 
 WallsRemover.prototype.removeWall = function (x, y) {
   let scene = this.walle.scene;
-  let wall = this.walle.nearestWall(x, y, 10);
+  let wall = scene.nearestElement(x, y, 10, 'wall');
 
   if (Wall.isWall(wall)) {
     wall.attachedElements.forEach(function(element){

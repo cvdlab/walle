@@ -52,7 +52,7 @@ HolesDrawer.prototype.updateDrawingWithPoint = function (x, y) {
 
   let walle = this.walle;
   let drawingHole = this.drawingHole;
-  let nearestWall = walle.nearestWall(x, y, 10);
+  let nearestWall = walle.scene.nearestElement(x, y, 10, 'wall');
 
   if(Wall.isWall(drawingHole.wall)) {
     //attached mode
