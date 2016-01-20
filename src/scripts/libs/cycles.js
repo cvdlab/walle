@@ -94,7 +94,7 @@ function get_starting_edge (incidences, ev_mapping) {
 
 function get_next_edge (incidences, edge, position, EV) {
   var items = incidences[EV[edge][position]]
-  console.log(items, incidences, EV, edge, position);
+  //console.log(items, incidences, EV, edge, position);
   var n_items = items.length
   var item
   var out
@@ -141,12 +141,12 @@ function find_cycles (V, EV) {
     E_cycles.push(E_cycle)
     V_cycles.push(V_cycle)
 
-    console.log('############## CYCLE ', ++counter)
-    console.log('EDGES:', E_cycle)
-    console.log('VERTICES:', V_cycle)
-    console.log('START', 'edge:', start.edge, 'position:', start.position)
-    console.log('COUNTER:', ev_mapping.map(e => e.color), ev_mapping.map(e => e.color).reduce((a, b) => a + b));
-    console.log('\n')
+    //console.log('############## CYCLE ', ++counter)
+    //console.log('EDGES:', E_cycle)
+    //console.log('VERTICES:', V_cycle)
+    //console.log('START', 'edge:', start.edge, 'position:', start.position)
+    //console.log('COUNTER:', ev_mapping.map(e => e.color), ev_mapping.map(e => e.color).reduce((a, b) => a + b));
+    //console.log('\n')
 
     start = get_starting_edge(incidences, ev_mapping)
   }
