@@ -34,15 +34,14 @@ Panel.prototype.start = function () {
     })
     .appendTo(this.walle.wrapper);
 
-  this.addFeature("WallsDrawer", "flaticon-walls1", "Add a new wall", false, true);
+  this.addFeature("WallsDrawer", "flaticon-walls1", "Add wall", false, true);
+  this.addFeature("WindowsDrawer", "flaticon-opened17", "Add window", false, true);
+  this.addFeature("DoorsDrawer", "flaticon-open203", "Add door", false, true);
+  this.addSeparator();
+
   this.addFeature("WallsMover", "flaticon-up13", "Move wall", false, true);
   this.addFeature("WallsRemover", "flaticon-eraser11", "Remove wall", false, true);
   this.addFeature("EdgesMover", "flaticon-move24", "Move wall anchor point", false, true);
-
-  this.addSeparator();
-
-  this.addFeature("WindowsDrawer", "flaticon-opened17", "Add window", false, true);
-  this.addFeature("DoorsDrawer", "flaticon-open203", "Add door", false, true);
 
   this.addSeparator();
 
