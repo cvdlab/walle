@@ -26,6 +26,7 @@ var Walle = function (container) {
     class: 'walle'
   }).css({position: "relative"});
   this.wrapper.appendTo(container);
+  jQuery("<div/>", { class: "overlay" }).appendTo(this.wrapper);
 
   //init paper and scene
   this.paper = Snap(this.width, this.height);
@@ -144,4 +145,12 @@ Walle.prototype.revertAndAutosave = function () {
 
   });
 
+};
+
+Walle.prototype.overlay = function (on) {
+  let wrapper = this.wrapper;
+  if(on)
+    wrapper.addClass('show-overlay');
+  else
+    wrapper.removeClass('show-overlay');
 };

@@ -10,20 +10,9 @@ var SceneImporter = function (walle) {
 SceneImporter.prototype.start = function () {
 
   let scene = this.walle.scene;
+  let walle = this.walle;
 
-  this.overlay = jQuery("<div/>", {
-    width: "100%",
-    height: "100%"
-  })
-    .css({
-      position: "absolute",
-      top: 0,
-      left: 0,
-      "background-color": "#000",
-      "z-index": 500,
-      opacity: 0.7
-    })
-    .appendTo(this.walle.wrapper);
+  walle.overlay(true);
 
   this.uploadWindow = jQuery("<div/>", {
     width: "60%",
@@ -100,6 +89,6 @@ SceneImporter.prototype.import = function (data) {
  */
 SceneImporter.prototype.stop = function () {
 
-  this.overlay.remove();
+  this.walle.overlay(false);
   this.uploadWindow.remove();
 };
