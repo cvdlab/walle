@@ -14,34 +14,12 @@ SceneExport.prototype.start = function () {
 
   walle.overlay(true);
 
-  this.downloadWindow = jQuery("<div/>", {
-    width: "60%",
-    height: "80%"
-  })
-    .css({
-      position: "absolute",
-      top: 25,
-      left: 0,
-      right: 0,
-      margin: "0 auto",
-      padding: 5,
-      border: "5px solid #1c79bc",
-      "background-color": "#fff",
-      "z-index": 1000
-    })
-    .appendTo(this.walle.wrapper);
+  this.downloadWindow = jQuery("<div/>", {class: "panel"}).appendTo(walle.wrapper);
 
   this.textarea = jQuery("<textarea/>", {
     width: "100%",
     height: "100%"
   })
-    .css({
-      border: 0,
-      display: "block",
-      padding: 0,
-      "font-family": "courier",
-      outline: 0
-    })
     .focus(function () {
       var $this = jQuery(this);
       $this.select();
