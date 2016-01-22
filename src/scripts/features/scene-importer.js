@@ -14,7 +14,7 @@ SceneImporter.prototype.start = function () {
 
   walle.overlay(true);
 
-  this.uploadWindow = jQuery("<div/>", {class: "panel"}).appendTo(walle.wrapper);
+  this.uploadWindow = jQuery("<div/>", {class: "modal"}).appendTo(walle.wrapper);
 
   let textarea = this.textarea = jQuery("<textarea/>", {
     width: "100%",

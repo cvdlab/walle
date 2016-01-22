@@ -14,7 +14,7 @@ SceneExport.prototype.start = function () {
 
   walle.overlay(true);
 
-  this.downloadWindow = jQuery("<div/>", {class: "panel"}).appendTo(walle.wrapper);
+  this.downloadWindow = jQuery("<div/>", {class: "modal"}).appendTo(walle.wrapper);
 
   this.textarea = jQuery("<textarea/>", {
     width: "100%",
