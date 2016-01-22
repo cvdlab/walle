@@ -24,8 +24,7 @@ var Walle = function (container) {
     width: this.width,
     height: this.height,
     class: 'walle'
-  }).css({position: "relative"});
-  this.wrapper.appendTo(container);
+  }).appendTo(container);
   jQuery("<div/>", { class: "overlay" }).appendTo(this.wrapper);
 
   //init paper and scene
