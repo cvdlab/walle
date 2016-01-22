@@ -23,7 +23,7 @@ var Walle = function (container) {
   this.wrapper = jQuery("<div/>", {
     width: this.width,
     height: this.height,
-    class: 'walle-wrapper'
+    class: 'walle'
   }).css({position: "relative"});
   this.wrapper.appendTo(container);
 
