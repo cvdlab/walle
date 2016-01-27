@@ -3,20 +3,13 @@
 
 var Wall = function (paper, edge0, edge1) {
 
-  this.colors = {
-    strokeNormal: "#8E9BA2",
-    strokeSelected: "#445964"
-  };
-
   this.paper = paper;
   this.events = new Events();
   this.edges = [edge0, edge1];
   this.length = Utils.twoPointsDistance(edge0.x, edge0.y, edge1.x, edge1.y);
   this.attachedElements = new Set();
 
-  let line = paper.line(edge0.x, edge0.y, edge1.x, edge1.y);
-  line.attr({strokeWidth: 4, stroke: this.colors.strokeNormal});
-  this.line = line;
+  let line = this.line = paper.line(edge0.x, edge0.y, edge1.x, edge1.y).addClass('wall');
 
   edge0.addAttachedElement(this);
   edge0.onMove((x, y)=> {
@@ -32,8 +25,7 @@ var Wall = function (paper, edge0, edge1) {
     this.events.dispatchEvent("move");
   });
 
-  this.distanceText = this.paper.text(0, 0, "")
-    .attr({"text-anchor": "middle", "font-family": "monospace", "pointer-events":"none"});
+  this.distanceText = this.paper.text(0, 0, "").addClass('wall-distance');
   this.distanceGroup = this.paper.g(this.distanceText);
   this.updateDistance();
 };
@@ -45,7 +37,10 @@ Wall.prototype.remove = function () {
 };
 
 Wall.prototype.selected = function (isSelected) {
-  this.line.attr({stroke: isSelected ? this.colors.strokeSelected : this.colors.strokeNormal});
+  if(isSelected)
+    this.line.addClass('selected');
+  else
+    this.line.removeClass('selected');
 };
 
 Wall.prototype.toString = Wall.prototype.toJson = function () {

@@ -1,0 +1,15 @@
+.walle .wall {
+  stroke-width: 4px;
+  stroke: #8E9BA2;
+}
+
+.walle .wall.selected {
+  stroke: #445964;
+}
+
+.walle .wall-distance {
+  font-size: 11px;
+  text-anchor: middle;
+  font-family: 'Courier', monospace;
+  pointer-events: none;
+}
