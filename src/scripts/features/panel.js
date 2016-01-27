@@ -60,7 +60,6 @@ Panel.prototype.addFeature = function (featureName, iconClass, featureDescriptio
 
   let featuresStatus = this.featuresStatus;
   let featuresBtn = this.featuresBtn;
-  let colors = this.colors;
   let panel = this.panel;
   let exclusiveFeatures = this.exclusiveFeatures;
 
@@ -116,7 +115,6 @@ Panel.prototype.turnOn = function (featureName) {
     });
   }
 
-  let colors = this.colors;
   this.walle.feature(featureName).start();
   this.featuresStatus[featureName] = true;
   this.featuresBtn[featureName].addClass('on');
@@ -126,7 +124,6 @@ Panel.prototype.turnOn = function (featureName) {
 Panel.prototype.turnOff = function (featureName) {
   console.log(featureName + ' turn off');
 
-  let colors = this.colors;
   this.walle.feature(featureName).stop();
   this.featuresStatus[featureName] = false;
   this.featuresBtn[featureName].removeClass('on');
