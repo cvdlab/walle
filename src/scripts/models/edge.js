@@ -2,13 +2,6 @@
 
 var Edge = function (paper, x, y) {
 
-  this.colors = {
-    strokeNormal: "#8E9BA2",
-    strokeSelected: "#445964",
-    fillNormal: "#fff",
-    fillSelected: "#00e5ff"
-  };
-
   this.paper = paper;
   this.x = x;
   this.y = y;
@@ -17,9 +10,7 @@ var Edge = function (paper, x, y) {
 
   this.events = new Events();
 
-  let circle = paper.circle(x, y, 8);
-  circle.attr({strokeWidth: 4, stroke: this.colors.strokeNormal, fill: this.colors.fillNormal});
-  this.circle = circle;
+  let circle = this.circle = paper.circle(x, y, 8).addClass('edge');
 
 };
 
@@ -31,11 +22,17 @@ Edge.prototype.move = function (x, y) {
 };
 
 Edge.prototype.selected = function (isSelected) {
-  this.circle.attr({stroke: isSelected ? this.colors.strokeSelected : this.colors.strokeNormal});
+  if(isSelected)
+    this.circle.addClass('selected');
+  else
+    this.circle.removeClass('selected');
 };
 
 Edge.prototype.hovered = function (isHovered) {
-  this.circle.attr({fill: isHovered ? this.colors.fillSelected : this.colors.fillNormal});
+  if(isHovered)
+    this.circle.addClass('hover');
+  else
+    this.circle.removeClass('hover');
 };
 
 Edge.prototype.redraw = function () {
