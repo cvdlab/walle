@@ -9,7 +9,7 @@ var Walle = function (container) {
 
   this.document = jQuery(document);
   this.pixelPerUnit = 60;
-  this.splashTime = 0;
+  this.splashTime = 3000;
 
   //init vars;
   this.width = container.offsetWidth;
@@ -90,27 +90,13 @@ Walle.prototype.removeSnapTo = function () {
 
 Walle.prototype.showSplash = function () {
   let splash = jQuery("<div/>", {
-    width: "100%",
-    height: "100%"
+    class: 'splash'
   })
-    .css({
-      position: "absolute",
-      top: 0,
-      right: 0,
-      opacity: 0.9,
-      "background-color": "#fff",
-      "z-index": 1000
-    })
     .appendTo(this.wrapper);
 
-  let content = jQuery('<div>', {})
-    .css({
-      "font-family": "fantasy",
-      'font-size': "65px",
-      color: "#1c79bc",
-      "margin-top": "20%",
-      "text-align": "center"
-    })
+  let content = jQuery('<div>', {
+    class: "content"
+  })
     .html("<i class=\"flaticon-draft\"></i> Walle 1.0")
     .appendTo(splash);
 
