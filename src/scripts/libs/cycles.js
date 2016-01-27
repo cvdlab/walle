@@ -122,8 +122,10 @@ function find_cycles (V, EV) {
   var incidences = compute_incidences(V, EV)
   var V_cycles = []
   var E_cycles = []
+  var dir_E_cycles = []
   var V_cycle
   var E_cycle
+  var dir_E_cycle
   var next
   var counter = 0
   var start = get_starting_edge(incidences, ev_mapping)
@@ -131,15 +133,18 @@ function find_cycles (V, EV) {
   while (start !== undefined) {
     V_cycle = [EV[start.edge][mod(start.position + 1, 2)], EV[start.edge][start.position]]
     E_cycle = [start.edge]
+    dir_E_cycle = [start.edge * (start.position ? -1 : 1)]
     next = get_next_edge(incidences, start.edge, start.position, EV)
     while (next.edge !== start.edge) {
       V_cycle.push(next.vertex)
       E_cycle.push(next.edge)
+      dir_E_cycle.push(next.edge * (next.position ? -1 : 1))
       color(ev_mapping, next.edge, next.position)
       next = get_next_edge(incidences, next.edge, next.position, EV)
     }
     E_cycles.push(E_cycle)
     V_cycles.push(V_cycle)
+    dir_E_cycles.push(dir_E_cycle)
 
     //console.log('############## CYCLE ', ++counter)
     //console.log('EDGES:', E_cycle)
@@ -154,9 +159,49 @@ function find_cycles (V, EV) {
   return {
     v_cycles: V_cycles,
     e_cycles: E_cycles,
+    dir_e_cycles: dir_E_cycles,
     ev_mapping: ev_mapping
   }
 }
+
+function find_inner_cycles (V, EV) {
+
+  var cycles = find_cycles(V, EV);
+
+  var rooms_values = cycles.dir_e_cycles.map(cycle => cycle.map(function (edge, i) {
+    var v1;
+    var v2;
+
+    var dir = edge > 0
+    edge = Math.abs(edge);
+
+    if (dir > 0) {
+      v1 = EV[edge][0];
+      v2 = EV[edge][1];
+    } else {
+      v1 = EV[edge][1];
+      v2 = EV[edge][0];
+    }
+
+    return (V[v2][0]  - V[v1][0]) * (V[v2][1] + V[v1][1]);
+  }));
+
+  var rooms_sums = rooms_values.map(room => room.reduce((a, b) => a + b))
+
+  var positive_count = rooms_sums.filter(sum => sum > 0).length;
+  var negative_count = rooms_sums.length - positive_count;
+
+  var rm_neg =  positive_count >= negative_count ? 1 : -1;
+
+  return {
+    v_cycles: cycles.v_cycles.filter((v, i) => (rm_neg * rooms_sums[i]) > 0 ),
+    e_cycles: cycles.e_cycles.filter((v, i) => (rm_neg * rooms_sums[i]) > 0 ),
+    ev_mapping: cycles.ev_mapping
+  }
+
+
+}
+
 
 //
 ///**

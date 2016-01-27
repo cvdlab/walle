@@ -20,6 +20,7 @@
     "Snap.svg": "snap.svg#~0.4.1",
     "jquery": "~2.1.4",
     "font-awesome": "~4.5.0",
-    "tooltipster": "~3.3.0"
+    "tooltipster": "~3.3.0",
+    "randomcolor": "~0.4.2"
   }
 }

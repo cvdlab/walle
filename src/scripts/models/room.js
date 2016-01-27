@@ -1,19 +1,16 @@
 "use strict";
 
-var Room = function (paper, walls) {
+var Room = function (paper, edges, color) {
 
   this.paper = paper;
   this.events = new Events();
 
-  this.walls = walls;
+  this.walls = edges;
 
-  let pathString = Room.edgesToPath(walls.map(function(wall){
-    return wall.edges[0];
-  }));
+  let pathString = Room.edgesToPath(edges);
 
-  let color = Utils.randomColor(50, Utils.randomIntInclusive(0, 50));
   this.path = paper.path(pathString).attr({fill: color, opacity: 0.3});
-
+  paper.prepend(this.path);
 };
 
 Room.prototype.remove = function(){

@@ -199,16 +199,24 @@ Scene.prototype.refreshRooms = function () {
       return edges.indexOf(edge);
     })
   });
+  console.log(edgesArray, wallsArray);
 
-  let cycles = find_cycles(edgesArray, wallsArray);
-  let rooms = cycles.e_cycles.map(function (roomWallIds) {
-    return roomWallIds.map(function (wallId) {
-      return walls[wallId];
+  let cycles = find_inner_cycles(edgesArray, wallsArray);
+  console.log(cycles);
+
+  let rooms = cycles.v_cycles.map(function (roomEdgesIds) {
+    return roomEdgesIds.map(function (edgeId) {
+      return edges[edgeId];
     });
   });
 
-  rooms.forEach((walls) => {
-    let room = new Room(this.paper, walls);
+  let roomsColor = randomColor({
+    count: rooms.length,
+    hue: 'green'
+  });
+
+  rooms.forEach((edges, i) => {
+    let room = new Room(this.paper, edges, roomsColor[i]);
     scene.addElement(room);
   });
 };
