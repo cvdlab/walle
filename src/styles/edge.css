@@ -1,15 +1,3 @@
-/*this.circle.attr({stroke: isSelected ? this.colors.strokeSelected : this.colors.strokeNormal});*/
-
-/*this.circle.attr({fill: isHovered ? this.colors.fillSelected : this.colors.fillNormal});*/
-
-/*this.colors = {*/
-  /*strokeNormal: "#8E9BA2",*/
-  /*strokeSelected: "#445964",*/
-  /*fillNormal: "#fff",*/
-  /*fillSelected: "#00e5ff"*/
-/*};*/
-
-/*circle.attr({strokeWidth: 4, stroke: this.colors.strokeNormal, fill: this.colors.fillNormal});*/
 
 .walle .edge{
   stroke-width: 4;
