@@ -1,0 +1,36 @@
+.walle .panel {
+  width: 200px;
+  height: 33px;
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  background-color: #f7f7f7;
+  border: 1px solid #e3e3e3;
+  z-index: 700;
+}
+
+.walle .panel .separator {
+  display: inline-block;
+  width: 1px;
+  height: 100%;
+  background-color: #e3e3e3;
+}
+
+.walle .panel .btn {
+  display: inline-block;
+  width: 40px;
+  font-size: 30px;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: top;
+  color: #8E9BA2;
+}
+
+.walle .panel .btn.on {
+  color: #1c79bc;
+}
+
+.walle .panel .btn i {
+  color: inherit;
+  font-size: 28px;
+}

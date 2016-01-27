@@ -7,10 +7,6 @@ var Panel = function (walle) {
   this.featuresBtn = {};
   this.exclusiveFeatures = [];
 
-  this.colors = {
-    strokeOff: "#8E9BA2",
-    strokeOn: "#1c79bc"
-  };
 };
 
 
@@ -20,18 +16,8 @@ var Panel = function (walle) {
 Panel.prototype.start = function () {
 
   this.panel = jQuery("<div/>", {
-    width: 200,
-    height: 33,
-    class: 'walle-panel'
+    class: 'panel'
   })
-    .css({
-      position: "absolute",
-      bottom: 5,
-      left: 5,
-      "background-color": "#f7f7f7",
-      border: "1px solid #e3e3e3",
-      "z-index": 700
-    })
     .appendTo(this.walle.wrapper);
 
   this.addFeature("WallsDrawer", "flaticon-walls1", "Add wall", false, true);
@@ -83,21 +69,10 @@ Panel.prototype.addFeature = function (featureName, iconClass, featureDescriptio
 
 
   let featureBtn = featuresBtn[featureName] = jQuery("<a href />")
-    .addClass('tooltip')
-    .css({
-      display: "inline-block",
-      width: 40,
-      "font-size": "30px",
-      "text-align": "center",
-      "text-decoration": "none",
-      "vertical-align": "top",
-      color: colors.strokeOff
-    })
-    .attr({title: featureDescription})
+    .attr({class: "btn tooltip", title: featureDescription})
     .appendTo(this.panel);
 
   let icon = jQuery("<i/>", {class: iconClass})
-    .css({color: "inherit", "font-size": "28px"})
     .appendTo(featureBtn);
 
   let width = 0;
@@ -123,8 +98,7 @@ Panel.prototype.addFeature = function (featureName, iconClass, featureDescriptio
 };
 
 Panel.prototype.addSeparator = function () {
-  jQuery("<span />")
-    .css({display: "inline-block", width: 1, height: "100%", "background-color": "#e3e3e3"})
+  jQuery("<span />", {class: "separator"})
     .appendTo(this.panel);
 };
 
@@ -141,12 +115,11 @@ Panel.prototype.turnOn = function (featureName) {
       }
     });
   }
-  ;
 
   let colors = this.colors;
   this.walle.feature(featureName).start();
   this.featuresStatus[featureName] = true;
-  this.featuresBtn[featureName].css({color: colors.strokeOn});
+  this.featuresBtn[featureName].addClass('on');
 };
 
 
@@ -156,5 +129,5 @@ Panel.prototype.turnOff = function (featureName) {
   let colors = this.colors;
   this.walle.feature(featureName).stop();
   this.featuresStatus[featureName] = false;
-  this.featuresBtn[featureName].css({color: colors.strokeOff});
+  this.featuresBtn[featureName].removeClass('on');
 };
