@@ -1,0 +1,25 @@
+.walle .hole {
+  opacity: 0.6;
+}
+
+.walle .hole.attached {
+  opacity: 0.9;
+}
+
+
+.walle .door line {
+  stroke-width: 5;
+  stroke: black;
+}
+
+.walle .door path {
+  stroke-width: 1;
+  stroke: black;
+  fill: none;
+  stroke-dasharray: 3, 1;
+}
+
+
+.walle .window line{
+  stroke: black;
+}

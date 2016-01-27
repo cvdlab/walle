@@ -4,13 +4,8 @@ var Hole = function (paper, wall, offset) {
   this.paper = paper;
   this.length = 30;
 
-  this.opacityLevel = {
-    attached: 0.9,
-    detached: 0.6
-  };
+  this.group = paper.group().addClass('hole');
 
-  this.group = paper.group()
-    .attr({opacity: this.opacityLevel.detached});
 
   this.redraw();
 
@@ -26,7 +21,7 @@ Hole.prototype.attach = function (wall, offset) {
   this.wall = wall;
   this.offset = offset;
 
-  this.group.attr({opacity: this.opacityLevel.attached});
+  this.group.addClass('attached');
 
   this.moveHandler = () => {
     this.updatePosition();
@@ -43,7 +38,7 @@ Hole.prototype.attach = function (wall, offset) {
  */
 Hole.prototype.detach = function () {
 
-  this.group.attr({opacity: this.opacityLevel.detached});
+  this.group.removeClass('attached');
 
   this.wall.removeAttachedElement(this);
   this.wall.offMove(this.moveHandler);
