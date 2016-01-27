@@ -212,7 +212,9 @@ Scene.prototype.refreshRooms = function () {
 
   let roomsColor = randomColor({
     count: rooms.length,
-    hue: 'green'
+    hue: 'green',
+    luminosity: 'light',
+    format: 'rgb'
   });
 
   rooms.forEach((edges, i) => {

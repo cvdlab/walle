@@ -9,7 +9,9 @@ var Room = function (paper, edges, color) {
 
   let pathString = Room.edgesToPath(edges);
 
-  this.path = paper.path(pathString).attr({fill: color, opacity: 0.3});
+  this.path = paper.path(pathString)
+    .attr({fill: color})
+    .addClass('room');
   paper.prepend(this.path);
 };
 
