@@ -5,6 +5,10 @@
   fill: white;
 }
 
+.walle .edge:hover{
+  stroke: #FFC107;
+}
+
 .walle .edge.selected{
   stroke: #445964;
 }

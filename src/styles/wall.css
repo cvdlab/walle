@@ -3,6 +3,10 @@
   stroke: #8E9BA2;
 }
 
+.walle .wall:hover{
+  stroke: #FFC107;
+}
+
 .walle .wall.selected {
   stroke: #445964;
 }

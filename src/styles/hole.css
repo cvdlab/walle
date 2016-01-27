@@ -6,6 +6,11 @@
   opacity: 0.9;
 }
 
+.walle .hole:hover line,
+.walle .hole:hover path{
+  stroke: #FFC107;
+}
+
 
 .walle .door line {
   stroke-width: 5;
