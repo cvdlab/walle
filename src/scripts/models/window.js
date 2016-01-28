@@ -17,19 +17,17 @@ Window.prototype.redraw = function(){
 
   group.addClass('window');
 
-  if(this.groupSymbol) this.groupSymbol.remove();
+  if(!this.groupSymbol) {
+    let line = this.line = paper.line(0, 0, length, 0).attr({strokeWidth: 5});
 
-  let line = this.line = paper.line(0, 0, length, 0)
-    .attr({strokeWidth: 5});
-
-  let lineLeft = this.lineLeft = paper.line(0, -6, 0, 6);
-
-  let lineRight = this.lineLeft = paper.line(length, -6, this.length, 6);
-
-  let groupSymbol = this.groupSymbol = paper.group(line, lineLeft, lineRight);
-
-  group.add(groupSymbol);
-
+    let lineLeft = this.lineLeft = paper.line(0, -6, 0, 6);
+    let lineRight = this.lineRight = paper.line(length, -6, length, 6);
+    let groupSymbol = this.groupSymbol = paper.group(line, lineLeft, lineRight);
+    group.add(groupSymbol);
+  }else{
+    this.line.attr({x2: length});
+    this.lineRight.attr({x1: length, x2: length});
+  }
 };
 
 

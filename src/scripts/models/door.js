@@ -17,23 +17,36 @@ Door.prototype.redraw = function () {
 
   group.addClass('door');
 
-  if (this.groupSymbol) this.groupSymbol.remove();
-
   //"M0,20 C0,10 10,0 20,0 L20,20 L0,20 z"
-
-  let line = this.line = paper.line(0, 0, length, 0);
-
-
   let path = "M0,p C0,q q,0 p,0 Lp,p"
-    .replace(/p/g, length)
+    .replace(/p/g, length.toString())
     .replace(/q/g, (length / 2).toString());
 
-  let figure = paper.path(path)
-    .transform(Snap.matrix().translate(0, -length));
+  let matrix = Snap.matrix();
+  if(this.inverted) matrix.scale(1, -1);
+  if(this.opposite)
+    matrix.scale(-1, 1).translate(-length, -length);
+  else
+    matrix.translate(0, -length);
 
-  let groupSymbol = this.groupSymbol = paper.group(figure, line);
 
-  group.add(groupSymbol);
+
+  if (!this.groupSymbol) {
+
+    let line = this.line = paper.line(0, 0, length, 0);
+
+    let figure = this.figure = paper.path(path).transform(matrix);
+
+    let groupSymbol = this.groupSymbol = paper.group(figure, line);
+    group.add(groupSymbol);
+
+  } else {
+
+    this.figure.attr({d: path});
+    this.figure.transform(matrix);
+    this.line.attr({x2: length});
+
+  }
 };
 
 
