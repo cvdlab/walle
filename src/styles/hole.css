@@ -6,8 +6,8 @@
   opacity: 0.9;
 }
 
-.walle .hole:hover line,
-.walle .hole:hover path{
+.walle .hole.attached:hover line,
+.walle .hole.attached:hover path{
   stroke: #FFC107;
 }
 
