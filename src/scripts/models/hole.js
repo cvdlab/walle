@@ -12,6 +12,11 @@ var Hole = function (paper, wall, offset) {
   if (wall && offset) this.attach(wall, offset);
 };
 
+Hole.prototype.setId = function(id){
+  this.id = id;
+  this.group.attr({id: this.id});
+};
+
 /**
  * attach to a wall
  * @param wall
