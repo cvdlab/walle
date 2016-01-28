@@ -2,7 +2,7 @@
 
 var Scene = function (paper) {
   this.paper = paper;
-  this.elements = [];
+  this.elements = {};
   this.events = new Events();
   this.nextId = 0;
 
@@ -11,12 +11,32 @@ var Scene = function (paper) {
     this.refreshRooms();
   });
 
+  this.click = (event) => {
+    let node = event.target;
+
+    while (!node.id || node.tagName === 'div' || node.tagName === 'svg') {
+      node = node.parentNode;
+    }
+
+    if (node.id) {
+      let element = this.elements[node.id];
+      this.events.dispatchEvent('click', event, element);
+    }
+
+  };
+
+  this.paper.click(this.click);
+
 };
 
 Scene.prototype.addElements = function (elements) {
   console.log("add", elements);
   elements.forEach((element) => {
-    if (!this.hasElement(element)) this.elements.push(element);
+    if (!this.hasElement(element)) {
+      let id = 'we' + this.nextId++;
+      element.setId(id);
+      this.elements[id] = element;
+    }
   });
   this.events.dispatchEvent('change', elements, 'add');
   this.events.dispatchEvent('add', elements);
@@ -24,16 +44,18 @@ Scene.prototype.addElements = function (elements) {
 
 Scene.prototype.addElement = function (element) {
   console.log("add", element);
-  element.setId('we' + this.nextId++);
-  this.elements.push(element);
+  if (!this.hasElement(element)) {
+    let id = 'we' + this.nextId++;
+    element.setId(id);
+    this.elements[id] = element;
+  }
   this.events.dispatchEvent('change', element, 'add');
   this.events.dispatchEvent('add', element);
 };
 
 Scene.prototype.removeElement = function (element) {
   console.log("remove", element);
-  var i = this.elements.indexOf(element);
-  if (i !== -1) this.elements.splice(i, 1);
+  delete this.elements[element.id];
   this.events.dispatchEvent('change', element, 'remove');
   this.events.dispatchEvent('remove', element);
 };
@@ -52,26 +74,25 @@ Scene.prototype.getRooms = function () {
 
 
 Scene.prototype.getElements = function (type) {
-  if (!type) return this.elements;
 
-  type = type.toLowerCase();
+  type = !type ? false : type.toLowerCase();
 
   let elements = [];
 
-  this.elements.forEach(function (element) {
-    let typeOf = Scene.typeof(element);
+  for (let id in this.elements) {
+    let element = this.elements[id];
 
-    if (typeOf === type) {
+    if (!type || Scene.typeof(element) === type) {
       elements.push(element);
     }
-  });
+  }
 
   return elements;
 };
 
 
 Scene.prototype.hasElement = function (element) {
-  return this.elements.indexOf(element) >= 0;
+  return this.elements[element.id] === true;
 };
 
 
@@ -79,7 +100,7 @@ Scene.prototype.toJson = function () {
 
   let groups = {};
 
-  this.elements.forEach(function (element) {
+  this.getElements().forEach(function (element) {
     let typeOf = Scene.typeof(element);
     groups[typeOf] = groups[typeOf] || [];
     groups[typeOf].push(element.toJson());
@@ -113,11 +134,19 @@ Scene.prototype.offRemove = function (handler) {
   this.events.removeEventListener('remove', handler);
 };
 
+Scene.prototype.onClick = function (handler) {
+  this.events.addEventListener('click', handler);
+};
+
+Scene.prototype.offClick = function (handler) {
+  this.events.removeEventListener('click', handler);
+};
+
 Scene.prototype.remove = function () {
-  this.elements.forEach(function (element) {
+  this.getElements().forEach(function (element) {
     element.remove();
   });
-  this.elements = [];
+  this.elements = {};
   this.events.dispatchEvent('change', this, 'remove');
   this.events.dispatchEvent('remove', this);
 };
@@ -242,7 +271,7 @@ Scene.prototype.nearestElement = function (x, y, minAcceptedDistance, type) {
 
   let minElement = null;
   let minDistance = Infinity;
-  let elements = type ? this.getElements(type) : this.elements;
+  let elements = type ? this.getElements(type) : this.getElements();
 
   elements.forEach(function (element) {
 

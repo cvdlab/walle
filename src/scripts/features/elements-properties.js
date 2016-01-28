@@ -20,18 +20,13 @@ ElementsProperties.prototype.start = function () {
   let scene = this.walle.scene;
 
   /** click handler **/
-  this.clickHandler = (event) => {
+  this.clickHandler = (event, element) => {
     if(this.status === ElementsProperties.statusWaiting){
-
-      let wall = scene.nearestElement(event.offsetX, event.offsetY, 5, 'wall');
-      if (Wall.isWall(wall)) {
-        this.openPanel(wall);
-        event.stopPropagation();
-      }
+      this.openPanel(element);
     }
   };
 
-  paper.click(this.clickHandler);
+  scene.onClick(this.clickHandler);
 
 };
 
@@ -49,5 +44,6 @@ ElementsProperties.prototype.openPanel = function (element) {
  * stop
  */
 ElementsProperties.prototype.stop = function () {
-
+  let scene = this.walle.scene;
+  scene.offClick(this.clickHandler);
 };
