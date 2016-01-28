@@ -30,6 +30,12 @@ var Wall = function (paper, edge0, edge1) {
   this.updateDistance();
 };
 
+Wall.prototype.setId = function(id){
+
+  this.id = id;
+  this.line.attr({id: this.id});
+
+};
 
 Wall.prototype.remove = function () {
   this.distanceText.remove();

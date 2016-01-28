@@ -14,6 +14,11 @@ var Edge = function (paper, x, y) {
 
 };
 
+Edge.prototype.setId = function(id){
+  this.id = id;
+  this.circle.attr({id: this.id});
+};
+
 Edge.prototype.move = function (x, y) {
   this.x = x;
   this.y = y;

@@ -24,7 +24,7 @@ Scene.prototype.addElements = function (elements) {
 
 Scene.prototype.addElement = function (element) {
   console.log("add", element);
-  element.id = this.nextId++;
+  element.setId('we' + this.nextId++);
   this.elements.push(element);
   this.events.dispatchEvent('change', element, 'add');
   this.events.dispatchEvent('add', element);
