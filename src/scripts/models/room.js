@@ -15,6 +15,11 @@ var Room = function (paper, edges, color) {
   paper.prepend(this.path);
 };
 
+Room.prototype.setId = function(id){
+  this.id = id;
+  this.path.attr({id:id});
+};
+
 Room.prototype.remove = function(){
   this.path.remove();
 };
