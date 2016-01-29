@@ -139,3 +139,9 @@ Hole.prototype.redraw = function () {
 
 };
 
+Hole.prototype.selected = function (isSelected) {
+  if(isSelected)
+    this.group.addClass('selected');
+  else
+    this.group.removeClass('selected');
+};

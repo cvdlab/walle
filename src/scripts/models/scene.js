@@ -11,22 +11,26 @@ var Scene = function (paper) {
     this.refreshRooms();
   });
 
-  this.click = (event) => {
-    let node = event.target;
+  let genericHandler = (eventName) => {
+    return (event) => {
+      let node = event.target;
 
-    while (!node.id || node.tagName === 'div' || node.tagName === 'svg') {
-      node = node.parentNode;
+      while (!node.id || node.tagName === 'div' || node.tagName === 'svg') {
+        node = node.parentNode;
+      }
+
+      if (node.id) {
+        let element = this.elements[node.id];
+        this.events.dispatchEvent(eventName, event, element);
+      }
     }
-
-    if (node.id) {
-      let element = this.elements[node.id];
-      this.events.dispatchEvent('click', event, element);
-    }
-
   };
 
-  this.paper.click(this.click);
+  this.clickHandler = genericHandler('click');
+  this.mouseDownHandler = genericHandler('mousedown');
 
+  this.paper.click(this.clickHandler);
+  this.paper.mousedown(this.mouseDownHandler);
 };
 
 Scene.prototype.addElements = function (elements) {
@@ -147,6 +151,30 @@ Scene.prototype.onClick = function (handler) {
 
 Scene.prototype.offClick = function (handler) {
   this.events.removeEventListener('click', handler);
+};
+
+Scene.prototype.onMouseDown = function (handler) {
+  this.events.addEventListener('mousedown', handler);
+};
+
+Scene.prototype.offMouseDown = function (handler) {
+  this.events.removeEventListener('mousedown', handler);
+};
+
+Scene.prototype.onMouseUp = function (handler) {
+  this.paper.mouseup(handler);
+};
+
+Scene.prototype.offMouseUp = function (handler) {
+  this.paper.unmouseup(handler);
+};
+
+Scene.prototype.onMouseMove = function (handler) {
+  this.paper.mousemove(handler);
+};
+
+Scene.prototype.offMouseMove = function (handler) {
+  this.paper.unmousemove(handler);
 };
 
 Scene.prototype.remove = function () {
