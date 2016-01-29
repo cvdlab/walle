@@ -31,11 +31,6 @@ Panel.prototype.start = function () {
 
   this.addSeparator();
 
-  this.addFeature("WallsMover", "flaticon-up13", "Move wall", false, true);
-  this.addFeature("EdgesMover", "flaticon-move24", "Move wall anchor point", false, true);
-
-  this.addSeparator();
-
   this.addFeature("SceneExport", "flaticon-social13", "Download scene", false, true);
   this.addFeature("SceneImporter", "flaticon-arrow68", "Import scene", false, true);
   this.addFeature("SceneRemove", "flaticon-basket33", "Remove scene", false, true);
