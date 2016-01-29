@@ -8,8 +8,12 @@ var Wall = function (paper, edge0, edge1) {
   this.edges = [edge0, edge1];
   this.length = Utils.twoPointsDistance(edge0.x, edge0.y, edge1.x, edge1.y);
   this.attachedElements = new Set();
+  this.tickness = 4;
 
-  let line = this.line = paper.line(edge0.x, edge0.y, edge1.x, edge1.y).addClass('wall');
+  let line = this.line =
+    paper.line(edge0.x, edge0.y, edge1.x, edge1.y)
+      .attr({strokeWidth: this.tickness})
+      .addClass('wall');
 
   edge0.addAttachedElement(this);
   edge0.onMove((x, y)=> {
@@ -25,7 +29,9 @@ var Wall = function (paper, edge0, edge1) {
     this.events.dispatchEvent("move");
   });
 
-  this.distanceText = this.paper.text(0, 0, "").addClass('wall-distance');
+  this.distanceText = this.paper.text(0, 0, "")
+    .attr({y: - this.tickness + (this.tickness/4)})
+    .addClass('wall-distance');
   this.distanceGroup = this.paper.g(this.distanceText);
   this.updateDistance();
 };
@@ -89,7 +95,7 @@ Wall.prototype.updateDistance = function () {
     text.attr({x: -distance / 2}); //align center
     text.transform(Snap.matrix().rotate(180));
   } else {
-    text.attr({x: distance / 2, y: -5}); //align center
+    text.attr({x: distance / 2}); //align center
     text.transform("");
   }
 
@@ -117,6 +123,11 @@ Wall.prototype.updateEdge = function (edgeId, newEdge) {
   this.updateDistance();
 };
 
+Wall.prototype.redraw = function(){
+  this.line.attr({strokeWidth: this.tickness});
+  this.distanceText.attr({y: - this.tickness + (this.tickness / 3)});
+  this.events.dispatchEvent('redraw');
+};
 
 Wall.prototype.distanceFromPoint = function(x, y){
   return Utils.segmentPointDistance(this.edges[0].x, this.edges[0].y, this.edges[1].x, this.edges[1].y, x, y);
@@ -128,6 +139,14 @@ Wall.prototype.onMove = function(handler){
 
 Wall.prototype.offMove = function(handler){
   this.events.removeEventListener('move', handler);
+};
+
+Wall.prototype.onRedraw = function(handler){
+  this.events.addEventListener('redraw', handler);
+};
+
+Wall.prototype.offRedraw = function(handler){
+  this.events.removeEventListener('redraw', handler);
 };
 
 Wall.prototype.addAttachedElement = function(element){

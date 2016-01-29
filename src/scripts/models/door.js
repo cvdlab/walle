@@ -14,6 +14,8 @@ Door.prototype.redraw = function () {
   let paper = this.paper;
   let length = this.length;
   let group = this.group;
+  let wall = this.wall;
+  let tickness = wall ? wall.tickness : 4;
 
   group.addClass('door');
 
@@ -29,11 +31,11 @@ Door.prototype.redraw = function () {
   else
     matrix.translate(0, -length);
 
-
+  matrix.translate(0, - tickness / 2);
 
   if (!this.groupSymbol) {
 
-    let line = this.line = paper.line(0, 0, length, 0);
+    let line = this.line = paper.line(0, 0, length, 0).attr({strokeWidth: tickness});
 
     let figure = this.figure = paper.path(path).transform(matrix);
 
@@ -44,7 +46,7 @@ Door.prototype.redraw = function () {
 
     this.figure.attr({d: path});
     this.figure.transform(matrix);
-    this.line.attr({x2: length});
+    this.line.attr({strokeWidth: tickness, x2: length});
 
   }
 };

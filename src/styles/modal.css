@@ -13,6 +13,11 @@
   z-index: 1000;
 }
 
+.walle .modal.mini {
+  top: 35px;
+  height: 40%;
+}
+
 .walle .modal textarea {
   border: 0;
   display: block;

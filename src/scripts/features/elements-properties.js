@@ -21,7 +21,11 @@ ElementsProperties.prototype.start = function () {
 
   /** click handler **/
   this.clickHandler = (event, element) => {
-    if (this.status === ElementsProperties.statusWaiting && element) {
+    if (
+      this.status === ElementsProperties.statusWaiting
+      && element
+      && (Wall.isWall(element) || Hole.isHole(element))
+    ) {
       this.openPanel(element);
     }
   };
@@ -35,14 +39,10 @@ ElementsProperties.prototype.start = function () {
  */
 ElementsProperties.prototype.openPanel = function (element) {
 
-  let templateMap = {
-    window: "template-form-window"
-  };
-
   let walle = this.walle;
 
   walle.overlay(true);
-  this.modal = jQuery("<div/>", {class: "modal"}).appendTo(walle.wrapper);
+  this.modal = jQuery("<div/>", {class: "modal mini"}).appendTo(walle.wrapper);
 
   let template = jQuery(ElementsProperties.template[Scene.typeof(element)]);
 
@@ -75,7 +75,7 @@ ElementsProperties.prototype.openPanel = function (element) {
     inputText.each(function () {
       let input = jQuery(this);
       let bind = input.attr('data-bind');
-      element[bind] = input.val();
+      element[bind] = parseInt(input.val());
     });
 
     inputCheckbox.each(function () {
@@ -172,10 +172,20 @@ ElementsProperties.template = {
       <input type="reset" value="Annulla"/>
       <input type="submit" value="Aggiorna"/>
     </form>
-    `
+    `,
 
     // wall template
-    //TODO
+  wall: `
+    <form>
+      <h3>Configure Wall</h3>
+      <div class="group">
+        <label>Tickness</label>
+        <input type="text" data-bind="tickness">
+      </div>
+      <input type="reset" value="Annulla"/>
+      <input type="submit" value="Aggiorna"/>
+    </form>
+    `
 
 
 };

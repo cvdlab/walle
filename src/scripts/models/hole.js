@@ -35,8 +35,13 @@ Hole.prototype.attach = function (wall, offset) {
     this.updatePosition();
   };
 
+  this.redrawHandler = () => {
+    this.redraw();
+  };
+
   wall.addAttachedElement(this);
   wall.onMove(this.moveHandler);
+  wall.onRedraw(this.redrawHandler);
 
   this.updatePosition();
 };
@@ -50,6 +55,7 @@ Hole.prototype.detach = function () {
 
   this.wall.removeAttachedElement(this);
   this.wall.offMove(this.moveHandler);
+  this.wall.offRedraw(this.redrawHandler);
   this.offset = null;
   this.wall = null;
   this.groupSymbol.transform(Snap.matrix().translate(0, 0));
