@@ -68,5 +68,9 @@ ElementsMove.prototype.endDragging = function (x, y) {
  * stop
  */
 ElementsMove.prototype.stop = function () {
-
+  let scene = this.walle.scene;
+  scene.offMouseDown(this.beginDragHandler);
+  scene.offMouseUp(this.endDragHandler);
+  scene.offMouseMove(this.draggingHandler);
+  this.walle.removeElementsFeedback(this.feedbackElementsList);
 };
