@@ -60,6 +60,13 @@ Scene.prototype.removeElement = function (element) {
   this.events.dispatchEvent('remove', element);
 };
 
+Scene.prototype.removeElements = function (elements) {
+  console.log("remove", elements);
+  elements.forEach(element => delete this.elements[element.id]);
+  this.events.dispatchEvent('change', elements, 'remove');
+  this.events.dispatchEvent('remove', elements);
+};
+
 Scene.prototype.getEdges = function () {
   return this.getElements('edge');
 };

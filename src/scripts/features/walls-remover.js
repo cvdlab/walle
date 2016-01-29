@@ -13,34 +13,37 @@ WallsRemover.prototype.start = function () {
 
   let walle = this.walle;
   let paper = this.paper;
+  let scene = walle.scene;
 
-  this.clickHandler = (event) => {
-    this.removeWall(event.offsetX, event.offsetY);
+  this.clickHandler = (event, element) => {
+    if (Wall.isWall(element) || Hole.isHole(element)) {
+      this.remove(element);
+    }
   };
 
-  paper.click(this.clickHandler);
+  scene.onClick(this.clickHandler);
 
 };
 
-WallsRemover.prototype.removeWall = function (x, y) {
+WallsRemover.prototype.remove = function (element) {
   let scene = this.walle.scene;
-  let wall = scene.nearestElement(x, y, 10, 'wall');
+  let removeList = [element];
 
-  if (Wall.isWall(wall)) {
-    wall.attachedElements.forEach(function(element){
-      scene.removeElement(element);
-      element.remove();
-    });
-    wall.edges.forEach(function(edge){
-      edge.removeAttachedElement(wall);
-      if(edge.attachedElements.size === 0){
-        scene.removeElement(edge);
-        edge.remove();
+  if (Wall.isWall(element)) {
+    element.attachedElements.forEach(element => removeList.push(element));
+
+    element.edges.forEach(function (edge) {
+      edge.removeAttachedElement(element);
+      console.log(edge);
+      if (edge.attachedElements.size === 0) {
+        removeList.push(edge);
       }
     });
-    scene.removeElement(wall);
-    wall.remove();
   }
+
+  scene.removeElements(removeList);
+  removeList.forEach(element=> element.remove());
+
 };
 
 /**
