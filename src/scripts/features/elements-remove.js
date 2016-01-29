@@ -15,6 +15,8 @@ ElementsRemove.prototype.start = function () {
   let paper = this.paper;
   let scene = walle.scene;
 
+  walle.addElementsFeedback(['wall', 'hole']);
+
   this.clickHandler = (event, element) => {
     if (Wall.isWall(element) || Hole.isHole(element)) {
       this.remove(element);
@@ -50,5 +52,9 @@ ElementsRemove.prototype.remove = function (element) {
  * stop
  */
 ElementsRemove.prototype.stop = function () {
-  this.paper.unclick(this.clickHandler);
+  let walle = this.walle;
+  let scene = walle.scene;
+
+  walle.removeElementsFeedback(['wall', 'hole']);
+  scene.offClick(this.clickHandler);
 };

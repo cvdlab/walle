@@ -139,3 +139,13 @@ Walle.prototype.overlay = function (on) {
   else
     wrapper.removeClass('show-overlay');
 };
+
+Walle.prototype.addElementsFeedback = function (elementsName) {
+  let wrapper = this.wrapper;
+  elementsName.forEach(elementName => wrapper.addClass(elementName + '-feedback'));
+};
+
+Walle.prototype.removeElementsFeedback = function (elementsName) {
+  let wrapper = this.wrapper;
+  elementsName.forEach(elementName => wrapper.removeClass(elementName + '-feedback'));
+};

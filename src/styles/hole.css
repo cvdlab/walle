@@ -6,8 +6,8 @@
   opacity: 0.9;
 }
 
-.walle .hole.attached:hover line,
-.walle .hole.attached:hover path{
+.walle.hole-feedback .hole.attached:hover line,
+.walle.hole-feedback .hole.attached:hover path{
   stroke: #FFC107;
 }
 

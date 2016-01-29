@@ -2,7 +2,7 @@
   stroke: #8E9BA2;
 }
 
-.walle .wall:hover{
+.walle.wall-feedback .wall:hover{
   stroke: #FFC107;
 }
 

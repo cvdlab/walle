@@ -19,6 +19,8 @@ ElementsProperties.prototype.start = function () {
   let paper = this.paper;
   let scene = this.walle.scene;
 
+  walle.addElementsFeedback(['wall', 'hole']);
+
   /** click handler **/
   this.clickHandler = (event, element) => {
     if (
@@ -105,7 +107,10 @@ ElementsProperties.prototype.closePanel = function (element) {
  */
 ElementsProperties.prototype.stop = function () {
   let scene = this.walle.scene;
+  let walle = this.walle;
   if (this.modal) this.closePanel();
+
+  walle.removeElementsFeedback(['wall', 'hole']);
 
   scene.offClick(this.clickHandler);
 };
