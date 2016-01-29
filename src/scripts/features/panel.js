@@ -27,7 +27,7 @@ Panel.prototype.start = function () {
 
   this.addFeature("ElementsProperties", "flaticon-up13", "Change element properties", false, true);
   this.addFeature("WallsMover", "flaticon-up13", "Move wall", false, true);
-  this.addFeature("WallsRemover", "flaticon-eraser11", "Remove wall", false, true);
+  this.addFeature("ElementsRemove", "flaticon-eraser11", "Remove", false, true);
   this.addFeature("EdgesMover", "flaticon-move24", "Move wall anchor point", false, true);
 
   this.addSeparator();

@@ -1,6 +1,6 @@
 "use strict";
 
-var WallsRemover = function (walle) {
+var ElementsRemove = function (walle) {
   this.walle = walle;
   this.paper = walle.paper;
 };
@@ -9,7 +9,7 @@ var WallsRemover = function (walle) {
 /**
  * start
  */
-WallsRemover.prototype.start = function () {
+ElementsRemove.prototype.start = function () {
 
   let walle = this.walle;
   let paper = this.paper;
@@ -25,7 +25,7 @@ WallsRemover.prototype.start = function () {
 
 };
 
-WallsRemover.prototype.remove = function (element) {
+ElementsRemove.prototype.remove = function (element) {
   let scene = this.walle.scene;
   let removeList = [element];
 
@@ -49,6 +49,6 @@ WallsRemover.prototype.remove = function (element) {
 /**
  * stop
  */
-WallsRemover.prototype.stop = function () {
+ElementsRemove.prototype.stop = function () {
   this.paper.unclick(this.clickHandler);
 };
