@@ -1,12 +1,13 @@
 
 .walle .edge{
-  stroke-width: 4;
+  stroke-width: 1;
   stroke: #8E9BA2;
-  fill: white;
+  fill: #8E9BA2;
 }
 
 .walle.edge-feedback .edge:hover{
   stroke: #FFC107;
+  fill: #FFC107;
 }
 
 .walle .edge.selected{

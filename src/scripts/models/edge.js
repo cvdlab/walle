@@ -10,7 +10,7 @@ var Edge = function (paper, x, y) {
 
   this.events = new Events();
 
-  let circle = this.circle = paper.circle(x, y, 8).addClass('edge');
+  let circle = this.circle = paper.circle(x, y, 4).addClass('edge');
 
 };
 

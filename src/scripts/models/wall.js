@@ -8,7 +8,7 @@ var Wall = function (paper, edge0, edge1) {
   this.edges = [edge0, edge1];
   this.length = Utils.twoPointsDistance(edge0.x, edge0.y, edge1.x, edge1.y);
   this.attachedElements = new Set();
-  this.tickness = 4;
+  this.tickness = 10;
 
   let line = this.line =
     paper.line(edge0.x, edge0.y, edge1.x, edge1.y)
