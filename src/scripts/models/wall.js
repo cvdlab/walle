@@ -30,13 +30,13 @@ var Wall = function (paper, edge0, edge1) {
   });
 
   this.distanceText = this.paper.text(0, 0, "")
-    .attr({y: - this.tickness + (this.tickness/4)})
+    .attr({y: -this.tickness + (this.tickness / 4)})
     .addClass('wall-distance');
   this.distanceGroup = this.paper.g(this.distanceText);
   this.updateDistance();
 };
 
-Wall.prototype.setId = function(id){
+Wall.prototype.setId = function (id) {
 
   this.id = id;
   this.line.attr({id: this.id});
@@ -49,7 +49,7 @@ Wall.prototype.remove = function () {
 };
 
 Wall.prototype.selected = function (isSelected) {
-  if(isSelected)
+  if (isSelected)
     this.line.addClass('selected');
   else
     this.line.removeClass('selected');
@@ -102,7 +102,7 @@ Wall.prototype.updateDistance = function () {
 
 };
 
-Wall.isWall = function(wall){
+Wall.isWall = function (wall) {
   return (wall instanceof Wall);
 };
 
@@ -114,8 +114,8 @@ Wall.prototype.updateEdge = function (edgeId, newEdge) {
 
 
   newEdge.onMove((x, y)=> {
-    if(edgeId===0) this.line.attr({x1: x, y1: y});
-    if(edgeId===1) this.line.attr({x2: x, y2: y});
+    if (edgeId === 0) this.line.attr({x1: x, y1: y});
+    if (edgeId === 1) this.line.attr({x2: x, y2: y});
     this.updateDistance();
     this.events.dispatchEvent("move");
   });
@@ -123,36 +123,55 @@ Wall.prototype.updateEdge = function (edgeId, newEdge) {
   this.updateDistance();
 };
 
-Wall.prototype.redraw = function(){
+Wall.prototype.redraw = function () {
   this.line.attr({strokeWidth: this.tickness});
-  this.distanceText.attr({y: - this.tickness + (this.tickness / 3)});
+  this.distanceText.attr({y: -this.tickness + (this.tickness / 3)});
   this.events.dispatchEvent('redraw');
 };
 
-Wall.prototype.distanceFromPoint = function(x, y){
+Wall.prototype.distanceFromPoint = function (x, y) {
   return Utils.segmentPointDistance(this.edges[0].x, this.edges[0].y, this.edges[1].x, this.edges[1].y, x, y);
 };
 
-Wall.prototype.onMove = function(handler){
+Wall.prototype.onMove = function (handler) {
   this.events.addEventListener('move', handler);
 };
 
-Wall.prototype.offMove = function(handler){
+Wall.prototype.offMove = function (handler) {
   this.events.removeEventListener('move', handler);
 };
 
-Wall.prototype.onRedraw = function(handler){
+Wall.prototype.onRedraw = function (handler) {
   this.events.addEventListener('redraw', handler);
 };
 
-Wall.prototype.offRedraw = function(handler){
+Wall.prototype.offRedraw = function (handler) {
   this.events.removeEventListener('redraw', handler);
 };
 
-Wall.prototype.addAttachedElement = function(element){
+Wall.prototype.addAttachedElement = function (element) {
   this.attachedElements.add(element);
 };
 
-Wall.prototype.removeAttachedElement = function(element){
+Wall.prototype.removeAttachedElement = function (element) {
   this.attachedElements.delete(element);
+};
+
+Wall.prototype.move = function (x, y) {
+
+  let edge0 = this.edges[0], edge1 = this.edges[1];
+  let ox1 = edge0.x, oy1 = edge0.y, ox2 = edge1.x, oy2 = edge1.y;
+
+  let center = Utils.centerPoint(edge0.x, edge0.y, edge1.x, edge1.y);
+
+  let translationVector = Utils.translationVector(ox1, oy1, ox2, oy2, x, y);
+  let vx = translationVector.vx, vy = translationVector.vy;
+
+  edge0.move(ox1 + vx, oy1 + vy);
+  edge1.move(ox2 + vx, oy2 + vy);
+};
+
+Wall.prototype.centerPoint = function () {
+  let edge0 = wall.wall.edges[0], edge1 = wall.wall.edges[1];
+  return Utils.centerPoint(edge0.x, edge0.y, edge1.x, edge1.y);
 };
