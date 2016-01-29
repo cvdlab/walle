@@ -6,3 +6,9 @@
   user-select: none;
   -o-user-select: none;
 }
+
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {
+  font-size: inherit !important;
+  margin-left: 0 !important;
+}

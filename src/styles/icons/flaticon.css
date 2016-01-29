@@ -9,59 +9,68 @@
 	font-style: normal;
 }
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
-[class^="flaticon-"]:after, [class*=" flaticon-"]:after {
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
 	font-family: Flaticon;
-
+        font-size: 20px;
 font-style: normal;
-
-}.flaticon-arrow68:before {
+margin-left: 20px;
+}.flaticon-access9:before {
 	content: "\e000";
 }
-.flaticon-basket33:before {
+.flaticon-arrow68:before {
 	content: "\e001";
 }
-.flaticon-computer196:before {
+.flaticon-basket33:before {
 	content: "\e002";
 }
-.flaticon-draft:before {
+.flaticon-computer196:before {
 	content: "\e003";
 }
-.flaticon-eraser11:before {
+.flaticon-draft:before {
 	content: "\e004";
 }
-.flaticon-graphicseditor81:before {
+.flaticon-eraser11:before {
 	content: "\e005";
 }
-.flaticon-move24:before {
+.flaticon-gears:before {
 	content: "\e006";
 }
-.flaticon-open203:before {
+.flaticon-github17:before {
 	content: "\e007";
 }
-.flaticon-opened17:before {
+.flaticon-graphicseditor81:before {
 	content: "\e008";
 }
-.flaticon-plan1:before {
+.flaticon-move24:before {
 	content: "\e009";
 }
-.flaticon-pointer32:before {
+.flaticon-open203:before {
 	content: "\e00a";
 }
-.flaticon-scroll8:before {
+.flaticon-opened17:before {
 	content: "\e00b";
 }
-.flaticon-social13:before {
+.flaticon-plan1:before {
 	content: "\e00c";
 }
-.flaticon-table41:before {
+.flaticon-pointer32:before {
 	content: "\e00d";
 }
-.flaticon-testtube1:before {
+.flaticon-scroll8:before {
 	content: "\e00e";
 }
-.flaticon-up13:before {
+.flaticon-social13:before {
 	content: "\e00f";
 }
-.flaticon-walls1:before {
+.flaticon-table41:before {
 	content: "\e010";
+}
+.flaticon-testtube1:before {
+	content: "\e011";
+}
+.flaticon-up13:before {
+	content: "\e012";
+}
+.flaticon-walls1:before {
+	content: "\e013";
 }
