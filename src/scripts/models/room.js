@@ -5,7 +5,7 @@ var Room = function (paper, edges, color) {
   this.paper = paper;
   this.events = new Events();
 
-  this.walls = edges;
+  this.edges = edges;
 
   let pathString = Room.edgesToPath(edges);
 
@@ -13,6 +13,15 @@ var Room = function (paper, edges, color) {
     .attr({fill: color})
     .addClass('room');
   paper.prepend(this.path);
+
+  this.moveEdgeHandler = (event) => {
+    this.redraw();
+  };
+
+  edges.forEach((edge)=>{
+    edge.onMove(this.moveEdgeHandler);
+  });
+
 };
 
 Room.prototype.setId = function(id){
@@ -27,9 +36,15 @@ Room.prototype.remove = function(){
 Room.prototype.toJson = function(){
   return {
     type: "room",
-    walls: this.walls.map(function(wall){return wall.toJson()})
+    edges: this.edges.map(function(edge){return edge.toJson()})
   };
 };
+
+Room.prototype.redraw = function () {
+  let pathString = Room.edgesToPath(this.edges);
+  this.path.attr({d: pathString});
+};
+
 
 Room.edgesToPath = function (edges) {
   let path = "";
