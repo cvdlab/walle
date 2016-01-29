@@ -5,6 +5,8 @@ var ElementsMove = function (walle) {
   this.paper = walle.paper;
 
   this.currentElement = null;
+
+  this.feedbackElementsList = ['hole', 'edge'];
 };
 
 
@@ -16,10 +18,10 @@ ElementsMove.prototype.start = function () {
   let walle = this.walle;
   let scene = walle.scene;
 
-  walle.addElementsFeedback(['hole']);
+  walle.addElementsFeedback(this.feedbackElementsList);
 
   this.beginDragHandler = (event, element) => {
-    if(Hole.isHole(element))
+    if(Hole.isHole(element) || Edge.isEdge(element))
       this.beginDragging(element, event.offsetX, event.offsetY);
   };
 
@@ -38,7 +40,7 @@ ElementsMove.prototype.start = function () {
 };
 
 ElementsMove.prototype.beginDragging = function (element, x, y) {
-  walle.removeElementsFeedback(['hole']);
+  walle.removeElementsFeedback(this.feedbackElementsList);
   this.currentElement = element;
   element.move(x, y);
   element.selected(true);
@@ -54,7 +56,7 @@ ElementsMove.prototype.endDragging = function (x, y) {
   let element = this.currentElement;
   let walle = this.walle;
 
-  walle.addElementsFeedback(['hole']);
+  walle.addElementsFeedback(this.feedbackElementsList);
   element.move(x, y);
   element.selected(false);
 
