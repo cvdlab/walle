@@ -44,6 +44,7 @@ Hole.prototype.attach = function (wall, offset) {
   wall.onRedraw(this.redrawHandler);
 
   this.updatePosition();
+  this.redraw();
 };
 
 /**
