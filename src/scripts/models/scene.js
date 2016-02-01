@@ -283,8 +283,14 @@ Scene.prototype.refreshRooms = function () {
     format: 'rgb'
   });
 
+  let roomsPatternDirection = randomNumber({
+    count: rooms.length,
+    max: 180,
+    shuffle: true
+  });
+
   rooms.forEach((edges, i) => {
-    let room = new Room(this.paper, edges, roomsColor[i]);
+    let room = new Room(this.paper, edges, roomsColor[i], roomsPatternDirection[i]);
     scene.addElement(room);
   });
 };
@@ -324,3 +330,4 @@ Scene.prototype.nearestElement = function (x, y, minAcceptedDistance, type) {
     return null;
   }
 };
+

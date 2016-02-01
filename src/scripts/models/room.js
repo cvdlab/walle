@@ -1,16 +1,30 @@
 "use strict";
 
-var Room = function (paper, edges, color) {
+var Room = function (paper, edges, color, angle) {
 
   this.paper = paper;
   this.events = new Events();
 
   this.edges = edges;
 
+  let pattern = this.pattern = paper
+    .path("M10-5-10,15M15,0,0,15M0-5-20,15").attr({
+      fill: "none",
+      stroke: color,
+      strokeWidth: 5
+    })
+    .pattern(0, 0, 10, 10)
+    .attr({
+      patternUnits: "userSpaceOnUse",
+      patternTransform: Snap.matrix().rotate(angle)
+    });
+
+  console.log('angle', angle);
+
   let pathString = Room.edgesToPath(edges);
 
   this.path = paper.path(pathString)
-    .attr({fill: color})
+    .attr({fill: pattern})
     .addClass('room');
   paper.prepend(this.path);
 
@@ -18,25 +32,27 @@ var Room = function (paper, edges, color) {
     this.redraw();
   };
 
-  edges.forEach((edge)=>{
+  edges.forEach((edge)=> {
     edge.onMove(this.moveEdgeHandler);
   });
 
 };
 
-Room.prototype.setId = function(id){
+Room.prototype.setId = function (id) {
   this.id = id;
-  this.path.attr({id:id});
+  this.path.attr({id: id});
 };
 
-Room.prototype.remove = function(){
+Room.prototype.remove = function () {
   this.path.remove();
 };
 
-Room.prototype.toJson = function(){
+Room.prototype.toJson = function () {
   return {
     type: "room",
-    edges: this.edges.map(function(edge){return edge.toJson()})
+    edges: this.edges.map(function (edge) {
+      return edge.toJson()
+    })
   };
 };
 
