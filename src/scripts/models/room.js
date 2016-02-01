@@ -8,7 +8,8 @@ var Room = function (paper, edges, color, angle) {
   this.edges = edges;
 
   let pattern = this.pattern = paper
-    .path("M10-5-10,15M15,0,0,15M0-5-20,15").attr({
+    .rect(0, 0, 10, 3)
+    .attr({
       fill: "none",
       stroke: color,
       strokeWidth: 5
