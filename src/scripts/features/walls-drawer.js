@@ -17,7 +17,7 @@ WallsDrawer.statusDirty = 2;
  * start
  */
 WallsDrawer.prototype.start = function () {
-  console.log("start walls mode");
+
 
   this.clickHandler = event => {
 
@@ -62,7 +62,6 @@ WallsDrawer.prototype.start = function () {
  * restart
  */
 WallsDrawer.prototype.restart = function () {
-  console.log("restart walls mode");
 
   //clear drawing area
   this.walle.removeSnapTo();
@@ -91,7 +90,6 @@ WallsDrawer.prototype.restart = function () {
  * stop
  */
 WallsDrawer.prototype.stop = function () {
-  console.log("stop walls mode");
 
   //abort if needed
   if (this.drawingWall !== null) this.abortDrawing();
@@ -119,7 +117,6 @@ WallsDrawer.prototype.beginDrawingWithPoint = function (x, y) {
  * @param edge
  */
 WallsDrawer.prototype.beginDrawingWithEdge = function (edge) {
-  console.log("begin drawing wall", edge.toString());
 
   //draw wall and edge
   let edge0 = edge;
@@ -163,7 +160,7 @@ WallsDrawer.prototype.beginDrawingWithEdge = function (edge) {
  * abortDrawing
  */
 WallsDrawer.prototype.abortDrawing = function () {
-  console.log("abort drawing wall");
+
   let scene = this.walle.scene;
   let edge0 = this.drawingWall.edges[0], edge1 = this.drawingWall.edges[1];
 
@@ -193,7 +190,6 @@ WallsDrawer.prototype.updateDrawingWithEdge = function (edge) {
  * @param y
  */
 WallsDrawer.prototype.updateDrawingWithPoint = function (x, y) {
-  //console.log("update drawing wall", x, y);
 
   //move wall endpoint
   this.drawingWall.edges[1].move(x, y);
@@ -205,7 +201,6 @@ WallsDrawer.prototype.updateDrawingWithPoint = function (x, y) {
  * @param startNew
  */
 WallsDrawer.prototype.endDrawingWithEdge = function (edge, startNew) {
-  console.log("end drawing wall", edge.toString());
 
   let wall = this.drawingWall;
   let scene = this.walle.scene;
@@ -235,7 +230,6 @@ WallsDrawer.prototype.endDrawingWithEdge = function (edge, startNew) {
  * @param startNew
  */
 WallsDrawer.prototype.endDrawingWithPoint = function (x, y, startNew) {
-  console.log("end drawing wall", x, y);
 
   let scene = this.walle.scene;
   let wall = this.drawingWall;

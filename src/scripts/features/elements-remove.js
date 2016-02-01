@@ -36,7 +36,7 @@ ElementsRemove.prototype.remove = function (element) {
 
     element.edges.forEach(function (edge) {
       edge.removeAttachedElement(element);
-      console.log(edge);
+
       if (edge.attachedElements.size === 0) {
         removeList.push(edge);
       }

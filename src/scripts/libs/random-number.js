@@ -25,9 +25,3 @@ function randomNumber(options) {
   if (shuffle) numbers = shuffleArray(numbers)
   return numbers;
 }
-
-console.log(randomNumber({
-  count: 5,
-  max: 100,
-  shuffle: true
-}));

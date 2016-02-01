@@ -85,8 +85,6 @@ SnapTo.prototype.use = function (handlers) {
 
   this.remove();
 
-  console.log("use snap events");
-
   let width = this.walle.width;
   let height = this.walle.height;
   let snapElements = this.snapElements;
@@ -122,7 +120,6 @@ SnapTo.prototype.use = function (handlers) {
  * Remove all snap points
  */
 SnapTo.prototype.remove = function () {
-  console.log("remove snap events");
 
   this.hideOverlay();
   this.snapElements.forEach(item => {
@@ -221,8 +218,6 @@ SnapTo.prototype.addSnapPoint = function (x, y, anchorObject, handlers) {
 };
 
 SnapTo.prototype.showOverlay = function(x, y, r){
-
-  console.log("showOverlay");
 
   this.hideOverlay();
 

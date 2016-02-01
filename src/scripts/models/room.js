@@ -20,8 +20,6 @@ var Room = function (paper, edges, color, angle) {
       patternTransform: Snap.matrix().rotate(angle)
     });
 
-  console.log('angle', angle);
-
   let pathString = Room.edgesToPath(edges);
 
   this.path = paper.path(pathString)

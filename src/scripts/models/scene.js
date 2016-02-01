@@ -34,7 +34,6 @@ var Scene = function (paper) {
 };
 
 Scene.prototype.addElements = function (elements) {
-  console.log("add", elements);
   elements.forEach((element) => {
     if (!this.hasElement(element)) {
       let id = 'we' + this.nextId++;
@@ -47,7 +46,6 @@ Scene.prototype.addElements = function (elements) {
 };
 
 Scene.prototype.addElement = function (element) {
-  console.log("add", element);
   if (!this.hasElement(element)) {
     let id = 'we' + this.nextId++;
     element.setId(id);
@@ -58,14 +56,12 @@ Scene.prototype.addElement = function (element) {
 };
 
 Scene.prototype.removeElement = function (element) {
-  console.log("remove", element);
   delete this.elements[element.id];
   this.events.dispatchEvent('change', element, 'remove');
   this.events.dispatchEvent('remove', element);
 };
 
 Scene.prototype.removeElements = function (elements) {
-  console.log("remove", elements);
   elements.forEach(element => delete this.elements[element.id]);
   this.events.dispatchEvent('change', elements, 'remove');
   this.events.dispatchEvent('remove', elements);
@@ -265,10 +261,8 @@ Scene.prototype.refreshRooms = function () {
       return edges.indexOf(edge);
     })
   });
-  console.log(edgesArray, wallsArray);
 
   let cycles = find_inner_cycles(edgesArray, wallsArray);
-  console.log(cycles);
 
   let rooms = cycles.v_cycles.map(function (roomEdgesIds) {
     return roomEdgesIds.map(function (edgeId) {

@@ -124,7 +124,6 @@ Walle.prototype.revertAndAutosave = function () {
 
   scene.onChange(function () {
 
-    console.log("autosave");
     let json = JSON.stringify(scene.toJson());
     storage.setItem(storageKey, json);
 

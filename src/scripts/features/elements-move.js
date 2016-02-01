@@ -47,12 +47,10 @@ ElementsMove.prototype.beginDragging = function (element, x, y) {
 };
 
 ElementsMove.prototype.updateDragging = function (x, y) {
-  console.log('update');
   this.currentElement.move(x, y);
 };
 
 ElementsMove.prototype.endDragging = function (x, y) {
-  console.log('end', this.currentElement);
   let element = this.currentElement;
   let walle = this.walle;
 

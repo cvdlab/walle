@@ -103,7 +103,7 @@ Panel.prototype.addSeparator = function () {
 
 
 Panel.prototype.turnOn = function (featureName) {
-  console.log(featureName + ' turn on');
+  console.info(featureName + ' turn on');
 
   let exclusiveFeatures = this.exclusiveFeatures;
 
@@ -122,7 +122,7 @@ Panel.prototype.turnOn = function (featureName) {
 
 
 Panel.prototype.turnOff = function (featureName) {
-  console.log(featureName + ' turn off');
+  console.info(featureName + ' turn off');
 
   this.walle.feature(featureName).stop();
   this.featuresStatus[featureName] = false;
