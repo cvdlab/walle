@@ -17,7 +17,7 @@ WallsDrawer.statusDirty = 2;
  * start
  */
 WallsDrawer.prototype.start = function () {
-
+  console.log('start');
 
   this.clickHandler = event => {
 
@@ -62,6 +62,7 @@ WallsDrawer.prototype.start = function () {
  * restart
  */
 WallsDrawer.prototype.restart = function () {
+  console.log('restart');
 
   //clear drawing area
   this.walle.removeSnapTo();
@@ -90,6 +91,7 @@ WallsDrawer.prototype.restart = function () {
  * stop
  */
 WallsDrawer.prototype.stop = function () {
+  console.log('stop');
 
   //abort if needed
   if (this.drawingWall !== null) this.abortDrawing();
@@ -108,6 +110,7 @@ WallsDrawer.prototype.stop = function () {
  * @param y
  */
 WallsDrawer.prototype.beginDrawingWithPoint = function (x, y) {
+  console.log('beginDrawingWithPoint')
   let edge = new Edge(this.paper, x, y);
   this.beginDrawingWithEdge(edge);
 };
@@ -117,6 +120,7 @@ WallsDrawer.prototype.beginDrawingWithPoint = function (x, y) {
  * @param edge
  */
 WallsDrawer.prototype.beginDrawingWithEdge = function (edge) {
+  console.log('beginDrawingWithEdge', edge);
 
   //draw wall and edge
   let edge0 = edge;
@@ -160,6 +164,7 @@ WallsDrawer.prototype.beginDrawingWithEdge = function (edge) {
  * abortDrawing
  */
 WallsDrawer.prototype.abortDrawing = function () {
+  console.log('abortDrawing');
 
   let scene = this.walle.scene;
   let edge0 = this.drawingWall.edges[0], edge1 = this.drawingWall.edges[1];
@@ -201,6 +206,7 @@ WallsDrawer.prototype.updateDrawingWithPoint = function (x, y) {
  * @param startNew
  */
 WallsDrawer.prototype.endDrawingWithEdge = function (edge, startNew) {
+  console.log('endDrawingWithEdge', edge, startNew);
 
   let wall = this.drawingWall;
   let scene = this.walle.scene;
@@ -230,6 +236,7 @@ WallsDrawer.prototype.endDrawingWithEdge = function (edge, startNew) {
  * @param startNew
  */
 WallsDrawer.prototype.endDrawingWithPoint = function (x, y, startNew) {
+  console.log('endDrawingWithPoint', x, y, startNew);
 
   let scene = this.walle.scene;
   let wall = this.drawingWall;
