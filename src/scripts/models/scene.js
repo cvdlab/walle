@@ -7,7 +7,7 @@ var Scene = function (paper) {
   this.nextId = 0;
 
   this.onChange((element) => {
-    if (Room.isRoom(element)) return;
+    if (Room.isRoom(element) || Hole.isHole(element)) return;
     this.refreshRooms();
   });
 
