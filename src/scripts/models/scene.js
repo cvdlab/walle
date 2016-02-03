@@ -99,7 +99,8 @@ Scene.prototype.getElements = function (type) {
 
 
 Scene.prototype.hasElement = function (element) {
-  return this.elements[element.id] === true;
+  let elements = this.elements;
+  return element.hasOwnProperty('id') && elements.hasOwnProperty(element.id);
 };
 
 
