@@ -7,7 +7,7 @@
  */
 var Walle = function (container) {
 
-  this.isProduction = window.location.port == "80";
+  this.isProduction = window.location.port == "";
   this.document = jQuery(document);
   this.pixelPerUnit = 60;
   this.splashTime = (this.isProduction) ? 3000 : 0;
