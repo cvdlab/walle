@@ -255,6 +255,6 @@ WallsDrawer.prototype.endDrawingWithPoint = function (x, y, startNew) {
 
   //restart
   this.restart();
-  if (startNew) this.beginDrawingWithPoint(x, y);
+  if (startNew) this.beginDrawingWithEdge(wall.edges[1]);
 
 };
