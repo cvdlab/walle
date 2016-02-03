@@ -170,7 +170,7 @@ WallsDrawer.prototype.abortDrawing = function () {
   let edge0 = this.drawingWall.edges[0], edge1 = this.drawingWall.edges[1];
 
   //abort
-  if (!scene.hasElement(edge0)) edge0.remove();
+  if (!scene.hasElement(edge0)) edge0.remove(); else edge0.selected(false);
   edge1.remove();
   this.drawingWall.remove();
 
