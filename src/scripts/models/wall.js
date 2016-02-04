@@ -1,14 +1,14 @@
 "use strict";
 
 
-var Wall = function (paper, vertex0, vertex1) {
+var Wall = function (paper, vertex0, vertex1, tickness) {
 
   this.paper = paper;
   this.events = new Events();
   this.vertices = [vertex0, vertex1];
   this.length = Utils.twoPointsDistance(vertex0.x, vertex0.y, vertex1.x, vertex1.y);
   this.attachedElements = new Set();
-  this.tickness = 10;
+  this.tickness = tickness || 10;
 
   let line = this.line =
     paper.line(vertex0.x, vertex0.y, vertex1.x, vertex1.y)
