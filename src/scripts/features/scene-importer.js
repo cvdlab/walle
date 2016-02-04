@@ -43,6 +43,7 @@ SceneImporter.prototype.import = function (data) {
     let json = JSON.parse(data);
     scene.load(json);
   } catch (e) {
+    console.error(e);
     alert("Impossible to parse scene");
     return;
   }
