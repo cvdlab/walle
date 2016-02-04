@@ -56,6 +56,7 @@ Vertex.prototype.remove = function () {
 Vertex.prototype.toJson = function () {
   return {
     type: "vertex",
+    id: this.id,
     x: this.x,
     y: this.y
   };

@@ -38,6 +38,7 @@ Window.prototype.redraw = function () {
 Window.prototype.toJson = function () {
   return {
     type: "window",
+    id: this.id,
     wall: this.wall.id,
     offset: this.offset,
     distanceFromFloor: this.distanceFromFloor,

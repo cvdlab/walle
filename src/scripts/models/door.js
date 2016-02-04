@@ -55,6 +55,7 @@ Door.prototype.redraw = function () {
 Door.prototype.toJson = function () {
   return {
     type: "door",
+    id: this.id,
     wall: this.wall.id,
     offset: this.offset,
     distanceFromFloor: this.distanceFromFloor,

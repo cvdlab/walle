@@ -106,15 +106,9 @@ Scene.prototype.hasElement = function (element) {
 
 Scene.prototype.toJson = function () {
 
-  let groups = {};
+  return this.getElements()
+    .map((element) => element.toJson());
 
-  this.getElements().forEach(function (element) {
-    let typeOf = Scene.typeof(element);
-    groups[typeOf] = groups[typeOf] || [];
-    groups[typeOf].push(element.toJson());
-  });
-
-  return groups;
 };
 
 /** events **/

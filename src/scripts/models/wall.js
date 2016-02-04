@@ -58,6 +58,7 @@ Wall.prototype.selected = function (isSelected) {
 Wall.prototype.toJson = function () {
   return {
     type: "wall",
+    id: this.id,
     vertex0: this.vertices[0].id,
     vertex1: this.vertices[1].id,
     tickness: this.tickness

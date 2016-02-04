@@ -49,6 +49,7 @@ Room.prototype.remove = function () {
 Room.prototype.toJson = function () {
   return {
     type: "room",
+    id: this.id,
     vertices: this.vertices.map((vertex)  => vertex.id)
   };
 };
