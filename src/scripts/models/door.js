@@ -1,8 +1,8 @@
 "use strict";
 
-var Door = function (paper, wall, offset) {
+var Door = function (paper, wall, offset, distanceFromFloor, inverted, opposite) {
 
-  Hole.call(this, paper, wall, offset);
+  Hole.call(this, paper, wall, offset, distanceFromFloor, inverted, opposite);
 
 };
 

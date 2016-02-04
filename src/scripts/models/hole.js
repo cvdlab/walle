@@ -1,12 +1,12 @@
 "use strict";
 
-var Hole = function (paper, wall, offset) {
+var Hole = function (paper, wall, offset, distanceFromFloor, inverted, opposite) {
   this.paper = paper;
   this.length = 30;
   this.height = 10;
-  this.distanceFromFloor = 0;
-  this.inverted = false;
-  this.opposite = false;
+  this.distanceFromFloor = distanceFromFloor || 0;
+  this.inverted = inverted || false;
+  this.opposite = opposite || false;
 
   this.group = paper.group().addClass('hole');
 
