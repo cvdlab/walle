@@ -126,7 +126,13 @@ Wall.prototype.updateVertex = function (vertexId, newVertex) {
 };
 
 Wall.prototype.redraw = function () {
-  this.line.attr({strokeWidth: this.tickness});
+  this.line.attr({
+    x1: this.vertices[0].x,
+    y1: this.vertices[0].y,
+    x2: this.vertices[1].x,
+    y2: this.vertices[1].y,
+    strokeWidth: this.tickness
+  });
   this.distanceText.attr({y: -this.tickness + (this.tickness / 3)});
   this.events.dispatchEvent('redraw');
 };
@@ -171,6 +177,27 @@ Wall.prototype.move = function (x, y) {
 
   vertex0.move(ox1 + vx, oy1 + vy);
   vertex1.move(ox2 + vx, oy2 + vy);
+};
+
+Wall.prototype.split = function(x, y){
+
+  let paper = this.paper;
+  let wall = this;
+  let x1 = wall.vertices[0].x, y1 = wall.vertices[0].y, x2 = wall.vertices[1].x, y2 = wall.vertices[1].y;
+  let point = Utils.intersectPoint(x1, y1, x2, y2, x, y);
+
+  let newVertex = new Vertex(paper, point.x, point.y);
+  let newWall0 = new Wall(paper, wall.vertices[0], newVertex, wall.tickness);
+  let newWall1 = new Wall(paper, newVertex, wall.vertices[1], wall.tickness);
+
+  wall.remove();
+
+  return {
+    vertex: newVertex,
+    wall0: newWall0,
+    wall1: newWall1
+  };
+
 };
 
 Wall.prototype.centerPoint = function () {

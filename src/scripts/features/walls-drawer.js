@@ -6,6 +6,8 @@ var WallsDrawer = function (walle) {
 
   this.drawingWall = null;
 
+  this.feedbackElementsList = ['wall', 'vertex'];
+
 };
 
 /** costants */
@@ -19,16 +21,30 @@ WallsDrawer.statusDirty = 2;
 WallsDrawer.prototype.start = function () {
   console.log('start');
 
-  this.clickHandler = event => {
+  this.clickHandler = (event, element) => {
 
     if (this.status === WallsDrawer.statusWaiting) {
-      this.beginDrawingWithPoint(event.offsetX, event.offsetY);
+
+      if(Wall.isWall(element))
+        this.beginDrawingWithWall(element, event.offsetX, event.offsetY);
+      else if(Vertex.isVertex(element))
+        this.beginDrawingWithVertex(element);
+      else
+        this.beginDrawingWithPoint(event.offsetX, event.offsetY);
+
       event.stopPropagation();
       return;
     }
 
     if (this.status === WallsDrawer.statusWorking) {
-      this.endDrawingWithPoint(event.offsetX, event.offsetY, event.shiftKey);
+
+      if(Wall.isWall(element))
+        this.endDrawingWithWall(element, event.offsetX, event.offsetY, event.shiftKey);
+      else if(Vertex.isVertex(element))
+        this.endDrawingWithVertex(element, event.shiftKey);
+      else
+        this.endDrawingWithPoint(event.offsetX, event.offsetY, event.shiftKey);
+
       event.stopPropagation();
     }
 
@@ -50,9 +66,11 @@ WallsDrawer.prototype.start = function () {
     }
   };
 
-  this.paper.click(this.clickHandler);
+  this.walle.addElementsFeedback(this.feedbackElementsList);
+
   this.paper.mousemove(this.mouseMoveHandler);
   this.walle.onAbort(this.abortHandler);
+  this.walle.scene.onClick(this.clickHandler);
 
   this.restart();
 };
@@ -65,22 +83,22 @@ WallsDrawer.prototype.restart = function () {
   console.log('restart');
 
   //clear drawing area
-  this.walle.removeSnapTo();
+  //this.walle.removeSnapTo();
   this.walle.changeCursor("auto");
 
   this.drawingWall = null;
 
   //add a point using snap points
-  this.walle.useSnapTo({
-    click: (event, x, y, anchorPoint) => {
-      if (Vertex.isVertex(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
-        this.beginDrawingWithVertex(anchorPoint);
-      } else {
-        this.beginDrawingWithPoint(x, y);
-      }
-      event.stopPropagation();
-    }
-  });
+  //this.walle.useSnapTo({
+  //  click: (event, x, y, anchorPoint) => {
+  //    if (Vertex.isVertex(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
+  //      this.beginDrawingWithVertex(anchorPoint);
+  //    } else {
+  //      this.beginDrawingWithPoint(x, y);
+  //    }
+  //    event.stopPropagation();
+  //  }
+  //});
 
   //start
   this.status = WallsDrawer.statusWaiting;
@@ -96,10 +114,10 @@ WallsDrawer.prototype.stop = function () {
   //abort if needed
   if (this.drawingWall !== null) this.abortDrawing();
 
-  this.walle.removeSnapTo();
+  //this.walle.removeSnapTo();
 
   this.status = WallsDrawer.statusDirty;
-  this.paper.unclick(this.clickHandler);
+  this.walle.scene.offClick(this.clickHandler);
   this.paper.unmousemove(this.mouseMoveHandler);
   this.walle.offAbort(this.abortHandler);
 };
@@ -110,9 +128,27 @@ WallsDrawer.prototype.stop = function () {
  * @param y
  */
 WallsDrawer.prototype.beginDrawingWithPoint = function (x, y) {
-  console.log('beginDrawingWithPoint')
+  console.log('beginDrawingWithPoint');
   let vertex = new Vertex(this.paper, x, y);
   this.beginDrawingWithVertex(vertex);
+};
+
+/**
+ * begin drawing
+ * @param wall
+ * @param x
+ * @param y
+ */
+WallsDrawer.prototype.beginDrawingWithWall = function (wall, x, y) {
+  console.log('beginDrawingWithWall', wall, x, y);
+
+  let scene = this.walle.scene;
+
+  let splittedWall = wall.split(x, y);
+  scene.removeElement(wall);
+  scene.addElements([splittedWall.vertex, splittedWall.wall0, splittedWall.wall1]);
+
+  this.beginDrawingWithVertex(splittedWall.vertex);
 };
 
 /**
@@ -142,21 +178,21 @@ WallsDrawer.prototype.beginDrawingWithVertex = function (vertex) {
 
 
   //use snap mode
-  this.walle.useSnapTo({
-    click: (event, x, y, anchorPoint) => {
-      vertex1.selected(false);
-      if (Vertex.isVertex(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
-        this.endDrawingWithVertex(anchorPoint, event.shiftKey);
-      } else {
-        this.endDrawingWithPoint(x, y, event.shiftKey);
-      }
-      event.stopPropagation();
-    },
-    mousemove: (event, x, y) => {
-      this.updateDrawingWithPoint(x, y);
-      event.stopPropagation();
-    }
-  });
+  //this.walle.useSnapTo({
+  //  click: (event, x, y, anchorPoint) => {
+  //    vertex1.selected(false);
+  //    if (Vertex.isVertex(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
+  //      this.endDrawingWithVertex(anchorPoint, event.shiftKey);
+  //    } else {
+  //      this.endDrawingWithPoint(x, y, event.shiftKey);
+  //    }
+  //    event.stopPropagation();
+  //  },
+  //  mousemove: (event, x, y) => {
+  //    this.updateDrawingWithPoint(x, y);
+  //    event.stopPropagation();
+  //  }
+  //});
 
 };
 
@@ -219,6 +255,7 @@ WallsDrawer.prototype.endDrawingWithVertex = function (vertex, startNew) {
   wall.vertices[1].selected(false);
   wall.selected(false);
   wall.vertices[1].redraw();
+  wall.redraw();
 
   scene.addElements([wall, wall.vertices[0]]);
 
@@ -257,4 +294,23 @@ WallsDrawer.prototype.endDrawingWithPoint = function (x, y, startNew) {
   this.restart();
   this.beginDrawingWithVertex(wall.vertices[1]);
 
+};
+
+/**
+ * end drawing
+ * @param wall
+ * @param x
+ * @param y
+ * @param startNew
+ */
+WallsDrawer.prototype.endDrawingWithWall = function (wall, x, y, startNew) {
+  console.log('endDrawingWithVertex', wall, startNew);
+
+  let scene = this.walle.scene;
+
+  let splittedWall = wall.split(x, y);
+  scene.removeElement(wall);
+  scene.addElements([splittedWall.vertex, splittedWall.wall0, splittedWall.wall1]);
+
+  this.endDrawingWithVertex(splittedWall.vertex, startNew);
 };

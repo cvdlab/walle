@@ -8,6 +8,7 @@
 
 .walle .wall.selected {
   stroke: #FFC107;
+  pointer-events: none;
 }
 
 .walle .wall-distance {
