@@ -119,8 +119,15 @@ Walle.prototype.revertAndAutosave = function () {
 
   if (storage.getItem(storageKey) !== null) {
     //revert
-    let json = JSON.parse(storage.getItem(storageKey));
-    scene.load(json);
+    let data = storage.getItem(storageKey);
+    try {
+      let json = JSON.parse(data);
+      scene.load(json);
+    } catch (e) {
+      console.error(e);
+      alert("Impossible to restore scene");
+      scene.remove();
+    }
   }
 
   scene.onChange(function () {
