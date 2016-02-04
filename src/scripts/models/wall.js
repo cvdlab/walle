@@ -18,14 +18,14 @@ var Wall = function (paper, vertex0, vertex1) {
   vertex0.addAttachedElement(this);
   vertex0.onMove((x, y)=> {
     line.attr({x1: x, y1: y});
-    this.updateDistance();
+    this.updateDistanceLabel();
     this.events.dispatchEvent("move");
   });
 
   vertex1.addAttachedElement(this);
   vertex1.onMove((x, y)=> {
     line.attr({x2: x, y2: y});
-    this.updateDistance();
+    this.updateDistanceLabel();
     this.events.dispatchEvent("move");
   });
 
@@ -33,7 +33,7 @@ var Wall = function (paper, vertex0, vertex1) {
     .attr({y: -this.tickness + (this.tickness / 4)})
     .addClass('wall-distance');
   this.distanceGroup = this.paper.g(this.distanceText);
-  this.updateDistance();
+  this.updateDistanceLabel();
 };
 
 Wall.prototype.setId = function (id) {
@@ -64,7 +64,7 @@ Wall.prototype.toString = Wall.prototype.toJson = function () {
 };
 
 
-Wall.prototype.updateDistance = function () {
+Wall.prototype.updateDistanceLabel = function () {
 
   let x1 = this.vertices[0].x;
   let y1 = this.vertices[0].y;
@@ -116,11 +116,11 @@ Wall.prototype.updateVertex = function (vertexId, newVertex) {
   newVertex.onMove((x, y)=> {
     if (vertexId === 0) this.line.attr({x1: x, y1: y});
     if (vertexId === 1) this.line.attr({x2: x, y2: y});
-    this.updateDistance();
+    this.updateDistanceLabel();
     this.events.dispatchEvent("move");
   });
 
-  this.updateDistance();
+  this.updateDistanceLabel();
 };
 
 Wall.prototype.redraw = function () {
