@@ -73,8 +73,8 @@ WallsDrawer.prototype.restart = function () {
   //add a point using snap points
   this.walle.useSnapTo({
     click: (event, x, y, anchorPoint) => {
-      if (Edge.isEdge(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
-        this.beginDrawingWithEdge(anchorPoint);
+      if (Vertex.isVertex(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
+        this.beginDrawingWithVertex(anchorPoint);
       } else {
         this.beginDrawingWithPoint(x, y);
       }
@@ -111,26 +111,26 @@ WallsDrawer.prototype.stop = function () {
  */
 WallsDrawer.prototype.beginDrawingWithPoint = function (x, y) {
   console.log('beginDrawingWithPoint')
-  let edge = new Edge(this.paper, x, y);
-  this.beginDrawingWithEdge(edge);
+  let vertex = new Vertex(this.paper, x, y);
+  this.beginDrawingWithVertex(vertex);
 };
 
 /**
  * begin drawing
- * @param edge
+ * @param vertex
  */
-WallsDrawer.prototype.beginDrawingWithEdge = function (edge) {
-  console.log('beginDrawingWithEdge', edge);
+WallsDrawer.prototype.beginDrawingWithVertex = function (vertex) {
+  console.log('beginDrawingWithVertex', vertex);
 
-  //draw wall and edge
-  let edge0 = edge;
-  let edge1 = new Edge(this.paper, edge.x, edge.y);
-  let wall = new Wall(this.paper, edge0, edge1);
-  edge0.redraw();
-  edge1.redraw();
+  //draw wall and vertex
+  let vertex0 = vertex;
+  let vertex1 = new Vertex(this.paper, vertex.x, vertex.y);
+  let wall = new Wall(this.paper, vertex0, vertex1);
+  vertex0.redraw();
+  vertex1.redraw();
 
-  edge0.selected(true);
-  edge1.selected(true);
+  vertex0.selected(true);
+  vertex1.selected(true);
   wall.selected(true);
 
   this.drawingWall = wall;
@@ -144,9 +144,9 @@ WallsDrawer.prototype.beginDrawingWithEdge = function (edge) {
   //use snap mode
   this.walle.useSnapTo({
     click: (event, x, y, anchorPoint) => {
-      edge1.selected(false);
-      if (Edge.isEdge(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
-        this.endDrawingWithEdge(anchorPoint, event.shiftKey);
+      vertex1.selected(false);
+      if (Vertex.isVertex(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
+        this.endDrawingWithVertex(anchorPoint, event.shiftKey);
       } else {
         this.endDrawingWithPoint(x, y, event.shiftKey);
       }
@@ -167,11 +167,11 @@ WallsDrawer.prototype.abortDrawing = function () {
   console.log('abortDrawing');
 
   let scene = this.walle.scene;
-  let edge0 = this.drawingWall.edges[0], edge1 = this.drawingWall.edges[1];
+  let vertex0 = this.drawingWall.vertices[0], vertex1 = this.drawingWall.vertices[1];
 
   //abort
-  if (!scene.hasElement(edge0)) edge0.remove(); else edge0.selected(false);
-  edge1.remove();
+  if (!scene.hasElement(vertex0)) vertex0.remove(); else vertex0.selected(false);
+  vertex1.remove();
   this.drawingWall.remove();
 
   this.drawingWall = null;
@@ -183,10 +183,10 @@ WallsDrawer.prototype.abortDrawing = function () {
 
 /**
  * update drawing
- * @param edge
+ * @param vertex
  */
-WallsDrawer.prototype.updateDrawingWithEdge = function (edge) {
-  this.updateDrawingWithPoint(edge.x, edge.y);
+WallsDrawer.prototype.updateDrawingWithVertex = function (vertex) {
+  this.updateDrawingWithPoint(vertex.x, vertex.y);
 };
 
 /**
@@ -197,36 +197,36 @@ WallsDrawer.prototype.updateDrawingWithEdge = function (edge) {
 WallsDrawer.prototype.updateDrawingWithPoint = function (x, y) {
 
   //move wall endpoint
-  this.drawingWall.edges[1].move(x, y);
+  this.drawingWall.vertices[1].move(x, y);
 };
 
 /**
  * end drawing
- * @param edge
+ * @param vertex
  * @param startNew
  */
-WallsDrawer.prototype.endDrawingWithEdge = function (edge, startNew) {
-  console.log('endDrawingWithEdge', edge, startNew);
+WallsDrawer.prototype.endDrawingWithVertex = function (vertex, startNew) {
+  console.log('endDrawingWithVertex', vertex, startNew);
 
   let wall = this.drawingWall;
   let scene = this.walle.scene;
-  if (wall.edges[0].x === edge.x && wall.edges[0].y === edge.y)return;
+  if (wall.vertices[0].x === vertex.x && wall.vertices[0].y === vertex.y)return;
 
-  wall.edges[1].remove();
-  wall.updateEdge(1, edge);
+  wall.vertices[1].remove();
+  wall.updateVertex(1, vertex);
 
-  wall.edges[0].selected(false);
-  wall.edges[1].selected(false);
+  wall.vertices[0].selected(false);
+  wall.vertices[1].selected(false);
   wall.selected(false);
-  wall.edges[1].redraw();
+  wall.vertices[1].redraw();
 
-  scene.addElements([wall, wall.edges[0]]);
+  scene.addElements([wall, wall.vertices[0]]);
 
   this.status = WallsDrawer.statusDirty;
 
   //restart
   this.restart();
-  if (startNew) this.beginDrawingWithEdge(edge);
+  if (startNew) this.beginDrawingWithVertex(vertex);
 };
 
 /**
@@ -240,21 +240,21 @@ WallsDrawer.prototype.endDrawingWithPoint = function (x, y, startNew) {
 
   let scene = this.walle.scene;
   let wall = this.drawingWall;
-  if (wall.edges[0].x === x && wall.edges[0].y === y)return;
-  if (scene.nearestElement(x, y, 1, 'edge') !== null) return;
+  if (wall.vertices[0].x === x && wall.vertices[0].y === y)return;
+  if (scene.nearestElement(x, y, 1, 'vertex') !== null) return;
 
-  wall.edges[1].move(x, y);
+  wall.vertices[1].move(x, y);
 
-  wall.edges[0].selected(false);
-  wall.edges[1].selected(false);
+  wall.vertices[0].selected(false);
+  wall.vertices[1].selected(false);
   wall.selected(false);
 
-  scene.addElements([wall, wall.edges[0], wall.edges[1]]);
+  scene.addElements([wall, wall.vertices[0], wall.vertices[1]]);
 
   this.status = WallsDrawer.statusDirty;
 
   //restart
   this.restart();
-  this.beginDrawingWithEdge(wall.edges[1]);
+  this.beginDrawingWithVertex(wall.vertices[1]);
 
 };

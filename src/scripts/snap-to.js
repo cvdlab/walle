@@ -89,28 +89,28 @@ SnapTo.prototype.use = function (handlers) {
   let height = this.walle.height;
   let snapElements = this.snapElements;
   let paper = this.paper;
-  let edges = this.scene.getEdges();
+  let vertices = this.scene.getVertices();
   let walls = this.scene.getWalls();
 
   //add wall snap point
-  edges.forEach((edge) => {
+  vertices.forEach((vertex) => {
 
-    this.addSnapPoint(edge.x, edge.y, edge, handlers);
+    this.addSnapPoint(vertex.x, vertex.y, vertex, handlers);
 
   });
 
   //add horizontal and vertical snap line
-  edges.forEach((edge) => {
-    let hCoords = Utils.horizontalLineIntoBox(edge.x, edge.y, width, height);
-    let vCoords = Utils.verticalLineIntoBox(edge.x, edge.y, width, height);
+  vertices.forEach((vertex) => {
+    let hCoords = Utils.horizontalLineIntoBox(vertex.x, vertex.y, width, height);
+    let vCoords = Utils.verticalLineIntoBox(vertex.x, vertex.y, width, height);
 
-    this.addSnapLine(hCoords.r1.x, hCoords.r1.y, hCoords.r2.x, hCoords.r2.y, edge, handlers);
-    this.addSnapLine(vCoords.r1.x, vCoords.r1.y, vCoords.r2.x, vCoords.r2.y, edge, handlers);
+    this.addSnapLine(hCoords.r1.x, hCoords.r1.y, hCoords.r2.x, hCoords.r2.y, vertex, handlers);
+    this.addSnapLine(vCoords.r1.x, vCoords.r1.y, vCoords.r2.x, vCoords.r2.y, vertex, handlers);
   });
 
   //add continue snap point
   walls.forEach((wall) => {
-    let coords = Utils.lineIntoBox(wall.edges[0].x, wall.edges[0].y, wall.edges[1].x, wall.edges[1].y, width, height);
+    let coords = Utils.lineIntoBox(wall.vertices[0].x, wall.vertices[0].y, wall.vertices[1].x, wall.vertices[1].y, width, height);
 
     this.addSnapLine(coords.r1.x, coords.r1.y, coords.r2.x, coords.r2.y, wall, handlers);
   });

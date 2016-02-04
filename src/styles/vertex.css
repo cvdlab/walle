@@ -1,19 +1,19 @@
 
-.walle .edge{
+.walle .vertex{
   stroke-width: 1;
   stroke: #8E9BA2;
   fill: #8E9BA2;
 }
 
-.walle.edge-feedback .edge:hover{
+.walle.vertex-feedback .vertex:hover{
   stroke: #FFC107;
   fill: #FFC107;
 }
 
-.walle .edge.selected{
+.walle .vertex.selected{
   stroke: #FFC107;
 }
 
-.walle .edge.hover{
+.walle .vertex.hover{
   fill: #00e5ff;
 }

@@ -1,6 +1,6 @@
 "use strict";
 
-var Edge = function (paper, x, y) {
+var Vertex = function (paper, x, y) {
 
   this.paper = paper;
   this.x = x;
@@ -10,37 +10,37 @@ var Edge = function (paper, x, y) {
 
   this.events = new Events();
 
-  let circle = this.circle = paper.circle(x, y, 4).addClass('edge');
+  let circle = this.circle = paper.circle(x, y, 4).addClass('vertex');
 
 };
 
-Edge.prototype.setId = function(id){
+Vertex.prototype.setId = function(id){
   this.id = id;
   this.circle.attr({id: this.id});
 };
 
-Edge.prototype.move = function (x, y) {
+Vertex.prototype.move = function (x, y) {
   this.x = x;
   this.y = y;
   this.circle.attr({cx: x, cy: y});
   this.events.dispatchEvent("move", x, y);
 };
 
-Edge.prototype.selected = function (isSelected) {
+Vertex.prototype.selected = function (isSelected) {
   if(isSelected)
     this.circle.addClass('selected');
   else
     this.circle.removeClass('selected');
 };
 
-Edge.prototype.hovered = function (isHovered) {
+Vertex.prototype.hovered = function (isHovered) {
   if(isHovered)
     this.circle.addClass('hover');
   else
     this.circle.removeClass('hover');
 };
 
-Edge.prototype.redraw = function () {
+Vertex.prototype.redraw = function () {
   let attr = this.circle.attr();
   this.circle.remove();
 
@@ -49,50 +49,50 @@ Edge.prototype.redraw = function () {
   this.circle = circle;
 };
 
-Edge.prototype.remove = function () {
+Vertex.prototype.remove = function () {
   this.circle.remove();
 };
 
-Edge.prototype.toString = Edge.prototype.toJson = function () {
+Vertex.prototype.toString = Vertex.prototype.toJson = function () {
   return {
-    type: "edge",
+    type: "vertex",
     x: this.x,
     y: this.y
   };
 };
 
-Edge.prototype.merge = function(edge){
-  //add edge listener to this
+Vertex.prototype.merge = function(vertex){
+  //add vertex listener to this
 };
 
-Edge.prototype.drag = function(onStart, onMove, onEnd){
+Vertex.prototype.drag = function(onStart, onMove, onEnd){
   this.circle.drag(onMove, onStart, onEnd);
 };
 
-Edge.prototype.undrag = function(){
+Vertex.prototype.undrag = function(){
   this.circle.undrag();
 };
 
-Edge.prototype.onMove = function(handler){
+Vertex.prototype.onMove = function(handler){
   this.events.addEventListener('move', handler);
 };
 
-Edge.prototype.offMove = function(handler){
+Vertex.prototype.offMove = function(handler){
   this.events.removeEventListener('move', handler);
 };
 
-Edge.prototype.distanceFromPoint = function(x, y){
+Vertex.prototype.distanceFromPoint = function(x, y){
   return Utils.twoPointsDistance(this.x, this.y, x, y);
 };
 
-Edge.isEdge = function(edge){
-  return (edge instanceof Edge);
+Vertex.isVertex = function(vertex){
+  return (vertex instanceof Vertex);
 };
 
-Edge.prototype.addAttachedElement = function(element){
+Vertex.prototype.addAttachedElement = function(element){
   this.attachedElements.add(element);
 };
 
-Edge.prototype.removeAttachedElement = function(element){
+Vertex.prototype.removeAttachedElement = function(element){
   this.attachedElements.delete(element);
 };

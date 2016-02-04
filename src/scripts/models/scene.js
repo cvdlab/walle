@@ -67,8 +67,8 @@ Scene.prototype.removeElements = function (elements) {
   this.events.dispatchEvent('remove', elements);
 };
 
-Scene.prototype.getEdges = function () {
-  return this.getElements('edge');
+Scene.prototype.getVertices = function () {
+  return this.getElements('vertex');
 };
 
 Scene.prototype.getWalls = function () {
@@ -188,32 +188,32 @@ Scene.prototype.load = function (data) {
   let paper = this.paper;
   let hashMap = [];
 
-  let hashEdge = (edge) => {
-    return edge.type + '_' + edge.x + '_' + edge.y
+  let hashVertex = (vertex) => {
+    return vertex.type + '_' + vertex.x + '_' + vertex.y
   };
   let hashWall = (wall)=> {
-    return wall.type + '_' + hashEdge(wall.edge0) + '_' + hashEdge(wall.edge1)
+    return wall.type + '_' + hashVertex(wall.vertex0) + '_' + hashVertex(wall.vertex1)
   };
 
-  data.edge = data.edge || [];
+  data.vertex = data.vertex || [];
   data.wall = data.wall || [];
   data.window = data.window || [];
   data.door = data.door || [];
 
-  //load edge
-  data.edge.forEach((edge)=> {
-    let edgeObj = new Edge(paper, edge.x, edge.y);
-    hashMap[hashEdge(edge)] = edgeObj;
-    this.addElement(edgeObj);
+  //load vertex
+  data.vertex.forEach((vertex)=> {
+    let vertexObj = new Vertex(paper, vertex.x, vertex.y);
+    hashMap[hashVertex(vertex)] = vertexObj;
+    this.addElement(vertexObj);
   });
 
   //load wall
   data.wall.forEach((wall)=> {
-    let edge0 = hashMap[hashEdge(wall.edge0)];
-    let edge1 = hashMap[hashEdge(wall.edge1)];
-    if (!edge0 || !edge1) throw new Error("Edge not found");
+    let vertex0 = hashMap[hashVertex(wall.vertex0)];
+    let vertex1 = hashMap[hashVertex(wall.vertex1)];
+    if (!vertex0 || !vertex1) throw new Error("Vertex not found");
 
-    let wallObj = new Wall(paper, edge0, edge1);
+    let wallObj = new Wall(paper, vertex0, vertex1);
     hashMap[hashWall(wall)] = wallObj;
     this.addElement(wallObj);
   });
@@ -236,15 +236,15 @@ Scene.prototype.load = function (data) {
     this.addElement(doorObj);
   });
 
-  //redraw edge
-  this.getEdges().forEach((edge)=> {
-    edge.redraw();
+  //redraw vertex
+  this.getVertices().forEach((vertex)=> {
+    vertex.redraw();
   });
 };
 
 Scene.prototype.refreshRooms = function () {
   let scene = this;
-  let edges = scene.getEdges();
+  let vertices = scene.getVertices();
   let walls = scene.getWalls();
 
   //remove old rooms
@@ -254,20 +254,20 @@ Scene.prototype.refreshRooms = function () {
   });
 
   //add new rooms
-  let edgesArray = edges.map(function (edge) {
-    return [edge.x, edge.y];
+  let verticesArray = vertices.map(function (vertex) {
+    return [vertex.x, vertex.y];
   });
   let wallsArray = walls.map(function (wall) {
-    return wall.edges.map(function (edge) {
-      return edges.indexOf(edge);
+    return wall.vertices.map(function (vertex) {
+      return vertices.indexOf(vertex);
     })
   });
 
-  let cycles = find_inner_cycles(edgesArray, wallsArray);
+  let cycles = find_inner_cycles(verticesArray, wallsArray);
 
-  let rooms = cycles.v_cycles.map(function (roomEdgesIds) {
-    return roomEdgesIds.map(function (edgeId) {
-      return edges[edgeId];
+  let rooms = cycles.v_cycles.map(function (roomVerticesIds) {
+    return roomVerticesIds.map(function (vertexId) {
+      return vertices[vertexId];
     });
   });
 
@@ -284,8 +284,8 @@ Scene.prototype.refreshRooms = function () {
     shuffle: true
   });
 
-  rooms.forEach((edges, i) => {
-    let room = new Room(this.paper, edges, roomsColor[i], roomsPatternDirection[i]);
+  rooms.forEach((vertices, i) => {
+    let room = new Room(this.paper, vertices, roomsColor[i], roomsPatternDirection[i]);
     scene.addElement(room);
   });
 };
@@ -295,7 +295,7 @@ Scene.typeof = function (obj) {
   if (Door.isDoor(obj)) return 'door';
   if (Window.isWindow(obj)) return 'window';
   if (Room.isRoom(obj)) return 'room';
-  if (Edge.isEdge(obj)) return 'edge';
+  if (Vertex.isVertex(obj)) return 'vertex';
   if (Wall.isWall(obj)) return 'wall';
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
 };

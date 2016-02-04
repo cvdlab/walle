@@ -34,11 +34,11 @@ ElementsRemove.prototype.remove = function (element) {
   if (Wall.isWall(element)) {
     element.attachedElements.forEach(element => removeList.push(element));
 
-    element.edges.forEach(function (edge) {
-      edge.removeAttachedElement(element);
+    element.vertices.forEach(function (vertex) {
+      vertex.removeAttachedElement(element);
 
-      if (edge.attachedElements.size === 0) {
-        removeList.push(edge);
+      if (vertex.attachedElements.size === 0) {
+        removeList.push(vertex);
       }
     });
   }

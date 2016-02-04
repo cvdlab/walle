@@ -6,7 +6,7 @@ var ElementsMove = function (walle) {
 
   this.currentElement = null;
 
-  this.feedbackElementsList = ['hole', 'edge', 'wall'];
+  this.feedbackElementsList = ['hole', 'vertex', 'wall'];
 };
 
 
@@ -21,7 +21,7 @@ ElementsMove.prototype.start = function () {
   walle.addElementsFeedback(this.feedbackElementsList);
 
   this.beginDragHandler = (event, element) => {
-    if(Hole.isHole(element) || Edge.isEdge(element) || Wall.isWall(element))
+    if(Hole.isHole(element) || Vertex.isVertex(element) || Wall.isWall(element))
       this.beginDragging(element, event.offsetX, event.offsetY);
   };
 

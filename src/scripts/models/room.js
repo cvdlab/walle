@@ -1,11 +1,11 @@
 "use strict";
 
-var Room = function (paper, edges, color, angle) {
+var Room = function (paper, vertices, color, angle) {
 
   this.paper = paper;
   this.events = new Events();
 
-  this.edges = edges;
+  this.vertices = vertices;
 
   let pattern = this.pattern = paper
     .rect(0, 0, 10, 3)
@@ -20,19 +20,19 @@ var Room = function (paper, edges, color, angle) {
       patternTransform: Snap.matrix().rotate(angle)
     });
 
-  let pathString = Room.edgesToPath(edges);
+  let pathString = Room.verticesToPath(vertices);
 
   this.path = paper.path(pathString)
     .attr({fill: pattern})
     .addClass('room');
   paper.prepend(this.path);
 
-  this.moveEdgeHandler = (event) => {
+  this.moveVertexHandler = (event) => {
     this.redraw();
   };
 
-  edges.forEach((edge)=> {
-    edge.onMove(this.moveEdgeHandler);
+  vertices.forEach((vertex)=> {
+    vertex.onMove(this.moveVertexHandler);
   });
 
 };
@@ -49,26 +49,26 @@ Room.prototype.remove = function () {
 Room.prototype.toJson = function () {
   return {
     type: "room",
-    edges: this.edges.map(function (edge) {
-      return edge.toJson()
+    vertices: this.vertices.map(function (vertex) {
+      return vertex.toJson()
     })
   };
 };
 
 Room.prototype.redraw = function () {
-  let pathString = Room.edgesToPath(this.edges);
+  let pathString = Room.verticesToPath(this.vertices);
   this.path.attr({d: pathString});
 };
 
 
-Room.edgesToPath = function (edges) {
+Room.verticesToPath = function (vertices) {
   let path = "";
   let first = true;
 
-  edges.forEach(function (edge) {
+  vertices.forEach(function (vertex) {
     let command = first ? 'M' : 'L';
     first = false;
-    path += command + edge.x + ' ' + edge.y + ' ';
+    path += command + vertex.x + ' ' + vertex.y + ' ';
   });
   path += ' z';
   return path;

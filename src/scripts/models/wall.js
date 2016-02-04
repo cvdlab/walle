@@ -1,29 +1,29 @@
 "use strict";
 
 
-var Wall = function (paper, edge0, edge1) {
+var Wall = function (paper, vertex0, vertex1) {
 
   this.paper = paper;
   this.events = new Events();
-  this.edges = [edge0, edge1];
-  this.length = Utils.twoPointsDistance(edge0.x, edge0.y, edge1.x, edge1.y);
+  this.vertices = [vertex0, vertex1];
+  this.length = Utils.twoPointsDistance(vertex0.x, vertex0.y, vertex1.x, vertex1.y);
   this.attachedElements = new Set();
   this.tickness = 10;
 
   let line = this.line =
-    paper.line(edge0.x, edge0.y, edge1.x, edge1.y)
+    paper.line(vertex0.x, vertex0.y, vertex1.x, vertex1.y)
       .attr({strokeWidth: this.tickness})
       .addClass('wall');
 
-  edge0.addAttachedElement(this);
-  edge0.onMove((x, y)=> {
+  vertex0.addAttachedElement(this);
+  vertex0.onMove((x, y)=> {
     line.attr({x1: x, y1: y});
     this.updateDistance();
     this.events.dispatchEvent("move");
   });
 
-  edge1.addAttachedElement(this);
-  edge1.onMove((x, y)=> {
+  vertex1.addAttachedElement(this);
+  vertex1.onMove((x, y)=> {
     line.attr({x2: x, y2: y});
     this.updateDistance();
     this.events.dispatchEvent("move");
@@ -58,18 +58,18 @@ Wall.prototype.selected = function (isSelected) {
 Wall.prototype.toString = Wall.prototype.toJson = function () {
   return {
     type: "wall",
-    edge0: this.edges[0].toString(),
-    edge1: this.edges[1].toString()
+    vertex0: this.vertices[0].toString(),
+    vertex1: this.vertices[1].toString()
   };
 };
 
 
 Wall.prototype.updateDistance = function () {
 
-  let x1 = this.edges[0].x;
-  let y1 = this.edges[0].y;
-  let x2 = this.edges[1].x;
-  let y2 = this.edges[1].y;
+  let x1 = this.vertices[0].x;
+  let y1 = this.vertices[0].y;
+  let x2 = this.vertices[1].x;
+  let y2 = this.vertices[1].y;
 
   let group = this.distanceGroup;
   let text = this.distanceText;
@@ -106,16 +106,16 @@ Wall.isWall = function (wall) {
   return (wall instanceof Wall);
 };
 
-Wall.prototype.updateEdge = function (edgeId, newEdge) {
+Wall.prototype.updateVertex = function (vertexId, newVertex) {
 
-  this.edges[edgeId].removeAttachedElement(this);
-  this.edges[edgeId] = newEdge;
-  this.edges[edgeId].addAttachedElement(this);
+  this.vertices[vertexId].removeAttachedElement(this);
+  this.vertices[vertexId] = newVertex;
+  this.vertices[vertexId].addAttachedElement(this);
 
 
-  newEdge.onMove((x, y)=> {
-    if (edgeId === 0) this.line.attr({x1: x, y1: y});
-    if (edgeId === 1) this.line.attr({x2: x, y2: y});
+  newVertex.onMove((x, y)=> {
+    if (vertexId === 0) this.line.attr({x1: x, y1: y});
+    if (vertexId === 1) this.line.attr({x2: x, y2: y});
     this.updateDistance();
     this.events.dispatchEvent("move");
   });
@@ -130,7 +130,7 @@ Wall.prototype.redraw = function () {
 };
 
 Wall.prototype.distanceFromPoint = function (x, y) {
-  return Utils.segmentPointDistance(this.edges[0].x, this.edges[0].y, this.edges[1].x, this.edges[1].y, x, y);
+  return Utils.segmentPointDistance(this.vertices[0].x, this.vertices[0].y, this.vertices[1].x, this.vertices[1].y, x, y);
 };
 
 Wall.prototype.onMove = function (handler) {
@@ -159,19 +159,19 @@ Wall.prototype.removeAttachedElement = function (element) {
 
 Wall.prototype.move = function (x, y) {
 
-  let edge0 = this.edges[0], edge1 = this.edges[1];
-  let ox1 = edge0.x, oy1 = edge0.y, ox2 = edge1.x, oy2 = edge1.y;
+  let vertex0 = this.vertices[0], vertex1 = this.vertices[1];
+  let ox1 = vertex0.x, oy1 = vertex0.y, ox2 = vertex1.x, oy2 = vertex1.y;
 
-  let center = Utils.centerPoint(edge0.x, edge0.y, edge1.x, edge1.y);
+  let center = Utils.centerPoint(vertex0.x, vertex0.y, vertex1.x, vertex1.y);
 
   let translationVector = Utils.translationVector(ox1, oy1, ox2, oy2, x, y);
   let vx = translationVector.vx, vy = translationVector.vy;
 
-  edge0.move(ox1 + vx, oy1 + vy);
-  edge1.move(ox2 + vx, oy2 + vy);
+  vertex0.move(ox1 + vx, oy1 + vy);
+  vertex1.move(ox2 + vx, oy2 + vy);
 };
 
 Wall.prototype.centerPoint = function () {
-  let edge0 = wall.wall.edges[0], edge1 = wall.wall.edges[1];
-  return Utils.centerPoint(edge0.x, edge0.y, edge1.x, edge1.y);
+  let vertex0 = wall.wall.vertices[0], vertex1 = wall.wall.vertices[1];
+  return Utils.centerPoint(vertex0.x, vertex0.y, vertex1.x, vertex1.y);
 };
