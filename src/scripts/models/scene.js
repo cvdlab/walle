@@ -11,7 +11,7 @@ var Scene = function (paper) {
     this.refreshRooms();
   });
 
-  let genericHandler = (eventName) => {
+  let detectElementHandler = (eventName) => {
     return (event) => {
       let node = event.target;
 
@@ -26,8 +26,8 @@ var Scene = function (paper) {
     }
   };
 
-  this.clickHandler = genericHandler('click');
-  this.mouseDownHandler = genericHandler('mousedown');
+  this.clickHandler = detectElementHandler('click');
+  this.mouseDownHandler = detectElementHandler('mousedown');
 
   this.paper.click(this.clickHandler);
   this.paper.mousedown(this.mouseDownHandler);
