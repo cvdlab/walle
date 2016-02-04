@@ -55,11 +55,12 @@ Wall.prototype.selected = function (isSelected) {
     this.line.removeClass('selected');
 };
 
-Wall.prototype.toString = Wall.prototype.toJson = function () {
+Wall.prototype.toJson = function () {
   return {
     type: "wall",
-    vertex0: this.vertices[0].toString(),
-    vertex1: this.vertices[1].toString()
+    vertex0: this.vertices[0].id,
+    vertex1: this.vertices[1].id,
+    tickness: this.tickness
   };
 };
 

@@ -25,13 +25,13 @@ Door.prototype.redraw = function () {
     .replace(/q/g, (length / 2).toString());
 
   let matrix = Snap.matrix();
-  if(this.inverted) matrix.scale(1, -1);
-  if(this.opposite)
+  if (this.inverted) matrix.scale(1, -1);
+  if (this.opposite)
     matrix.scale(-1, 1).translate(-length, -length);
   else
     matrix.translate(0, -length);
 
-  matrix.translate(0, - tickness / 2);
+  matrix.translate(0, -tickness / 2);
 
   if (!this.groupSymbol) {
 
@@ -55,8 +55,11 @@ Door.prototype.redraw = function () {
 Door.prototype.toJson = function () {
   return {
     type: "door",
-    wall: this.wall.toJson(),
-    offset: this.offset
+    wall: this.wall.id,
+    offset: this.offset,
+    distanceFromFloor: this.distanceFromFloor,
+    inverted: this.inverted,
+    opposite: this.opposite
   };
 };
 

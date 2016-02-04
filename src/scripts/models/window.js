@@ -38,8 +38,11 @@ Window.prototype.redraw = function () {
 Window.prototype.toJson = function () {
   return {
     type: "window",
-    wall: this.wall.toJson(),
-    offset: this.offset
+    wall: this.wall.id,
+    offset: this.offset,
+    distanceFromFloor: this.distanceFromFloor,
+    inverted: this.inverted,
+    opposite: this.opposite
   };
 };
 

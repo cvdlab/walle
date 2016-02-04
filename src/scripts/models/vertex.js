@@ -53,7 +53,7 @@ Vertex.prototype.remove = function () {
   this.circle.remove();
 };
 
-Vertex.prototype.toString = Vertex.prototype.toJson = function () {
+Vertex.prototype.toJson = function () {
   return {
     type: "vertex",
     x: this.x,
