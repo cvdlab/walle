@@ -180,60 +180,51 @@ Scene.prototype.remove = function () {
 Scene.prototype.load = function (data) {
 
   let paper = this.paper;
-  let hashMap = [];
+  let scene = this;
+  scene.remove();
 
-  let hashVertex = (vertex) => {
-    return vertex.type + '_' + vertex.x + '_' + vertex.y
-  };
-  let hashWall = (wall)=> {
-    return wall.type + '_' + hashVertex(wall.vertex0) + '_' + hashVertex(wall.vertex1)
-  };
+  let loadedElements = {};
 
-  data.vertex = data.vertex || [];
-  data.wall = data.wall || [];
-  data.window = data.window || [];
-  data.door = data.door || [];
+  data
+    .filter(d => d.type == 'vertex')
+    .forEach(d => {
+      loadedElements[d.id] = new Vertex(paper, d.x, d.y)
+    });
 
-  //load vertex
-  data.vertex.forEach((vertex)=> {
-    let vertexObj = new Vertex(paper, vertex.x, vertex.y);
-    hashMap[hashVertex(vertex)] = vertexObj;
-    this.addElement(vertexObj);
-  });
+  data
+    .filter(d => d.type == 'wall')
+    .forEach(d => {
+      let vertex0 = loadedElements[d.vertex0];
+      if (!vertex0) throw new Error('Impossibile to load vertex ' + d.vertex0);
+      let vertex1 = loadedElements[d.vertex1];
+      if (!vertex1) throw new Error('Impossibile to load vertex ' + d.vertex1);
+      loadedElements[d.id] = new Wall(paper, vertex0, vertex1, d.tickness);
+    });
 
-  //load wall
-  data.wall.forEach((wall)=> {
-    let vertex0 = hashMap[hashVertex(wall.vertex0)];
-    let vertex1 = hashMap[hashVertex(wall.vertex1)];
-    if (!vertex0 || !vertex1) throw new Error("Vertex not found");
+  data
+    .filter(d => d.type == 'window')
+    .forEach(d => {
+      let wall = loadedElements[d.wall];
+      if (!wall) throw new Error('Impossibile to load vertex ' + d.wall);
+      loadedElements[d.id] = new Window(paper, wall, d.offset, d.distanceFromFloor, d.inverted, d.opposite);
+    });
 
-    let wallObj = new Wall(paper, vertex0, vertex1);
-    hashMap[hashWall(wall)] = wallObj;
-    this.addElement(wallObj);
-  });
+  data
+    .filter(d => d.type == 'door')
+    .forEach(d => {
+      let wall = loadedElements[d.wall];
+      if (!wall) throw new Error('Impossibile to load vertex ' + d.wall);
+      loadedElements[d.id] = new Door(paper, wall, d.offset, d.distanceFromFloor, d.inverted, d.opposite);
+    });
 
-  //load window
-  data.window.forEach((window) => {
-    let wall = hashMap[hashWall(window.wall)];
-    if (!wall) throw new Error("Wall not found");
+  let loadedElementsArray = [];
+  for (var ID in loadedElements) {
+    loadedElementsArray.push(loadedElements[ID]);
+  }
 
-    let windowObj = new Window(paper, wall, window.offset);
-    this.addElement(windowObj);
-  });
+  scene.addElements(loadedElementsArray);
 
-  //load door
-  data.door.forEach((door) => {
-    let wall = hashMap[hashWall(door.wall)];
-    if (!wall) throw new Error("Wall not found");
-
-    let doorObj = new Door(paper, wall, door.offset);
-    this.addElement(doorObj);
-  });
-
-  //redraw vertex
-  this.getVertices().forEach((vertex)=> {
-    vertex.redraw();
-  });
+  this.getVertices().forEach(vertex=> vertex.redraw());
 };
 
 Scene.prototype.refreshRooms = function () {
