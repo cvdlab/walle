@@ -112,7 +112,7 @@ Walle.prototype.showSplash = function () {
 Walle.prototype.revertAndAutosave = function () {
 
   if (!window.localStorage) return;
-  let storageKey = 'walle_scene_autosave';
+  let storageKey = 'walle_scene_autosave_v1';
   let storage = window.localStorage;
 
   let scene = this.scene;
