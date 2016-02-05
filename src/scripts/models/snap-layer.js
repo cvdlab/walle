@@ -35,7 +35,7 @@ var SnapLayer = function (scene) {
           snapElement.hover(true);
           hoveredSnapElement = snapElement;
         }
-        events.dispatchEvent(handlerName, targetPoint.x, targetPoint.y, targetElement);
+        events.dispatchEvent(handlerName, event, targetPoint.x, targetPoint.y, targetElement);
       }else if(hoveredSnapElement){
         hoveredSnapElement.hover(false);
         hoveredSnapElement = null;
