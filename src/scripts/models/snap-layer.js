@@ -7,9 +7,12 @@ var SnapLayer = function (scene) {
   let events = this.events = new Events();
 
   let paper = this.paper = scene.paper;
+  this.active = false;
 
   let parametricHandler = handlerName => {
     return (event) => {
+
+      if (!this.active) return;
 
       let activeElements = snapElements
         .map(snapElement => {
@@ -30,13 +33,13 @@ var SnapLayer = function (scene) {
         let snapElement = activeElements[0].snapElement;
         let targetElement = snapElement.targetElement;
         let targetPoint = snapElement.targetPoint(event.offsetX, event.offsetY);
-        if(hoveredSnapElement !== snapElement){
-          if(hoveredSnapElement) hoveredSnapElement.hover(false);
+        if (hoveredSnapElement !== snapElement) {
+          if (hoveredSnapElement) hoveredSnapElement.hover(false);
           snapElement.hover(true);
           hoveredSnapElement = snapElement;
         }
         events.dispatchEvent(handlerName, event, targetPoint.x, targetPoint.y, targetElement);
-      }else if(hoveredSnapElement){
+      } else if (hoveredSnapElement) {
         hoveredSnapElement.hover(false);
         hoveredSnapElement = null;
       }
@@ -54,19 +57,23 @@ var SnapLayer = function (scene) {
 };
 
 SnapLayer.prototype.onClick = function (handler) {
+  this.active = true;
   this.events.addEventListener('click', handler);
 };
 
 SnapLayer.prototype.offClick = function (handler) {
   this.events.removeEventListener('click', handler);
+  this.active = this.events.length > 0;
 };
 
 SnapLayer.prototype.onMouseMove = function (handler) {
+  this.active = true;
   this.events.addEventListener('mousemove', handler);
 };
 
 SnapLayer.prototype.offMouseMove = function (handler) {
   this.events.removeEventListener('mousemove', handler);
+  this.active = this.events.length > 0;
 };
 
 SnapLayer.prototype.addTargetElements = function (elements) {
