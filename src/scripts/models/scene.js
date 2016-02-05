@@ -1,10 +1,13 @@
 "use strict";
 
-var Scene = function (paper) {
+var Scene = function (paper, width, height) {
   this.paper = paper;
   this.elements = {};
   this.events = new Events();
   this.nextId = 0;
+  this.width = width;
+  this.height = height;
+  this.snapLayer = new SnapLayer(this);
 
   this.onChange((element) => {
     if (Room.isRoom(element) || Hole.isHole(element)) return;

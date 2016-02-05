@@ -1,0 +1,16 @@
+.walle .snap-element {
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.walle .snap-line {
+  stroke-width: 1px;
+  stroke: red;
+}
+
+
+.walle .snap-point {
+  stroke-width: 1px;
+  fill: red;
+  stroke: red;
+}

@@ -13,8 +13,8 @@ var Walle = function (container) {
   this.splashTime = (this.isProduction) ? 3000 : 0;
 
   //init vars;
-  this.width = container.offsetWidth;
-  this.height = container.offsetHeight;
+  let width = this.width = container.offsetWidth;
+  let height = this.height = container.offsetHeight;
 
   this.events = new Events();
   this.debugMode = false;
@@ -31,7 +31,7 @@ var Walle = function (container) {
   //init paper and scene
   this.paper = Snap(this.width, this.height);
   this.paper.appendTo(this.wrapper.get(0));
-  this.scene = new Scene(this.paper);
+  this.scene = new Scene(this.paper, width, height);
 
   //snap to
   this.snapTo = new SnapTo(this);
