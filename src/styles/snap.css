@@ -14,3 +14,8 @@
   fill: red;
   stroke: red;
 }
+
+.walle .snap-overlay{
+  fill: #000;
+  pointer-events: none;
+}

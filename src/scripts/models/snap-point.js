@@ -29,7 +29,8 @@ SnapPoint.prototype.hover = function (on) {
 
     let maskRect = this.paper
       .rect(0, 0, 99999, 99999)
-      .attr({fill: "black", opacity: 0, mask: mask})
+      .addClass('snap-overlay')
+      .attr({opacity: 0, mask: mask})
       .animate({opacity: 0.5}, 100);
 
     this.overlay = {
