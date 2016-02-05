@@ -3,32 +3,37 @@
 var SnapLayer = function (scene) {
   this.scene = scene;
   let snapElements = this.snapElements = [];
-  this.events = new Events();
+  let events = this.events = new Events();
 
   let paper = this.paper = scene.paper;
 
-  let clickHandler = (event) => {
-    //console.log('click')
-  };
+  let parametricHandler = handlerName => {
+    return (event) => {
+      let minSnapElement = null;
+      let minDistance = Number.POSITIVE_INFINITY;
 
-  let mouseMoveHandler = (event) => {
-    //console.log('mousemove');
+      let distancedElements = snapElements
+        .map(snapElement => {
+          return {
+            distance: snapElement.distanceFromPoint(event.offsetX, event.offsetY),
+            snapElement: snapElement,
+            priority: snapElement.priority
+          }
+        })
+        .filter(o => o.distance < 10)
+        .sort((a, b) => {
+          if (a.priority > b.priority) return -1;
+          if (a.priority < b.priority) return 1;
+          return a.distance - b.distance;
+        });
 
-    let minSnapElement = null;
-    let minDistance = Number.POSITIVE_INFINITY;
-
-    snapElements.forEach((snapElement) => {
-      let distance = snapElement.distanceFromPoint(event.offsetX, event.offsetY);
-
-      if(! minSnapElement || (distance <= minDistance && snapElement.priority <= minSnapElement.priority)){
-        minDistance = distance;
-        minSnapElement = snapElement;
+      if (distancedElements.length > 0) {
+        let snapElement = distancedElements[0].snapElement;
+        let targetElement = snapElement.targetElement;
+        let targetPoint = snapElement.targetPoint(event.offsetX, event.offsetY);
+        events.dispatchEvent(handlerName, targetPoint.x, targetPoint.y, targetElement);
       }
-    });
-
-    //console.log(minDistance, minSnapElement);
-
-
+    }
   };
 
   let addHandler = (elements) => {
@@ -36,9 +41,9 @@ var SnapLayer = function (scene) {
     this.addTargetElements(elements);
   };
 
-  paper.click(clickHandler);
-  paper.mousemove(mouseMoveHandler);
-  //scene.onAdd(addHandler);
+  paper.click(parametricHandler('click'));
+  paper.mousemove(parametricHandler('mousemove'));
+  scene.onAdd(addHandler);
 };
 
 SnapLayer.prototype.onClick = function (handler) {
@@ -70,20 +75,20 @@ SnapLayer.prototype.addTargetElements = function (elements) {
       let x2 = element.vertices[1].x, y2 = element.vertices[1].y;
 
       let coords = Utils.lineIntoBox(x1, y1, x2, y2, width, height);
-      let snapElement = new SnapLine(paper, coords.r1.x, coords.r1.y, coords.r2.x, coords.r2.y, element);
+      let snapElement = new SnapLine(paper, coords.r1.x, coords.r1.y, coords.r2.x, coords.r2.y, element, 10);
       snapElements.push(snapElement);
     }
 
     if (Vertex.isVertex(element)) {
       let vCoords = Utils.verticalLineIntoBox(element.x, element.y, width, height);
-      let vSnapElement = new SnapLine(paper, vCoords.r1.x, vCoords.r1.y, vCoords.r2.x, vCoords.r2.y, element);
+      let vSnapElement = new SnapLine(paper, vCoords.r1.x, vCoords.r1.y, vCoords.r2.x, vCoords.r2.y, element, 10);
       snapElements.push(vSnapElement);
 
       let hCoords = Utils.horizontalLineIntoBox(element.x, element.y, width, height);
-      let hSnapElement = new SnapLine(paper, hCoords.r1.x, hCoords.r1.y, hCoords.r2.x, hCoords.r2.y, element);
+      let hSnapElement = new SnapLine(paper, hCoords.r1.x, hCoords.r1.y, hCoords.r2.x, hCoords.r2.y, element, 10);
       snapElements.push(hSnapElement);
 
-      let pointSnapElement = new SnapPoint(paper, element.x, element.y, element);
+      let pointSnapElement = new SnapPoint(paper, element.x, element.y, element, 20);
       snapElements.push(pointSnapElement);
     }
 

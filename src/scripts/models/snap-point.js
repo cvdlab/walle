@@ -1,14 +1,13 @@
 "use strict";
 
-var SnapPoint = function (paper, x, y, targetElement) {
-
+var SnapPoint = function (paper, x, y, targetElement, priority) {
   this.paper = paper;
   this.x = x;
   this.y = y;
   this.targetElement = targetElement;
-  this.priority = 2;
+  this.priority = priority || 1;
 
-  this.paper.circle(x, y, 10).addClass('snap-element snap-point');
+  this.paper.circle(x, y, 5).addClass('snap-element snap-point');
 };
 
 SnapPoint.prototype.distanceFromPoint = function (xp, yp) {

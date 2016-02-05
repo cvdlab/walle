@@ -1,6 +1,6 @@
 "use strict";
 
-var SnapLine = function (paper, x1, y1, x2, y2, targetElement) {
+var SnapLine = function (paper, x1, y1, x2, y2, targetElement, priority) {
 
   this.paper = paper;
   this.x1 = x1;
@@ -8,7 +8,7 @@ var SnapLine = function (paper, x1, y1, x2, y2, targetElement) {
   this.x2 = x2;
   this.y2 = y2;
   this.targetElement = targetElement;
-  this.priority = 1;
+  this.priority = priority || 1;
 
   this.paper.line(x1, y1, x2, y2).addClass('snap-element snap-line');
 };
