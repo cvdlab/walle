@@ -51,9 +51,19 @@ var SnapLayer = function (scene) {
     this.addTargetElements(elements);
   };
 
+  let removeHandler = (elements) => {
+    if (!Array.isArray(elements)) elements = [elements];
+
+    this.snapElements = snapElements = snapElements.filter(snapElement =>{
+      return elements.indexOf(snapElement.targetElement) === -1;
+    });
+
+  };
+
   paper.click(parametricHandler('click'));
   paper.mousemove(parametricHandler('mousemove'));
   scene.onAdd(addHandler);
+  scene.onRemove(removeHandler);
 };
 
 SnapLayer.prototype.onClick = function (handler) {
