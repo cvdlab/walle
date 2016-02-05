@@ -25,29 +25,75 @@ WallsDrawer.prototype.start = function () {
 
     if (this.status === WallsDrawer.statusWaiting) {
 
-      if(Wall.isWall(element))
+      if (Wall.isWall(element))
         this.beginDrawingWithWall(element, event.offsetX, event.offsetY);
-      else if(Vertex.isVertex(element))
+      else if (Vertex.isVertex(element))
         this.beginDrawingWithVertex(element);
       else
         this.beginDrawingWithPoint(event.offsetX, event.offsetY);
 
-      event.stopPropagation();
+      event.stopImmediatePropagation();
       return;
     }
 
     if (this.status === WallsDrawer.statusWorking) {
 
-      if(Wall.isWall(element))
+      if (Wall.isWall(element))
         this.endDrawingWithWall(element, event.offsetX, event.offsetY, event.shiftKey);
-      else if(Vertex.isVertex(element))
+      else if (Vertex.isVertex(element))
         this.endDrawingWithVertex(element, event.shiftKey);
       else
         this.endDrawingWithPoint(event.offsetX, event.offsetY, event.shiftKey);
 
-      event.stopPropagation();
+      event.stopImmediatePropagation();
     }
 
+  };
+
+  this.snapClickHandler = (event, x, y, targetElement) => {
+
+    let onElement = targetElement.distanceFromPoint(x, y) < 1;
+
+    if (this.status === WallsDrawer.statusWaiting) {
+      if (!onElement) {
+        this.beginDrawingWithPoint(x, y);
+        event.stopImmediatePropagation();
+        return;
+      }
+      if (Wall.isWall(targetElement)) {
+        this.beginDrawingWithWall(targetElement, x, y);
+        event.stopImmediatePropagation();
+        return;
+      }
+      if (Vertex.isVertex(targetElement)) {
+        this.beginDrawingWithVertex(targetElement);
+        event.stopImmediatePropagation();
+      }
+    }
+
+    if (this.status === WallsDrawer.statusWorking) {
+      if (!onElement) {
+        this.endDrawingWithPoint(x, y);
+        event.stopImmediatePropagation();
+        return;
+      }
+      if (Wall.isWall(targetElement)) {
+        this.endDrawingWithWall(targetElement, x, y);
+        event.stopImmediatePropagation();
+        return;
+      }
+      if (Vertex.isVertex(targetElement)) {
+        this.endDrawingWithVertex(targetElement);
+        event.stopImmediatePropagation();
+      }
+    }
+  };
+
+  this.snapMouseMoveHandler = (event, x, y, targetElement) => {
+    if (this.status === WallsDrawer.statusWorking) {
+      this.updateDrawingWithPoint(x ,y);
+      event.stopImmediatePropagation();
+    }
   };
 
   this.mouseMoveHandler = event => {
@@ -71,6 +117,8 @@ WallsDrawer.prototype.start = function () {
   this.paper.mousemove(this.mouseMoveHandler);
   this.walle.onAbort(this.abortHandler);
   this.walle.scene.onClick(this.clickHandler);
+  this.walle.scene.snapLayer.onClick(this.snapClickHandler);
+  this.walle.scene.snapLayer.onMouseMove(this.snapMouseMoveHandler);
 
   this.restart();
 };
@@ -120,6 +168,8 @@ WallsDrawer.prototype.stop = function () {
   this.walle.scene.offClick(this.clickHandler);
   this.paper.unmousemove(this.mouseMoveHandler);
   this.walle.offAbort(this.abortHandler);
+  this.walle.scene.snapLayer.offClick(this.snapClickHandler);
+  this.walle.scene.snapLayer.offMouseMove(this.snapMouseMoveHandler);
 };
 
 /**
@@ -231,7 +281,6 @@ WallsDrawer.prototype.updateDrawingWithVertex = function (vertex) {
  * @param y
  */
 WallsDrawer.prototype.updateDrawingWithPoint = function (x, y) {
-
   //move wall endpoint
   this.drawingWall.vertices[1].move(x, y);
 };
