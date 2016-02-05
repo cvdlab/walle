@@ -130,23 +130,9 @@ WallsDrawer.prototype.start = function () {
 WallsDrawer.prototype.restart = function () {
   console.log('restart');
 
-  //clear drawing area
-  //this.walle.removeSnapTo();
   this.walle.changeCursor("auto");
 
   this.drawingWall = null;
-
-  //add a point using snap points
-  //this.walle.useSnapTo({
-  //  click: (event, x, y, anchorPoint) => {
-  //    if (Vertex.isVertex(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
-  //      this.beginDrawingWithVertex(anchorPoint);
-  //    } else {
-  //      this.beginDrawingWithPoint(x, y);
-  //    }
-  //    event.stopPropagation();
-  //  }
-  //});
 
   //start
   this.status = WallsDrawer.statusWaiting;
@@ -161,8 +147,6 @@ WallsDrawer.prototype.stop = function () {
 
   //abort if needed
   if (this.drawingWall !== null) this.abortDrawing();
-
-  //this.walle.removeSnapTo();
 
   this.status = WallsDrawer.statusDirty;
   this.walle.scene.offClick(this.clickHandler);
@@ -225,24 +209,6 @@ WallsDrawer.prototype.beginDrawingWithVertex = function (vertex) {
   this.walle.changeCursor("crosshair");
 
   this.status = WallsDrawer.statusWorking;
-
-
-  //use snap mode
-  //this.walle.useSnapTo({
-  //  click: (event, x, y, anchorPoint) => {
-  //    vertex1.selected(false);
-  //    if (Vertex.isVertex(anchorPoint) && anchorPoint.x === x && anchorPoint.y === y) {
-  //      this.endDrawingWithVertex(anchorPoint, event.shiftKey);
-  //    } else {
-  //      this.endDrawingWithPoint(x, y, event.shiftKey);
-  //    }
-  //    event.stopPropagation();
-  //  },
-  //  mousemove: (event, x, y) => {
-  //    this.updateDrawingWithPoint(x, y);
-  //    event.stopPropagation();
-  //  }
-  //});
 
 };
 
