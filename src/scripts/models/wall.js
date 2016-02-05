@@ -112,11 +112,10 @@ Wall.prototype.updateVertex = function (vertexId, newVertex) {
   this.vertices[vertexId].removeAttachedElement(this);
   this.vertices[vertexId] = newVertex;
   this.vertices[vertexId].addAttachedElement(this);
-
+  this.redraw();
 
   newVertex.onMove((x, y)=> {
-    if (vertexId === 0) this.line.attr({x1: x, y1: y});
-    if (vertexId === 1) this.line.attr({x2: x, y2: y});
+    this.redraw();
     this.updateDistanceLabel();
     this.events.dispatchEvent("move");
   });
