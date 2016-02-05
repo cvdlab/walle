@@ -353,7 +353,7 @@ WallsDrawer.prototype.endDrawingWithPoint = function (x, y, startNew) {
  * @param startNew
  */
 WallsDrawer.prototype.endDrawingWithWall = function (wall, x, y, startNew) {
-  console.log('endDrawingWithVertex', wall, startNew);
+  console.log('endDrawingWithWall', wall, startNew);
 
   let scene = this.walle.scene;
 
