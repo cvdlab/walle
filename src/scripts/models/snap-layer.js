@@ -3,7 +3,7 @@
 var SnapLayer = function (scene) {
   this.scene = scene;
   let snapElements = this.snapElements = [];
-  let hoveredSnapElements = [];
+  let hoveredSnapElement = null;
   let events = this.events = new Events();
 
   let paper = this.paper = scene.paper;
@@ -24,26 +24,21 @@ var SnapLayer = function (scene) {
           if (a.priority > b.priority) return -1;
           if (a.priority < b.priority) return 1;
           return a.distance - b.distance;
-        })
-        .map(o => o.snapElement);
-
-      activeElements.forEach(snapElement => snapElement.hover(true));
-
-      hoveredSnapElements
-        .forEach(snapElement => {
-          if (activeElements.indexOf(snapElement) === -1) {
-            snapElement.hover(false)
-          }
         });
 
-      hoveredSnapElements = activeElements;
-
       if (activeElements.length > 0) {
-        let snapElement = activeElements[0];
+        let snapElement = activeElements[0].snapElement;
         let targetElement = snapElement.targetElement;
         let targetPoint = snapElement.targetPoint(event.offsetX, event.offsetY);
-        snapElement.hover(true);
+        if(hoveredSnapElement !== snapElement){
+          if(hoveredSnapElement) hoveredSnapElement.hover(false);
+          snapElement.hover(true);
+          hoveredSnapElement = snapElement;
+        }
         events.dispatchEvent(handlerName, targetPoint.x, targetPoint.y, targetElement);
+      }else if(hoveredSnapElement){
+        hoveredSnapElement.hover(false);
+        hoveredSnapElement = null;
       }
     }
   };
