@@ -1,13 +1,16 @@
 .walle .wall {
   stroke: #8E9BA2;
+  /*stroke: #333;*/
+  stroke-width: 1px;
+  fill: #e8e8e8;
 }
 
 .walle.wall-feedback .wall:hover{
-  stroke: #FFC107;
+  fill: #FFC107;
 }
 
 .walle .wall.selected {
-  stroke: #FFC107;
+  fill: #FFC107;
   pointer-events: none;
 }
 

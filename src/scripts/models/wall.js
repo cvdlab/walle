@@ -11,6 +11,7 @@ var Wall = function (paper, vertex0, vertex1, tickness) {
   this.tickness = tickness || 10;
 
   this.line = null;
+  this.redraw();
 
   vertex0.addAttachedElement(this);
   vertex0.onMove((x, y)=> {
@@ -31,7 +32,7 @@ var Wall = function (paper, vertex0, vertex1, tickness) {
     .addClass('wall-distance');
   this.distanceGroup = this.paper.g(this.distanceText);
   this.updateDistanceLabel();
-  this.redraw();
+
 };
 
 Wall.prototype.setId = function (id) {
@@ -126,23 +127,45 @@ Wall.prototype.updateVertex = function (vertexId, newVertex) {
 Wall.prototype.redraw = function () {
   let paper = this.paper;
   let vertex0 = this.vertices[0], vertex1 = this.vertices[1];
+  let actualTickness = this.tickness / 2;
   let x1 = vertex0.x, y1 = vertex0.y, x2 = vertex1.x, y2 = vertex1.y;
 
+  let xa, ya, xb, yb;
+
+  xa = x1;
+  ya = y1;
+  xb = x2;
+  yb = y2;
+
+  let alpha = - (Math.atan2(xb - xa, yb - ya) + Math.PI / 2);
+  let cosAlpha = Math.cos(alpha), sinAlpha = Math.sin(alpha);
+
+  let delta_xr = actualTickness * sinAlpha;
+  let delta_yr = actualTickness * -cosAlpha;
+
+  let delta_xl = actualTickness * -sinAlpha;
+  let delta_yl = actualTickness * cosAlpha;
+
+  let xar = xa + delta_xr;
+  let yar = ya + delta_yr;
+  let xal = xa + delta_xl;
+  let yal = ya + delta_yl;
+
+  let xbr = xb + delta_xr;
+  let ybr = yb + delta_yr;
+  let xbl = xb + delta_xl;
+  let ybl = yb + delta_yl;
+
+  let pathStr = `M${xar} ${yar}L ${xbr} ${ybr}L ${xbl} ${ybl}L ${xal} ${yal}z`;
+
   if (!this.line) {
-    let line = this.line = paper.line(x1, y1, x2, y2)
-      .attr({strokeWidth: this.tickness})
-      .addClass('wall');
+    this.line = paper.path(pathStr).addClass('wall');
+  } else {
+    this.line.attr({d: pathStr});
   }
 
-  this.line.attr({
-    x1: this.vertices[0].x,
-    y1: this.vertices[0].y,
-    x2: this.vertices[1].x,
-    y2: this.vertices[1].y,
-    strokeWidth: this.tickness
-  });
-  this.distanceText.attr({y: -this.tickness + (this.tickness / 3)});
   this.events.dispatchEvent('redraw');
+
 };
 
 Wall.prototype.distanceFromPoint = function (x, y) {
