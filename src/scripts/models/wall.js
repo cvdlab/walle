@@ -10,21 +10,18 @@ var Wall = function (paper, vertex0, vertex1, tickness) {
   this.attachedElements = new Set();
   this.tickness = tickness || 10;
 
-  let line = this.line =
-    paper.line(vertex0.x, vertex0.y, vertex1.x, vertex1.y)
-      .attr({strokeWidth: this.tickness})
-      .addClass('wall');
+  this.line = null;
 
   vertex0.addAttachedElement(this);
   vertex0.onMove((x, y)=> {
-    line.attr({x1: x, y1: y});
+    this.redraw();
     this.updateDistanceLabel();
     this.events.dispatchEvent("move");
   });
 
   vertex1.addAttachedElement(this);
   vertex1.onMove((x, y)=> {
-    line.attr({x2: x, y2: y});
+    this.redraw();
     this.updateDistanceLabel();
     this.events.dispatchEvent("move");
   });
@@ -34,6 +31,7 @@ var Wall = function (paper, vertex0, vertex1, tickness) {
     .addClass('wall-distance');
   this.distanceGroup = this.paper.g(this.distanceText);
   this.updateDistanceLabel();
+  this.redraw();
 };
 
 Wall.prototype.setId = function (id) {
@@ -126,6 +124,16 @@ Wall.prototype.updateVertex = function (vertexId, newVertex) {
 };
 
 Wall.prototype.redraw = function () {
+  let paper = this.paper;
+  let vertex0 = this.vertices[0], vertex1 = this.vertices[1];
+  let x1 = vertex0.x, y1 = vertex0.y, x2 = vertex1.x, y2 = vertex1.y;
+
+  if (!this.line) {
+    let line = this.line = paper.line(x1, y1, x2, y2)
+      .attr({strokeWidth: this.tickness})
+      .addClass('wall');
+  }
+
   this.line.attr({
     x1: this.vertices[0].x,
     y1: this.vertices[0].y,
@@ -179,7 +187,7 @@ Wall.prototype.move = function (x, y) {
   vertex1.move(ox2 + vx, oy2 + vy);
 };
 
-Wall.prototype.split = function(x, y){
+Wall.prototype.split = function (x, y) {
 
   let paper = this.paper;
   let wall = this;
