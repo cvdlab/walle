@@ -163,7 +163,7 @@ SnapTo.prototype.addSnapLine = function (x1, y1, x2, y2, anchorObject, handlers)
   };
 
   element.snapPointFn = function (xp, yp) {
-    return Utils.intersectPoint(x1, y1, x2, y2, event.offsetX, event.offsetY);
+    return Utils.nearestPointFromLine(x1, y1, x2, y2, event.offsetX, event.offsetY);
   };
 
   element.distanceFn = function (xp, yp) {

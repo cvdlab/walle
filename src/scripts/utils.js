@@ -68,8 +68,7 @@ Utils.horizontalLineIntoBox = function (x, y, width, height) {
 
 };
 
-//nearest point from line
-Utils.intersectPoint = function (x1, y1, x2, y2, xp, yp) {
+Utils.nearestPointFromLine = function (x1, y1, x2, y2, xp, yp) {
 
   if (x1 === x2) return {x: x1, y: yp};
   if (y1 === y2) return {x: xp, y: y1};

@@ -96,7 +96,7 @@ Hole.prototype.move = function (x, y) {
   if (wall) {
 
     let x1 = wall.vertices[0].x, y1 = wall.vertices[0].y, x2 = wall.vertices[1].x, y2 = wall.vertices[1].y;
-    let point = Utils.intersectPoint(x1, y1, x2, y2, x, y);
+    let point = Utils.nearestPointFromLine(x1, y1, x2, y2, x, y);
     let offsetLength = Utils.twoPointsDistance(x1, y1, point.x, point.y) - this.length / 2;
 
     if(offsetLength < 0) offsetLength = 0;

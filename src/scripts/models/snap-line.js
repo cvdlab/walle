@@ -19,7 +19,7 @@ SnapLine.prototype.distanceFromPoint = function (xp, yp) {
 };
 
 SnapLine.prototype.targetPoint = function (xp, yp) {
-  return Utils.intersectPoint(this.x1, this.y1, this.x2, this.y2, xp, yp);
+  return Utils.nearestPointFromLine(this.x1, this.y1, this.x2, this.y2, xp, yp);
 };
 
 SnapLine.prototype.hover = function (on) {
