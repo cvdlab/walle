@@ -15,10 +15,10 @@ ElementsRemove.prototype.start = function () {
   let paper = this.paper;
   let scene = walle.scene;
 
-  walle.addElementsFeedback(['wall', 'hole']);
+  walle.addElementsFeedback(['wall', 'hole', 'vertex']);
 
   this.clickHandler = (event, element) => {
-    if (Wall.isWall(element) || Hole.isHole(element)) {
+    if (Wall.isWall(element) || Hole.isHole(element) || Vertex.isVertex(element)) {
       this.remove(element);
     }
   };
@@ -30,6 +30,13 @@ ElementsRemove.prototype.start = function () {
 ElementsRemove.prototype.remove = function (element) {
   let scene = this.walle.scene;
   let removeList = [element];
+
+  if(Vertex.isVertex(element)){
+    if(element.attachedElements.size > 0){
+      alert('This vertex can\'t be removed.');
+      return;
+    }
+  }
 
   if (Wall.isWall(element)) {
     element.attachedElements.forEach(element => removeList.push(element));
