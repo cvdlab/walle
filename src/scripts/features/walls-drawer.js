@@ -21,6 +21,8 @@ WallsDrawer.statusDirty = 2;
 WallsDrawer.prototype.start = function () {
   console.log('start');
 
+  let snapLayer = this.walle.scene.snapLayer;
+
   this.clickHandler = (event, element) => {
 
     if (this.status === WallsDrawer.statusWaiting) {
@@ -57,16 +59,19 @@ WallsDrawer.prototype.start = function () {
     if (this.status === WallsDrawer.statusWaiting) {
       if (!onElement) {
         this.beginDrawingWithPoint(x, y);
+        snapLayer.resetHover();
         event.stopImmediatePropagation();
         return;
       }
       if (Wall.isWall(targetElement)) {
         this.beginDrawingWithWall(targetElement, x, y);
+        snapLayer.resetHover();
         event.stopImmediatePropagation();
         return;
       }
       if (Vertex.isVertex(targetElement)) {
         this.beginDrawingWithVertex(targetElement);
+        snapLayer.resetHover();
         event.stopImmediatePropagation();
       }
     }
@@ -74,16 +79,19 @@ WallsDrawer.prototype.start = function () {
     if (this.status === WallsDrawer.statusWorking) {
       if (!onElement) {
         this.endDrawingWithPoint(x, y);
+        snapLayer.resetHover();
         event.stopImmediatePropagation();
         return;
       }
       if (Wall.isWall(targetElement)) {
         this.endDrawingWithWall(targetElement, x, y);
+        snapLayer.resetHover();
         event.stopImmediatePropagation();
         return;
       }
       if (Vertex.isVertex(targetElement)) {
         this.endDrawingWithVertex(targetElement);
+        snapLayer.resetHover();
         event.stopImmediatePropagation();
       }
     }

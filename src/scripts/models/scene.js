@@ -176,6 +176,7 @@ Scene.prototype.remove = function () {
     element.remove();
   });
   this.elements = {};
+  this.snapLayer.remove();
   this.events.dispatchEvent('change', this, 'remove');
   this.events.dispatchEvent('remove', this);
 };

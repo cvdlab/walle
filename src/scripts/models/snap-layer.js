@@ -3,7 +3,7 @@
 var SnapLayer = function (scene) {
   this.scene = scene;
   let snapElements = this.snapElements = [];
-  let hoveredSnapElement = null;
+  this.hoveredSnapElement = null;
   let events = this.events = new Events();
 
   let paper = this.paper = scene.paper;
@@ -33,15 +33,15 @@ var SnapLayer = function (scene) {
         let snapElement = activeElements[0].snapElement;
         let targetElement = snapElement.targetElement;
         let targetPoint = snapElement.targetPoint(event.offsetX, event.offsetY);
-        if (hoveredSnapElement !== snapElement) {
-          if (hoveredSnapElement) hoveredSnapElement.hover(false);
+        if (this.hoveredSnapElement !== snapElement) {
+          if (this.hoveredSnapElement) this.hoveredSnapElement.hover(false);
           snapElement.hover(true);
-          hoveredSnapElement = snapElement;
+          this.hoveredSnapElement = snapElement;
         }
         events.dispatchEvent(handlerName, event, targetPoint.x, targetPoint.y, targetElement);
-      } else if (hoveredSnapElement) {
-        hoveredSnapElement.hover(false);
-        hoveredSnapElement = null;
+      } else if (this.hoveredSnapElement) {
+        this.hoveredSnapElement.hover(false);
+        this.hoveredSnapElement = null;
       }
     }
   };
@@ -132,4 +132,17 @@ SnapLayer.prototype.addTargetElements = function (elements) {
 
   });
 };
+
+SnapLayer.prototype.remove = function () {
+  this.resetHover();
+  this.snapElements = [];
+};
+
+SnapLayer.prototype.resetHover = function () {
+  if (this.hoveredSnapElement) {
+    this.hoveredSnapElement.hover(false);
+    this.hoveredSnapElement = null;
+  }
+};
+
 
