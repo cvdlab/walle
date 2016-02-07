@@ -13,6 +13,10 @@ var SnapLayer = function (scene) {
     return (event) => {
 
       if (!this.active) return;
+      if (scene.extractElementFromDOM(event.target)) {
+        this.resetHover();
+        return;
+      }
 
       let activeElements = snapElements
         .map(snapElement => {
