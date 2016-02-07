@@ -95,9 +95,23 @@ Utils.centerPoint = function (x1, y1, x2, y2) {
 
 Utils.translationVector = function (x1, y1, x2, y2, xp, yp) {
 
+  let vx, vy;
+
   //punto medio segmento
   let xm = (x1 + x2) / 2;
   let ym = (y1 + y2) / 2;
+
+  if(x1 === x2){
+    vx = xp - x1;
+    vy = 0;
+    return {x: xm + vx , y: ym, vx, vy};
+  }
+
+  if(y1 === y2){
+    vx = 0;
+    vy = yp - y1;
+    return {x: xm, y: ym + vy, vx, vy};
+  }
 
   //eq segmento
   let m =  (y2 - y1) / (x2 - x1);
@@ -115,8 +129,8 @@ Utils.translationVector = function (x1, y1, x2, y2, xp, yp) {
   let yt = mii * xt + qii;
 
   //vettore translazione
-  let vx = xt - xm;
-  let vy = yt - ym;
+  vx = xt - xm;
+  vy = yt - ym;
 
   return {x: xt, y: yt, vx, vy};
 };
