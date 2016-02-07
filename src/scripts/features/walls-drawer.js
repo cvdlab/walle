@@ -84,13 +84,13 @@ WallsDrawer.prototype.start = function () {
         return;
       }
       if (Wall.isWall(targetElement)) {
-        this.endDrawingWithWall(targetElement, x, y);
+        this.endDrawingWithWall(targetElement, x, y, event.shiftKey);
         snapLayer.resetHover();
         event.stopImmediatePropagation();
         return;
       }
       if (Vertex.isVertex(targetElement)) {
-        this.endDrawingWithVertex(targetElement);
+        this.endDrawingWithVertex(targetElement, event.shiftKey);
         snapLayer.resetHover();
         event.stopImmediatePropagation();
       }
