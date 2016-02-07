@@ -95,14 +95,22 @@ SnapLayer.prototype.addTargetElements = function (elements) {
   elements.forEach(element => {
 
     if (Wall.isWall(element)) {
-      let x1 = element.vertices[0].x, y1 = element.vertices[0].y;
-      let x2 = element.vertices[1].x, y2 = element.vertices[1].y;
+      let x1, y1, x2, y2;
+
+      x1 = element.vertices[0].x;
+      y1 = element.vertices[0].y;
+      x2 = element.vertices[1].x;
+      y2 = element.vertices[1].y;
 
       let coords = Utils.lineIntoBox(x1, y1, x2, y2, width, height);
       let snapElement = new SnapLine(paper, coords.r1.x, coords.r1.y, coords.r2.x, coords.r2.y, element, 10, 5)
       snapElements.push(snapElement);
 
       element.onMove(event => {
+        x1 = element.vertices[0].x;
+        y1 = element.vertices[0].y;
+        x2 = element.vertices[1].x;
+        y2 = element.vertices[1].y;
         coords = Utils.lineIntoBox(x1, y1, x2, y2, width, height);
         snapElement.move(coords.r1.x, coords.r1.y, coords.r2.x, coords.r2.y);
       });
