@@ -33,9 +33,6 @@ var Walle = function (container) {
   this.paper.appendTo(this.wrapper.get(0));
   this.scene = new Scene(this.paper, width, height);
 
-  //snap to
-  this.snapTo = new SnapTo(this);
-
   this.showSplash();
   this.revertAndAutosave();
 
@@ -76,16 +73,6 @@ Walle.prototype.onAbort = function (handler) {
 
 Walle.prototype.offAbort = function (handler) {
   this.events.removeEventListener('abort', handler);
-};
-
-/** snap **/
-Walle.prototype.useSnapTo = function (handler) {
-  this.snapTo.use(handler);
-};
-
-/** snap **/
-Walle.prototype.removeSnapTo = function () {
-  this.snapTo.remove();
 };
 
 
