@@ -18,14 +18,9 @@ var Scene = function (paper, width, height) {
     return (event) => {
       let node = event.target;
 
-      while (!node.id || node.tagName === 'div' || node.tagName === 'svg') {
-        node = node.parentNode;
-      }
+      let element = this.extractElementFromDOM(node);
 
-      if (node.id) {
-        let element = this.elements[node.id];
-        this.events.dispatchEvent(eventName, event, element);
-      }
+      this.events.dispatchEvent(eventName, event, element);
     }
   };
 
@@ -315,3 +310,22 @@ Scene.prototype.nearestElement = function (x, y, minAcceptedDistance, type) {
   }
 };
 
+/**
+ *
+ */
+Scene.prototype.extractElementFromDOM = function (DOMElement) {
+  let elements = this.elements;
+  let node = DOMElement;
+
+  while (!node.id || node.tagName === 'div' || node.tagName === 'svg') {
+    node = node.parentNode;
+  }
+
+  let element;
+
+  if (element = elements[node.id]) {
+    return element;
+  }
+
+  return null;
+};
