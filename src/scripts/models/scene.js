@@ -167,11 +167,14 @@ Scene.prototype.offMouseMove = function (handler) {
 };
 
 Scene.prototype.remove = function () {
-  this.getElements().forEach(function (element) {
+  let pendingDeletetion = [];
+
+  for(let elementsID in this.elements) {
+    let element = this.elements[elementsID];
     element.remove();
-  });
-  this.elements = {};
-  this.snapLayer.remove();
+    pendingDeletetion.push(element);
+  }
+  this.removeElements(pendingDeletetion);
   this.events.dispatchEvent('change', this, 'remove');
   this.events.dispatchEvent('remove', this);
 };

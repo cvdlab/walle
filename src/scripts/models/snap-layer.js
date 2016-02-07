@@ -145,11 +145,6 @@ SnapLayer.prototype.addTargetElements = function (elements) {
   });
 };
 
-SnapLayer.prototype.remove = function () {
-  this.resetHover();
-  this.snapElements = [];
-};
-
 SnapLayer.prototype.resetHover = function () {
   if (this.hoveredSnapElement) {
     this.hoveredSnapElement.hover(false);
