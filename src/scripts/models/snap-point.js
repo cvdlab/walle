@@ -46,3 +46,8 @@ SnapPoint.prototype.hover = function (on) {
 
   }
 };
+
+SnapPoint.prototype.move = function (x, y) {
+  this.x = x;
+  this.y = y;
+};
