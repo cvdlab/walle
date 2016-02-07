@@ -91,7 +91,7 @@ WallsDrawer.prototype.start = function () {
 
   this.snapMouseMoveHandler = (event, x, y, targetElement) => {
     if (this.status === WallsDrawer.statusWorking) {
-      this.updateDrawingWithPoint(x ,y);
+      this.updateDrawingWithPoint(x, y);
       event.stopImmediatePropagation();
     }
   };
@@ -192,6 +192,9 @@ WallsDrawer.prototype.beginDrawingWithWall = function (wall, x, y) {
 WallsDrawer.prototype.beginDrawingWithVertex = function (vertex) {
   console.log('beginDrawingWithVertex', vertex);
 
+  let scene = this.walle.scene;
+  scene.addElement(vertex);
+
   //draw wall and vertex
   let vertex0 = vertex;
   let vertex1 = new Vertex(this.paper, vertex.x, vertex.y);
@@ -220,9 +223,18 @@ WallsDrawer.prototype.abortDrawing = function () {
 
   let scene = this.walle.scene;
   let vertex0 = this.drawingWall.vertices[0], vertex1 = this.drawingWall.vertices[1];
+  let wall = this.drawingWall;
 
-  //abort
-  if (!scene.hasElement(vertex0)) vertex0.remove(); else vertex0.selected(false);
+  //remove vertex 0 if needed
+  vertex0.removeAttachedElement(wall);
+  if (vertex0.attachedElements.size === 0) {
+    scene.removeElement(vertex0);
+    vertex0.remove();
+  } else {
+    vertex0.selected(false);
+  }
+
+
   vertex1.remove();
   this.drawingWall.remove();
 
