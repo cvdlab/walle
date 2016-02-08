@@ -37,7 +37,6 @@ Panel.prototype.start = function () {
 
   this.addSeparator();
 
-  this.addFeature("Grid", "flaticon-table41", "Show grids", true, false);
   this.addFeature("Debugger", "flaticon-computer196", "Debug mode", false, false);
   this.addFeature("EasterEgg", "flaticon-testtube1", "Experimental", false, true);
   this.addFeature("WalleWebsite", "flaticon-github17", "Open website", false, false);

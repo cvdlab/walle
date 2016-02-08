@@ -51,6 +51,7 @@ VisibilityLayer.prototype.start = function () {
   this.addVisibilityElementButton('layer-rooms', 'Rooms');
   this.addVisibilityElementButton('layer-windows', 'Windows');
   this.addVisibilityElementButton('layer-doors', 'Doors');
+  this.addVisibilityElementButton('layer-grid', 'Grid');
 
 };
 

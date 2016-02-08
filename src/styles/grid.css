@@ -1,4 +1,8 @@
-.walle .grid line{
+.walle.hide-layer-grid .grid {
+  display: none;
+}
+
+.walle .grid line {
   stroke-width: 1px;
   stroke: #eee;
 }
