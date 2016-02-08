@@ -1,3 +1,7 @@
+.walle.hide-layer-rooms .room{
+  display: none;
+}
+
 .walle .room{
   opacity: 0.8;
 }

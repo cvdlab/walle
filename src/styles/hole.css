@@ -1,3 +1,8 @@
+.walle.hide-layer-doors .door.attached,
+.walle.hide-layer-windows .window.attached{
+  display: none;
+}
+
 .walle .hole {
   opacity: 0.6;
 }

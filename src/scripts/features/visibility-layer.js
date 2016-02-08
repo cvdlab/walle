@@ -47,10 +47,10 @@ VisibilityLayer.prototype.start = function () {
     })
     .appendTo(this.walle.wrapper);
 
-  this.addVisibilityElementButton('layer-wall', 'Walls');
-  this.addVisibilityElementButton('layer-room', 'Rooms');
-  this.addVisibilityElementButton('layer-window', 'Windows');
-  this.addVisibilityElementButton('layer-door', 'Doors');
+  this.addVisibilityElementButton('layer-walls', 'Walls');
+  this.addVisibilityElementButton('layer-rooms', 'Rooms');
+  this.addVisibilityElementButton('layer-windows', 'Windows');
+  this.addVisibilityElementButton('layer-doors', 'Doors');
 
 };
 
