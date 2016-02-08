@@ -143,3 +143,13 @@ Walle.prototype.removeElementsFeedback = function (elementsName) {
   let wrapper = this.wrapper;
   elementsName.forEach(elementName => wrapper.removeClass(elementName + '-feedback'));
 };
+
+Walle.prototype.showLayer = function (layerID) {
+  let wrapper = this.wrapper;
+  wrapper.removeClass(`hide-${layerID}`);
+};
+
+Walle.prototype.hideLayer = function (layerID) {
+  let wrapper = this.wrapper;
+  wrapper.addClass(`hide-${layerID}`);
+};

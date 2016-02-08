@@ -1,0 +1,31 @@
+.walle .visibility-layer {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background-color: #f7f7f7;
+  border: 1px solid #e3e3e3;
+  z-index: 700;
+  font-family: 'Roboto', sans-serif;
+}
+
+.walle .visibility-layer .btn{
+  display: block;
+  padding: 2px 5px;
+  font-size: 10px;
+
+  text-decoration: none;
+  vertical-align: top;
+}
+
+.walle .visibility-layer .btn.on{
+  color: #4f6b77;
+}
+
+.walle .visibility-layer .btn.off{
+  opacity: 0.3;
+}
+
+.walle .visibility-layer .btn i{
+  padding-right: 5px;
+  font-size: 13px;
+}

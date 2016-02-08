@@ -32,45 +32,51 @@ margin-left: 20px;
 .flaticon-eraser11:before {
 	content: "\e005";
 }
-.flaticon-gears:before {
+.flaticon-eye110:before {
 	content: "\e006";
 }
-.flaticon-github17:before {
+.flaticon-gears:before {
 	content: "\e007";
 }
-.flaticon-graphicseditor81:before {
+.flaticon-github17:before {
 	content: "\e008";
 }
-.flaticon-move24:before {
+.flaticon-graphicseditor81:before {
 	content: "\e009";
 }
-.flaticon-open203:before {
+.flaticon-move24:before {
 	content: "\e00a";
 }
-.flaticon-opened17:before {
+.flaticon-open203:before {
 	content: "\e00b";
 }
-.flaticon-plan1:before {
+.flaticon-opened17:before {
 	content: "\e00c";
 }
-.flaticon-pointer32:before {
+.flaticon-plan1:before {
 	content: "\e00d";
 }
-.flaticon-scroll8:before {
+.flaticon-pointer32:before {
 	content: "\e00e";
 }
-.flaticon-social13:before {
+.flaticon-scroll8:before {
 	content: "\e00f";
 }
-.flaticon-table41:before {
+.flaticon-social13:before {
 	content: "\e010";
 }
-.flaticon-testtube1:before {
+.flaticon-table41:before {
 	content: "\e011";
 }
-.flaticon-up13:before {
+.flaticon-testtube1:before {
 	content: "\e012";
 }
-.flaticon-walls1:before {
+.flaticon-up13:before {
 	content: "\e013";
+}
+.flaticon-visibility2:before {
+	content: "\e014";
+}
+.flaticon-walls1:before {
+	content: "\e015";
 }

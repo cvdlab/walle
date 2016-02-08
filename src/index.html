@@ -40,6 +40,7 @@
   <script src="scripts/features/windows-drawer.js"></script>
   <script src="scripts/features/walle-website.js"></script>
   <script src="scripts/features/elements-move.js"></script>
+  <script src="scripts/features/visibility-layer.js"></script>
 
   <link rel="stylesheet" type="text/css" href="styles/style.css">
   <link rel="stylesheet" type="text/css" href="styles/walle.css">
@@ -53,6 +54,7 @@
   <link rel="stylesheet" type="text/css" href="styles/room.css">
   <link rel="stylesheet" type="text/css" href="styles/panel.css">
   <link rel="stylesheet" type="text/css" href="styles/snap.css">
+  <link rel="stylesheet" type="text/css" href="styles/visibility-layer.css">
   <link rel="stylesheet" type="text/css" href="styles/icons/flaticon.css">
 
   <script>
@@ -66,6 +68,7 @@
       var container = document.getElementById('container');
       var walle = window.walle = new Walle(container);
       walle.feature("Panel").start();
+      walle.feature("VisibilityLayer").start();
 
       jQuery(document).ready(function() {
         jQuery('.tooltip').tooltipster();
