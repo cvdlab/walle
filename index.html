@@ -40,6 +40,7 @@
   <script src="src/scripts/features/windows-drawer.js"></script>
   <script src="src/scripts/features/walle-website.js"></script>
   <script src="src/scripts/features/elements-move.js"></script>
+  <script src="src/scripts/features/visibility-layer.js"></script>
 
   <link rel="stylesheet" type="text/css" href="src/styles/style.css">
   <link rel="stylesheet" type="text/css" href="src/styles/walle.css">
@@ -53,6 +54,7 @@
   <link rel="stylesheet" type="text/css" href="src/styles/room.css">
   <link rel="stylesheet" type="text/css" href="src/styles/panel.css">
   <link rel="stylesheet" type="text/css" href="src/styles/snap.css">
+  <link rel="stylesheet" type="text/css" href="src/styles/visibility-layer.css">
   <link rel="stylesheet" type="text/css" href="src/styles/icons/flaticon.css">
 
   <script>
@@ -66,6 +68,8 @@
       var container = document.getElementById('container');
       var walle = window.walle = new Walle(container);
       walle.feature("Panel").start();
+      walle.feature("VisibilityLayer").start();
+      walle.feature("Grid").start();
 
       jQuery(document).ready(function() {
         console.log('start');
