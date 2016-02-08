@@ -1,0 +1,74 @@
+<link rel="import" href="../../components/iron-input/iron-input.html">
+
+<dom-module id="form-hole">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <form on-submit="onSubmit">
+      <h3>Configure Hole</h3>
+      <div class="group">
+        <label>Width</label>
+        <input is="iron-input" type="number" bind-value="{{element.length}}" title="Width"/>
+      </div>
+      <div class="group">
+        <label>Height</label>
+        <input is="iron-input" type="number" bind-value="{{element.height}}" title="Height"/>
+      </div>
+      <div class="group">
+        <label>Distance from floor</label>
+        <input is="iron-input" type="number" bind-value="{{element.distanceFromFloor}}" title="Distance from floor"/>
+      </div>
+      <div class="group">
+        <label>Opening side</label>
+        <input type="button" on-click="switchInverted" value="Exchanges room" />
+      </div>
+      <div class="group">
+        <label>Hinge side</label>
+        <input type="button" on-click="switchOpposite" value="Exchanges side" />
+      </div>
+      <input type="reset" value="Annulla"/>
+      <input type="submit" value="Aggiorna"/>
+    </form>
+
+  </template>
+</dom-module>
+
+<script>
+  "use strict";
+  Polymer({
+    is: 'form-hole',
+    properties: {
+      element: {
+        type: Object
+      }
+    },
+
+    switchInverted: function () {
+      let element = this.element;
+      element.inverted = !element.inverted;
+      event.preventDefault();
+    },
+
+    switchOpposite: function () {
+      let element = this.element;
+      element.opposite = !element.opposite;
+      event.preventDefault();
+    },
+
+    onSubmit: function (event) {
+      let element = this.element;
+      element.length = parseInt(element.length);
+      element.height = parseInt(element.height);
+      element.distanceFromFloor = parseInt(element.distanceFromFloor);
+      this.fire('properties-changed');
+      event.preventDefault();
+    }
+
+  });
+
+</script>

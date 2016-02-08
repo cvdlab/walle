@@ -1,0 +1,50 @@
+<link rel="import" href="../../components/iron-input/iron-input.html">
+
+<dom-module id="form-wall">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <form on-submit="onSubmit">
+      <h3>Configure Wall</h3>
+      <div class="group">
+        <label>Tickness</label>
+        <input is="iron-input" type="number" bind-value="{{element.tickness}}" data-bind="tickness" title="tickness"/>
+      </div>
+      <input type="reset" value="Annulla"/>
+      <input type="submit" value="Aggiorna"/>
+    </form>
+
+  </template>
+</dom-module>
+
+<script>
+  "use strict";
+  Polymer({
+    is: 'form-wall',
+    properties: {
+      element: {
+        type: Object
+      }
+    },
+
+    ready: function () {
+    },
+
+    attached: function () {
+    },
+
+    onSubmit: function (event) {
+      let element = this.element;
+      element.tickness = parseInt(element.tickness);
+      this.fire('properties-changed');
+      event.preventDefault();
+    }
+
+  });
+
+</script>

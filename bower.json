@@ -21,6 +21,8 @@
     "jquery": "~2.1.4",
     "font-awesome": "~4.5.0",
     "tooltipster": "~3.3.0",
-    "randomcolor": "~0.4.2"
+    "randomcolor": "~0.4.2",
+    "polymer": "~1.2.4",
+    "iron-input": "PolymerElements/iron-input"
   }
 }
