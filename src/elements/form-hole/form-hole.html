@@ -31,7 +31,7 @@
         <label>Hinge side</label>
         <input type="button" on-click="switchOpposite" value="Exchanges side" />
       </div>
-      <input type="reset" value="Annulla"/>
+      <input type="reset" value="Annulla" on-click="onCancel"/>
       <input type="submit" value="Aggiorna"/>
     </form>
 
@@ -57,6 +57,11 @@
     switchOpposite: function () {
       let element = this.element;
       element.opposite = !element.opposite;
+      event.preventDefault();
+    },
+
+    onCancel: function (event) {
+      this.fire('cancel');
       event.preventDefault();
     },
 

@@ -15,7 +15,7 @@
         <label>Tickness</label>
         <input is="iron-input" type="number" bind-value="{{element.tickness}}" data-bind="tickness" title="tickness"/>
       </div>
-      <input type="reset" value="Annulla"/>
+      <input type="reset" value="Annulla" on-click="onCancel"/>
       <input type="submit" value="Aggiorna"/>
     </form>
 
@@ -36,6 +36,11 @@
     },
 
     attached: function () {
+    },
+
+    onCancel: function (event) {
+      this.fire('cancel');
+      event.preventDefault();
     },
 
     onSubmit: function (event) {

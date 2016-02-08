@@ -60,7 +60,9 @@ ElementsProperties.prototype.openPanel = function (element) {
   DOMElement.addEventListener('properties-changed', (event)=> {
     element.redraw();
     this.closePanel();
-    console.log(element);
+  });
+  DOMElement.addEventListener('cancel', (event)=> {
+    this.closePanel();
   });
   modal.html(DOMElement);
 
