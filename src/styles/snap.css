@@ -10,12 +10,14 @@
 
 .walle .snap-line.hover {
   visibility: visible;
-  stroke: red;
+  stroke: red !important;
+  opacity: 1 !important;
 }
 
 .walle .snap-line.visible {
   visibility: visible;
   stroke: orange;
+  opacity: 0.3;
 }
 
 .walle .snap-point {
