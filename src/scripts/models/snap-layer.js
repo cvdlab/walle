@@ -151,7 +151,7 @@ SnapLayer.prototype.addTargetElements = function (elements) {
           new SnapLine(paper, position, 0, position, height, element, priority, radius) :
           new SnapLine(paper, 0, position, width, position, element, priority, radius);
 
-      gridSnapLine.hover(true);
+      gridSnapLine.visible(true);
       snapElements.push(gridSnapLine);
     }
   });

@@ -5,9 +5,18 @@
 
 .walle .snap-line {
   stroke-width: 1px;
+  visibility: hidden;
+}
+
+.walle .snap-line.hover {
+  visibility: visible;
   stroke: red;
 }
 
+.walle .snap-line.visible {
+  visibility: visible;
+  stroke: orange;
+}
 
 .walle .snap-point {
   stroke-width: 1px;

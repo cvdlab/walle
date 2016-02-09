@@ -11,7 +11,8 @@ var SnapLine = function (paper, x1, y1, x2, y2, targetElement, priority, radius)
   this.priority = priority || 1;
   this.radius = radius;
 
-  this.line = null;
+  this.line = this.paper.line(this.x1, this.y1, this.x2, this.y2)
+    .addClass('snap-element snap-line');
 };
 
 SnapLine.prototype.distanceFromPoint = function (xp, yp) {
@@ -23,15 +24,11 @@ SnapLine.prototype.targetPoint = function (xp, yp) {
 };
 
 SnapLine.prototype.hover = function (on) {
-  if (on && !this.line) {
-    this.line = this.paper.line(this.x1, this.y1, this.x2, this.y2)
-      .addClass('snap-element snap-line');
-  }
+  on ? this.line.addClass('hover') : this.line.removeClass('hover');
+};
 
-  if (!on && this.line) {
-    this.line.remove();
-    this.line = null;
-  }
+SnapLine.prototype.visible = function (on) {
+  on ? this.line.addClass('visible') : this.line.removeClass('visible');
 };
 
 SnapLine.prototype.move = function (x1, y1, x2, y2) {
