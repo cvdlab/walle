@@ -232,7 +232,6 @@ Scene.prototype.load = function (data) {
 
   scene.addElements(loadedElementsArray);
 
-  this.getVertices().forEach(vertex=> vertex.redraw());
 };
 
 Scene.prototype.refreshRooms = function () {
