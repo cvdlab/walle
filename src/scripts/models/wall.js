@@ -31,6 +31,7 @@ var Wall = function (paper, vertex0, vertex1, tickness) {
     .attr({y: -this.tickness + (this.tickness / 4)})
     .addClass('wall-distance');
   this.distanceGroup = this.paper.g(this.distanceText);
+  paper.select('#walls').append(this.distanceGroup);
   this.updateDistanceLabel();
 
 };
@@ -160,6 +161,7 @@ Wall.prototype.redraw = function () {
 
   if (!this.line) {
     this.line = paper.path(pathStr).addClass('wall');
+    paper.select('#walls').append(this.line);
   } else {
     this.line.attr({d: pathStr});
   }

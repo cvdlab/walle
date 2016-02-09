@@ -25,7 +25,8 @@ var Room = function (paper, vertices, color, angle) {
   this.path = paper.path(pathString)
     .attr({fill: pattern})
     .addClass('room');
-  paper.prepend(this.path);
+
+  paper.select('#rooms').append(this.path);
 
   this.moveVertexHandler = (event) => {
     this.redraw();

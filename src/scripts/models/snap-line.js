@@ -13,6 +13,8 @@ var SnapLine = function (paper, x1, y1, x2, y2, targetElement, priority, radius)
 
   this.line = this.paper.line(this.x1, this.y1, this.x2, this.y2)
     .addClass('snap-element snap-line');
+
+  paper.select('#snap-elements').append(this.line);
 };
 
 SnapLine.prototype.distanceFromPoint = function (xp, yp) {

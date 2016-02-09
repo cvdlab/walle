@@ -30,6 +30,13 @@ var Walle = function (container) {
 
   //init paper and scene
   this.paper = Snap(this.width, this.height);
+  this.paper.g().attr({id: "grids"});
+  this.paper.g().attr({id: "rooms"});
+  this.paper.g().attr({id: "walls"});
+  this.paper.g().attr({id: "holes"});
+  this.paper.g().attr({id: "vertices"});
+  this.paper.g().attr({id: "snap-elements"});
+  this.paper.g().attr({id: "rulers"});
   this.paper.appendTo(this.wrapper.get(0));
   this.scene = new Scene(this.paper, width, height);
 

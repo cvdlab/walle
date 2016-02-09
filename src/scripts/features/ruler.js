@@ -39,6 +39,7 @@ Ruler.prototype.start = function () {
     .attr({fill: vPattern})
     .addClass('ruler horizontal');
 
+  paper.select('#rulers').append(horizontalRuler).append(verticalRuler);
 
   horizontalRuler.click(event=> {
     this.addCustomGridLine('v', event.offsetX);

@@ -11,6 +11,7 @@ var Vertex = function (paper, x, y) {
   this.events = new Events();
 
   let circle = this.circle = paper.circle(x, y, 4).addClass('vertex');
+  paper.select('#vertices').append(circle);
 
 };
 

@@ -9,6 +9,7 @@ var Hole = function (paper, wall, offset, distanceFromFloor, inverted, opposite)
   this.opposite = opposite || false;
 
   this.group = paper.group().addClass('hole');
+  paper.select('#holes').append(this.group);
 
   this.redraw();
 
