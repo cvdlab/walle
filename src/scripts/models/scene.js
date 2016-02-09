@@ -167,14 +167,14 @@ Scene.prototype.offMouseMove = function (handler) {
 };
 
 Scene.prototype.remove = function () {
-  let pendingDeletetion = [];
+  let pendingDeletion = [];
 
   for(let elementsID in this.elements) {
     let element = this.elements[elementsID];
     element.remove();
-    pendingDeletetion.push(element);
+    pendingDeletion.push(element);
   }
-  this.removeElements(pendingDeletetion);
+  this.removeElements(pendingDeletion);
   this.events.dispatchEvent('change', this, 'remove');
   this.events.dispatchEvent('remove', this);
 };
