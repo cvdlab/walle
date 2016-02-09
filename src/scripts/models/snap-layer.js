@@ -144,8 +144,8 @@ SnapLayer.prototype.addTargetElements = function (elements) {
 
     if (GridLine.isGridLine(element)) {
       let position = element.position;
-      let priority = 30;
-      let radius = 15;
+      let priority = 15;
+      let radius = 8;
       let gridSnapLine =
         element.isVertical() ?
           new SnapLine(paper, position, 0, position, height, element, priority, radius) :
