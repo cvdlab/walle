@@ -10,8 +10,7 @@ var Scene = function (paper, width, height) {
   this.snapLayer = new SnapLayer(this);
 
   this.onChange((element) => {
-    if (Room.isRoom(element) || Hole.isHole(element)) return;
-    this.refreshRooms();
+    if (Vertex.isVertex(element) || Wall.isWall(element) || Array.isArray(element)) this.refreshRooms();
   });
 
   let detectElementHandler = (eventName) => {
