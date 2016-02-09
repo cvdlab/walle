@@ -289,6 +289,7 @@ Scene.typeof = function (obj) {
   if (Room.isRoom(obj)) return 'room';
   if (Vertex.isVertex(obj)) return 'vertex';
   if (Wall.isWall(obj)) return 'wall';
+  if (GridLine.isGridLine(obj)) return 'grid-line';
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
 };
 
