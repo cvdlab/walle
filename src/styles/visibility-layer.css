@@ -1,7 +1,7 @@
 .walle .visibility-layer {
   position: absolute;
-  top: 5px;
-  left: 5px;
+  bottom: 5px;
+  right: 5px;
   background-color: #f7f7f7;
   border: 1px solid #e3e3e3;
   z-index: 700;

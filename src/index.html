@@ -24,6 +24,7 @@
   <script src="scripts/models/snap-layer.js"></script>
   <script src="scripts/models/snap-line.js"></script>
   <script src="scripts/models/snap-point.js"></script>
+  <script src="scripts/models/grid-line.js"></script>
   <script src="scripts/libs/utils.js"></script>
   <script src="scripts/walle.js"></script>
   <script src="scripts/features/elements-properties.js"></script>
@@ -42,6 +43,7 @@
   <script src="scripts/features/walle-website.js"></script>
   <script src="scripts/features/elements-move.js"></script>
   <script src="scripts/features/visibility-layer.js"></script>
+  <script src="scripts/features/ruler.js"></script>
 
   <link rel="stylesheet" type="text/css" href="styles/style.css">
   <link rel="stylesheet" type="text/css" href="styles/walle.css">
@@ -55,6 +57,7 @@
   <link rel="stylesheet" type="text/css" href="styles/room.css">
   <link rel="stylesheet" type="text/css" href="styles/panel.css">
   <link rel="stylesheet" type="text/css" href="styles/snap.css">
+  <link rel="stylesheet" type="text/css" href="styles/ruler.css">
   <link rel="stylesheet" type="text/css" href="styles/visibility-layer.css">
   <link rel="stylesheet" type="text/css" href="styles/icons/flaticon.css">
 
@@ -75,6 +78,7 @@
       walle.feature("Panel").start();
       walle.feature("VisibilityLayer").start();
       walle.feature("Grid").start();
+      walle.feature("Ruler").start();
 
       jQuery(document).ready(function() {
         jQuery('.tooltip').tooltipster();

@@ -58,7 +58,7 @@ var SnapLayer = function (scene) {
   let removeHandler = (elements) => {
     if (!Array.isArray(elements)) elements = [elements];
 
-    this.snapElements = snapElements = snapElements.filter(snapElement =>{
+    this.snapElements = snapElements = snapElements.filter(snapElement => {
       return elements.indexOf(snapElement.targetElement) === -1;
     });
 
@@ -142,6 +142,18 @@ SnapLayer.prototype.addTargetElements = function (elements) {
       });
     }
 
+    if (GridLine.isGridLine(element)) {
+      let position = element.position;
+      let priority = 30;
+      let radius = 15;
+      let gridSnapLine =
+        element.isVertical() ?
+          new SnapLine(paper, position, 0, position, height, element, priority, radius) :
+          new SnapLine(paper, 0, position, width, position, element, priority, radius);
+
+      gridSnapLine.hover(true);
+      snapElements.push(gridSnapLine);
+    }
   });
 };
 

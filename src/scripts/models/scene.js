@@ -219,6 +219,12 @@ Scene.prototype.load = function (data) {
       loadedElements[d.id] = new Door(paper, wall, d.offset, d.distanceFromFloor, d.inverted, d.opposite);
     });
 
+  data
+    .filter(d => d.type == 'grid-line')
+    .forEach(d => {
+      loadedElements[d.id] = new GridLine(paper, d.direction, d.position);
+    });
+
   let loadedElementsArray = [];
   for (var ID in loadedElements) {
     loadedElementsArray.push(loadedElements[ID]);
