@@ -39,3 +39,7 @@ GridLine.prototype.distanceFromPoint = function (x, y) {
 
   return Math.POSITIVE_INFINITY;
 };
+
+GridLine.prototype.remove = function () {
+
+};
