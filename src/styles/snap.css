@@ -16,8 +16,7 @@
 
 .walle .snap-line.visible {
   visibility: visible;
-  stroke: orange;
-  opacity: 0.3;
+  stroke: #ffc500;
 }
 
 .walle .snap-point {
