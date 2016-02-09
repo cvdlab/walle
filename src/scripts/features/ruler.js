@@ -3,8 +3,6 @@
 var Ruler = function (walle) {
   this.walle = walle;
   this.paper = walle.paper;
-
-
 };
 
 
@@ -15,6 +13,7 @@ Ruler.prototype.start = function () {
 
   let paper = this.paper;
   let walle = this.walle;
+  let scene = walle.scene;
 
   let hPattern = paper.path('M0,0 L0,10, M5,5 L5,10, M0,10 L10,10')
     .attr({
@@ -41,15 +40,31 @@ Ruler.prototype.start = function () {
 
   paper.select('#rulers').append(horizontalRuler).append(verticalRuler);
 
-  horizontalRuler.click(event=> {
-    this.addCustomGridLine('v', event.offsetX);
-    event.stopPropagation();
-  });
+  let findNearGridLine = (direction, position) => {
+    let gridLines = scene.getElements('grid-line');
+    for (let i = gridLines.length - 1; i >= 0; i--) {
+      let gridLine = gridLines[i];
+      if (gridLine.direction === direction && Math.abs(gridLine.position - position) < 5)
+        return gridLine;
+    }
+    return null;
+  };
 
-  verticalRuler.click(event=> {
-    this.addCustomGridLine('h', event.offsetY);
-    event.stopPropagation();
-  });
+  let handler = (direction) => {
+    return event=> {
+      let position = direction === 'h' ? event.offsetY : event.offsetX;
+      let nearGridLine = findNearGridLine(direction, position);
+      if (nearGridLine)
+        this.removeCustomGridLine(nearGridLine);
+      else
+        this.addCustomGridLine(direction, position);
+
+      event.stopPropagation();
+    };
+  };
+
+  horizontalRuler.click(handler('v'));
+  verticalRuler.click(handler('h'));
 };
 
 Ruler.prototype.addCustomGridLine = function (direction, position) {
@@ -64,6 +79,9 @@ Ruler.prototype.addCustomGridLine = function (direction, position) {
   scene.addElement(gridLine);
 };
 
+Ruler.prototype.removeCustomGridLine = function (gridLine) {
+  this.walle.scene.removeElement(gridLine);
+};
 
 /**
  * stop
