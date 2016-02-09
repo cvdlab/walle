@@ -44,6 +44,7 @@ Wall.prototype.setId = function (id) {
 
 Wall.prototype.remove = function () {
   this.distanceText.remove();
+  this.distanceGroup.remove();
   this.line.remove();
 };
 
