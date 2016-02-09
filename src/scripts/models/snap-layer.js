@@ -56,12 +56,21 @@ var SnapLayer = function (scene) {
   };
 
   let removeHandler = (elements) => {
+    this.resetHover();
     if (!Array.isArray(elements)) elements = [elements];
 
-    this.snapElements = snapElements = snapElements.filter(snapElement => {
-      return elements.indexOf(snapElement.targetElement) === -1;
-    });
+    let newSnapElements = [];
+    let i = snapElements.length;
+    while(i--){
+      let snapElement = snapElements[i];
+      if(elements.indexOf(snapElement.targetElement) >= 0){
+        snapElement.remove();
+      }else{
+        newSnapElements.push(snapElement);
+      }
+    }
 
+    snapElements = this.snapElements = newSnapElements;
   };
 
   paper.click(parametricHandler('click'));
