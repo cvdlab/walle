@@ -87,6 +87,7 @@ SnapLayer.prototype.onClick = function (handler) {
 SnapLayer.prototype.offClick = function (handler) {
   this.events.removeEventListener('click', handler);
   this.active = this.events.length > 0;
+  if(!this.active) this.resetHover();
 };
 
 SnapLayer.prototype.onMouseMove = function (handler) {
