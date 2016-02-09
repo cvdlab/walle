@@ -42,12 +42,7 @@ Vertex.prototype.hovered = function (isHovered) {
 };
 
 Vertex.prototype.redraw = function () {
-  let attr = this.circle.attr();
-  this.circle.remove();
-
-  let circle = this.paper.circle();
-  circle.attr(attr);
-  this.circle = circle;
+  this.circle.attr({cx: this.x, cy: this.y});
 };
 
 Vertex.prototype.remove = function () {
