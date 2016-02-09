@@ -51,3 +51,7 @@ SnapPoint.prototype.move = function (x, y) {
   this.x = x;
   this.y = y;
 };
+
+SnapPoint.isSnapPoint = function (snapPoint) {
+  return (snapPoint instanceof SnapPoint);
+};

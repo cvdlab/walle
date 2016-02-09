@@ -52,48 +52,34 @@ WallsDrawer.prototype.start = function () {
 
   };
 
-  this.snapClickHandler = (event, x, y, targetElement) => {
-
-    let onElement = targetElement.distanceFromPoint(x, y) < 1;
+  this.snapClickHandler = (event, x, y, targetElement, snapElement) => {
 
     if (this.status === WallsDrawer.statusWaiting) {
-      if (!onElement) {
-        this.beginDrawingWithPoint(x, y);
-        snapLayer.resetHover();
-        event.stopImmediatePropagation();
-        return;
-      }
-      if (Wall.isWall(targetElement)) {
-        this.beginDrawingWithWall(targetElement, x, y);
-        snapLayer.resetHover();
-        event.stopImmediatePropagation();
-        return;
-      }
-      if (Vertex.isVertex(targetElement)) {
+      snapLayer.resetHover();
+
+      if (Vertex.isVertex(targetElement) && SnapPoint.isSnapPoint(snapElement)) {
         this.beginDrawingWithVertex(targetElement);
-        snapLayer.resetHover();
         event.stopImmediatePropagation();
+        return;
       }
+
+      this.beginDrawingWithPoint(x, y);
+      event.stopImmediatePropagation();
+      return;
     }
 
     if (this.status === WallsDrawer.statusWorking) {
-      if (!onElement) {
-        this.endDrawingWithPoint(x, y);
-        snapLayer.resetHover();
-        event.stopImmediatePropagation();
-        return;
-      }
-      if (Wall.isWall(targetElement)) {
-        this.endDrawingWithWall(targetElement, x, y, event.shiftKey);
-        snapLayer.resetHover();
-        event.stopImmediatePropagation();
-        return;
-      }
-      if (Vertex.isVertex(targetElement)) {
+      snapLayer.resetHover();
+
+      if (Vertex.isVertex(targetElement) && SnapPoint.isSnapPoint(snapElement)) {
         this.endDrawingWithVertex(targetElement, event.shiftKey);
-        snapLayer.resetHover();
         event.stopImmediatePropagation();
+        return;
       }
+
+      this.endDrawingWithPoint(x, y);
+      event.stopImmediatePropagation();
+
     }
   };
 
