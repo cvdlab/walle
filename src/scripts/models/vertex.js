@@ -21,10 +21,11 @@ Vertex.prototype.setId = function(id){
 };
 
 Vertex.prototype.move = function (x, y) {
+  let originalX = this.x, originalY = this.y;
   this.x = x;
   this.y = y;
   this.circle.attr({cx: x, cy: y});
-  this.events.dispatchEvent("move", x, y);
+  this.events.dispatchEvent("move", x, y, originalX, originalY);
 };
 
 Vertex.prototype.selected = function (isSelected) {

@@ -89,6 +89,11 @@ Select.prototype.endSelection = function (x, y) {
   this.updateSelection(x, y);
   this.symbol.remove();
   this.symbol = null;
+
+  let groupName = window.prompt("Please insert group name","Group #1");
+
+  let group = new Group(this.paper, groupName, this.selectedElements);
+
   this.status = Select.statusSelected;
 };
 
