@@ -70,7 +70,7 @@ Select.prototype.beginSelection = function (x, y) {
 
 Select.prototype.updateSelection = function (x, y) {
   //console.log('u', x, y);
-
+  let scene = this.scene;
   let start = this.selectionStartPoint;
   let end = {x, y};
   let boundingBox = Utils.boundingBox(start, end);
@@ -80,31 +80,8 @@ Select.prototype.updateSelection = function (x, y) {
   this.selectionEndPoint = {x, y};
 
   this.selectedElements.forEach(element => element.selected(false));
-
-  let scene = this.scene;
-  let insideElements = [];
-  scene.getVertices().forEach(vertex => {
-    let inside = vertex.insideBoundingBox(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
-    if(inside){
-      vertex.selected(true);
-      insideElements.push(vertex);
-    }
-  });
-
-  scene.getWalls().forEach(wall => {
-    let inside = wall.vertices.every(vertex => insideElements.indexOf(vertex) >= 0);
-    if(inside){
-      wall.selected(true);
-      insideElements.push(wall);
-      wall.attachedElements.forEach(attachedElement => {
-        insideElements.push(attachedElement);
-        attachedElement.selected(true);
-      });
-    }
-
-  });
-
-  this.selectedElements = insideElements;
+  this.selectedElements = scene.elementsInsideBoundingBox(boundingBox);
+  this.selectedElements.forEach(element => element.selected(true));
 };
 
 Select.prototype.endSelection = function (x, y) {

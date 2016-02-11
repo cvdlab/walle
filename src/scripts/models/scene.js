@@ -337,3 +337,31 @@ Scene.prototype.extractElementFromDOM = function (DOMElement) {
 
   return null;
 };
+
+/**
+ *
+ */
+Scene.prototype.elementsInsideBoundingBox = function (boundingBox) {
+  let elements = this.elements;
+  let scene = this;
+  let insideElements = [];
+  scene.getVertices().forEach(vertex => {
+    let inside = vertex.insideBoundingBox(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
+    if(inside){
+      insideElements.push(vertex);
+    }
+  });
+
+  scene.getWalls().forEach(wall => {
+    let inside = wall.vertices.every(vertex => insideElements.indexOf(vertex) >= 0);
+    if(inside){
+      wall.selected(true);
+      insideElements.push(wall);
+      wall.attachedElements.forEach(attachedElement => {
+        insideElements.push(attachedElement);
+      });
+    }
+  });
+
+  return insideElements;
+};
