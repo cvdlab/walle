@@ -12,6 +12,7 @@
 
 .walle .vertex.selected{
   stroke: #FFC107;
+  fill: #FFC107;
   pointer-events: none;
 }
 

@@ -20,6 +20,9 @@ Panel.prototype.start = function () {
   })
     .appendTo(this.walle.wrapper);
 
+  this.addFeature("Select", "flaticon-clicking1", "Select", false, true);
+  this.addSeparator();
+
   this.addFeature("WallsDrawer", "flaticon-walls1", "Add wall", false, true);
   this.addFeature("WindowsDrawer", "flaticon-opened17", "Add window", false, true);
   this.addFeature("DoorsDrawer", "flaticon-open203", "Add door", false, true);

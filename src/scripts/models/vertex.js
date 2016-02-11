@@ -93,3 +93,15 @@ Vertex.prototype.addAttachedElement = function(element){
 Vertex.prototype.removeAttachedElement = function(element){
   this.attachedElements.delete(element);
 };
+
+Vertex.prototype.insideBoundingBox = function(x, y, width, height){
+  let vx = this.x, vy = this.y;
+
+  return (
+    x <= vx &&
+    y <= vy &&
+    vx <= x + width &&
+    vy <= y + height
+  );
+
+};

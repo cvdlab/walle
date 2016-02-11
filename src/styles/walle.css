@@ -12,3 +12,12 @@
   font-size: inherit !important;
   margin-left: 0 !important;
 }
+
+
+.selection-rect{
+  stroke: #A2ABFD;
+  stroke-width: 1px;
+  fill: #F3F4FF;
+  opacity: 0.5;
+  pointer-events: none;
+}
