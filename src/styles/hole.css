@@ -12,7 +12,7 @@
 }
 
 .walle .hole.selected *{
-  stroke: #FFC107;
+  stroke: #a48007;
 }
 
 .walle.hole-feedback .hole.attached:hover line,

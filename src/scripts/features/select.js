@@ -10,8 +10,7 @@ var Select = function (walle) {
   this.selectionEndPoint = null;
   this.selectionBoudingBox = null;
   this.symbol = null;
-  this.selectedWalls = [];
-  this.selectedVertices = [];
+  this.selectedElements = [];
 };
 
 Select.statusWaiting = 0;
@@ -80,23 +79,32 @@ Select.prototype.updateSelection = function (x, y) {
   this.symbol.attr(boundingBox);
   this.selectionEndPoint = {x, y};
 
+  this.selectedElements.forEach(element => element.selected(false));
+
   let scene = this.scene;
-  let insideVertices = [];
+  let insideElements = [];
   scene.getVertices().forEach(vertex => {
     let inside = vertex.insideBoundingBox(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
-    vertex.selected(inside);
-    if(inside) insideVertices.push(vertex);
+    if(inside){
+      vertex.selected(true);
+      insideElements.push(vertex);
+    }
   });
 
-  let insideWalls = [];
   scene.getWalls().forEach(wall => {
-    let inside = wall.vertices.every(vertex => insideVertices.indexOf(vertex) >= 0);
-    wall.selected(inside);
-    if(inside) insideWalls.push(wall);
+    let inside = wall.vertices.every(vertex => insideElements.indexOf(vertex) >= 0);
+    if(inside){
+      wall.selected(true);
+      insideElements.push(wall);
+      wall.attachedElements.forEach(attachedElement => {
+        insideElements.push(attachedElement);
+        attachedElement.selected(true);
+      });
+    }
+
   });
 
-  this.selectedVertices = insideVertices;
-  this.selectedWalls = insideWalls;
+  this.selectedElements = insideElements;
 };
 
 Select.prototype.endSelection = function (x, y) {
