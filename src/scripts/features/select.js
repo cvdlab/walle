@@ -132,9 +132,7 @@ Select.prototype.abortSelection = function () {
 Select.prototype.stop = function () {
   let paper = this.paper;
 
-  let scene = this.scene;
-  scene.getWalls().forEach(wall => wall.selected(false));
-  scene.getVertices().forEach(wall => wall.selected(false));
+  this.selectedElements.forEach(element => element.selected(false));
 
   paper.unmousedown(this.mouseDownHandler);
   paper.unmouseup(this.mouseUpHandler);
