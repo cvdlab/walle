@@ -5,12 +5,14 @@ var Select = function (walle) {
   this.status = Select.statusDirty;
   this.paper = walle.paper;
   this.scene = walle.scene;
+  this.wrapper = walle.wrapper;
 
   this.selectionStartPoint = null;
   this.selectionEndPoint = null;
   this.selectionBoudingBox = null;
   this.symbol = null;
   this.selectedElements = [];
+  this.groupButton = null;
 };
 
 Select.statusWaiting = 0;
@@ -90,9 +92,18 @@ Select.prototype.endSelection = function (x, y) {
   this.symbol.remove();
   this.symbol = null;
 
-  let groupName = window.prompt("Please insert group name","Group #1");
+  //update centroid
+  let selectedElements = this.selectedElements;
+  let centroid = Utils.centroid(selectedElements.filter(element => Vertex.isVertex(element)));
 
-  let group = new Group(this.paper, groupName, this.selectedElements);
+  let button = this.groupButton = jQuery('<button>', {class: "button-group"})
+    .text('Create Group')
+    .css({top: centroid.y, left: centroid.x})
+    .on('click', event => {
+      this.createGroup();
+    });
+  this.wrapper.append(button);
+
 
   this.status = Select.statusSelected;
 };
@@ -100,12 +111,29 @@ Select.prototype.endSelection = function (x, y) {
 Select.prototype.abortSelection = function () {
 
   if (this.status === Select.statusSelected || this.status === Select.statusWorking) {
+    this.selectedElements.forEach(element => element.selected(false));
+    this.selectedElements = [];
     if (this.symbol) {
       this.symbol.remove();
       this.symbol = null;
     }
+    if (this.groupButton) {
+      this.groupButton.remove();
+      this.groupButton = null;
+    }
   }
   this.status = Select.statusWaiting;
+};
+
+Select.prototype.createGroup = function () {
+
+  let groupName = window.prompt("Please insert group name", "Group #1");
+
+  if(groupName !== null) {
+    let group = new Group(this.paper, groupName, this.selectedElements);
+    this.abortSelection();
+  }
+
 };
 
 /**

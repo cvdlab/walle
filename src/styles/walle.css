@@ -21,3 +21,18 @@
   opacity: 0.5;
   pointer-events: none;
 }
+
+.button-group{
+  top: 0;
+  left: 0;
+  position: absolute;
+  display: block;
+  width: 100px;
+  height: 20px;
+  border-radius: 3px;
+  background: blue;
+  border: 0;
+  color: #fff;
+  margin: -10px 0 0 -50px;
+  font-size: 10px;
+}

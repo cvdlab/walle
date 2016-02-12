@@ -100,20 +100,20 @@ Utils.translationVector = function (x1, y1, x2, y2, xp, yp) {
   let xm = (x1 + x2) / 2;
   let ym = (y1 + y2) / 2;
 
-  if(x1 === x2){
+  if (x1 === x2) {
     vx = xp - x1;
     vy = 0;
-    return {x: xm + vx , y: ym, vx, vy};
+    return {x: xm + vx, y: ym, vx, vy};
   }
 
-  if(y1 === y2){
+  if (y1 === y2) {
     vx = 0;
     vy = yp - y1;
     return {x: xm, y: ym + vy, vx, vy};
   }
 
   //eq segmento
-  let m =  (y2 - y1) / (x2 - x1);
+  let m = (y2 - y1) / (x2 - x1);
 
   //retta perpendicolare
   let mi = -1 / m;
@@ -142,7 +142,7 @@ Utils.projectonPoint = function (x1, y1, x2, y2, xp, yp) {
   let ym = (y1 + y2) / 2;
 
   //eq segmento
-  let m =  (y2 - y1) / (x2 - x1);
+  let m = (y2 - y1) / (x2 - x1);
 
   //retta perpendicolare
   let mi = -1 / m;
@@ -202,15 +202,39 @@ Utils.randomColor = function (numOfSteps, step) {
   var i = ~~(h * 6);
   var f = h * 6 - i;
   var q = 1 - f;
-  switch(i % 6){
-    case 0: r = 1; g = f; b = 0; break;
-    case 1: r = q; g = 1; b = 0; break;
-    case 2: r = 0; g = 1; b = f; break;
-    case 3: r = 0; g = q; b = 1; break;
-    case 4: r = f; g = 0; b = 1; break;
-    case 5: r = 1; g = 0; b = q; break;
+  switch (i % 6) {
+    case 0:
+      r = 1;
+      g = f;
+      b = 0;
+      break;
+    case 1:
+      r = q;
+      g = 1;
+      b = 0;
+      break;
+    case 2:
+      r = 0;
+      g = 1;
+      b = f;
+      break;
+    case 3:
+      r = 0;
+      g = q;
+      b = 1;
+      break;
+    case 4:
+      r = f;
+      g = 0;
+      b = 1;
+      break;
+    case 5:
+      r = 1;
+      g = 0;
+      b = q;
+      break;
   }
-  var c = "#" + ("00" + (~ ~(r * 255)).toString(16)).slice(-2) + ("00" + (~ ~(g * 255)).toString(16)).slice(-2) + ("00" + (~ ~(b * 255)).toString(16)).slice(-2);
+  var c = "#" + ("00" + (~~(r * 255)).toString(16)).slice(-2) + ("00" + (~~(g * 255)).toString(16)).slice(-2) + ("00" + (~~(b * 255)).toString(16)).slice(-2);
   return (c);
 };
 
@@ -248,4 +272,23 @@ Utils.boundingBox = function (start, end) {
       height: start.y - end.y
     };
   }
+};
+
+Utils.centroid = function (pts) {
+  var first = pts[0], last = pts[pts.length - 1];
+  if (first.x != last.x || first.y != last.y) pts.push(first);
+  var twicearea = 0,
+    x = 0, y = 0,
+    nPts = pts.length,
+    p1, p2, f;
+  for (var i = 0, j = nPts - 1; i < nPts; j = i++) {
+    p1 = pts[i];
+    p2 = pts[j];
+    f = p1.x * p2.y - p2.x * p1.y;
+    twicearea += f;
+    x += ( p1.x + p2.x ) * f;
+    y += ( p1.y + p2.y ) * f;
+  }
+  f = twicearea * 3;
+  return {x: x / f, y: y / f};
 };
