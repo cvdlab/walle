@@ -355,7 +355,7 @@ Scene.prototype.elementsInsideBoundingBox = function (boundingBox) {
   scene.getWalls().forEach(wall => {
     let inside = wall.vertices.every(vertex => insideElements.indexOf(vertex) >= 0);
     if(inside){
-      wall.selected(true);
+      //wall.selected(true);
       insideElements.push(wall);
       wall.attachedElements.forEach(attachedElement => {
         insideElements.push(attachedElement);

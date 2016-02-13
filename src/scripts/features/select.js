@@ -13,6 +13,8 @@ var Select = function (walle) {
   this.symbol = null;
   this.selectedElements = [];
   this.groupButton = null;
+
+  this._groups = [];
 };
 
 Select.statusWaiting = 0;
@@ -81,19 +83,32 @@ Select.prototype.updateSelection = function (x, y) {
   this.symbol.attr(boundingBox);
   this.selectionEndPoint = {x, y};
 
+  let alreadySelected = [];
+  this._groups.forEach(group => group.elements.forEach(element => alreadySelected.push(element)));
+
+
   this.selectedElements.forEach(element => element.selected(false));
-  this.selectedElements = scene.elementsInsideBoundingBox(boundingBox);
-  this.selectedElements.forEach(element => element.selected(true));
+  let insideElements = scene.elementsInsideBoundingBox(boundingBox);
+  insideElements = insideElements.filter(element => alreadySelected.indexOf(element) === -1);
+  insideElements.forEach(element => element.selected(true));
+  this.selectedElements = insideElements;
+
 };
 
 Select.prototype.endSelection = function (x, y) {
   console.log('e', x, y);
   this.updateSelection(x, y);
-  this.symbol.remove();
-  this.symbol = null;
+  if (this.symbol) {
+    this.symbol.remove();
+    this.symbol = null;
+  }
 
   //update centroid
   let selectedElements = this.selectedElements;
+  if (selectedElements.length === 0) {
+    this.abortSelection();
+    return;
+  }
   let centroid = Utils.centroid(selectedElements.filter(element => Vertex.isVertex(element)));
 
   let button = this.groupButton = jQuery('<button>', {class: "button-group"})
@@ -129,8 +144,9 @@ Select.prototype.createGroup = function () {
 
   let groupName = window.prompt("Please insert group name", "Group #1");
 
-  if(groupName !== null) {
+  if (groupName !== null) {
     let group = new Group(this.paper, groupName, this.selectedElements);
+    this._groups.push(group);
     this.abortSelection();
   }
 
